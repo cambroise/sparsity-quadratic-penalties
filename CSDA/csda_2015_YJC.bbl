@@ -1,0 +1,131 @@
+\begin{thebibliography}{24}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+
+\bibitem[{Ambroise and McLachlan(2002)}]{Ambroise02}
+Ambroise, C., McLachlan, G.~J., 2002. Selection bias in gene extraction on the
+  basis of microarray gene-expression data. Proceedings of the National Academy
+  of Sciences 99~(10), 6562--6566.
+
+\bibitem[{Bach et~al.(2012)Bach, Jenatton, Mairal, and
+  Obozinski}]{2012_FML_Bach}
+Bach, F., Jenatton, R., Mairal, J., Obozinski, G., 2012. Optimization with
+  sparsity-inducing penalties. Foundations and Trends in Machine Learning
+  4~(1), 1--106.
+
+\bibitem[{Beck and Teboulle(2009)}]{2009_SIAM_Beck}
+Beck, A., Teboulle, M., 2009. Fast iterative shrinkage-thresholding algorithm
+  for linear inverse problems. SIAM Journal on Imaging Sciences 2, 183--202.
+
+\bibitem[{Bondell and Reich(2008)}]{Bondell08}
+Bondell, H.~D., Reich, B.~J., 2008. Simultaneous regression shrinkage, variable
+  selection, and supervised clustering of predictors with oscar. Biometrics
+  64~(1), 115--123.
+
+\bibitem[{Bonnans et~al.(2006)Bonnans, Gilbert, Lemar\'echal, and
+  Sagastiz\'abal}]{Bonnans06}
+Bonnans, J.~F., Gilbert, J.~C., Lemar\'echal, C., Sagastiz\'abal, C., 2006.
+  Numerical Optimization: Theoretical and Practical Aspects, 2nd Edition.
+  Springer.
+
+\bibitem[{Bottou and Bousquet(2008)}]{Bottou08}
+Bottou, L., Bousquet, O., 2008. The tradeoffs of large scale learning. In:
+  Platt, J.~C., Koller, D., Singer, Y., Roweis, S. (Eds.), Advances in Neural
+  Information Processing Systems, 20 (NIPS 2008). pp. 161--168.
+
+\bibitem[{Boyd et~al.(2011)Boyd, Parikh, Chu, Peleato, and
+  Eckstein}]{boyd2011distributed}
+Boyd, S., Parikh, N., Chu, E., Peleato, B., Eckstein, J., 2011. Distributed
+  optimization and statistical learning via the alternating direction method of
+  multipliers. Foundations and Trends{\textregistered} in Machine Learning
+  3~(1), 1--122.
+
+\bibitem[{Boyd and Vandenberghe(2004)}]{boyd2004convex}
+Boyd, S., Vandenberghe, L., 2004. Convex optimization. Cambridge university
+  press.
+
+\bibitem[{Eddelbuettel and Fran\c{c}ois(2011)}]{2011_JSS_rcpp}
+Eddelbuettel, D., Fran\c{c}ois, R., 4 2011. Rcpp: Seamless {R} and {C++}
+  integration. Journal of Statistical Software 40~(8), 1--18.
+\newline\urlprefix\url{http://www.jstatsoft.org/v40/i08}
+
+\bibitem[{Efron et~al.(2004)Efron, Hastie, Johnstone, and
+  Tibshirani}]{2004_AS_Efron}
+Efron, B., Hastie, T., Johnstone, I., Tibshirani, R., 2004. Least angle
+  regression. The Annals of Statistics 32~(2), 407--499, with discussion, and a
+  rejoinder by the authors.
+
+\bibitem[{Freedman(1983)}]{Freedman83b}
+Freedman, D.~A., 1983. A note on screening regression equations. The American
+  Statistician 37~(2), 152--155.
+
+\bibitem[{Friedman et~al.(2007)Friedman, Hastie, H\"ofling, and
+  Tibshirani}]{2007_AAS_Friedman}
+Friedman, J., Hastie, T., H\"ofling, H., Tibshirani, R., 2007. Pathwise
+  coordinate optimization. The Annals of Applied Statistics 1~(2), 302--332.
+
+\bibitem[{Friedman et~al.(2010)Friedman, Hastie, and
+  Tibshirani}]{2009_JSS_Friedman}
+Friedman, J.~H., Hastie, T., Tibshirani, R., 2 2010. Regularization paths for
+  generalized linear models via coordinate descent. Journal of Statistical
+  Software 33~(1), 1--22.
+\newline\urlprefix\url{http://www.jstatsoft.org/v33/i01}
+
+\bibitem[{Gilbert(2016)}]{Gilbert16}
+Gilbert, J.~C., 2016. Fragments d'optimisation diff\'erentiable -- th\'eorie et
+  algorithmes.
+\newline\urlprefix\url{http://www-rocq.inria.fr/~gilbert/ensta/optim.html}
+
+\bibitem[{Lacoste-Julien et~al.(2012)Lacoste-Julien, Jaggi, Schmidt, and
+  Pletscher}]{lacoste2012block}
+Lacoste-Julien, S., Jaggi, M., Schmidt, M., Pletscher, P., 2012.
+  Block-coordinate {Frank-Wolfe} optimization for structural svms. arXiv
+  preprint arXiv:1207.4747.
+
+\bibitem[{Mairal(2010)}]{Mairal10}
+Mairal, J., 2010. Sparse coding for machine learning, image processing and
+  computer vision. Ph.D. thesis, \'Ecole Normale Sup\'erieure de Cachan.
+
+\bibitem[{Moulines and Bach(2011)}]{moulines2011non}
+Moulines, E., Bach, F.~R., 2011. Non-asymptotic analysis of stochastic
+  approximation algorithms for machine learning. In: Advances in Neural
+  Information Processing Systems. pp. 451--459.
+
+\bibitem[{Osborne et~al.(2000)Osborne, Presnell, and
+  Turlach}]{2000_JCGS_Osborne}
+Osborne, M.~R., Presnell, B., Turlach, B.~A., 2000. On the {LASSO} and its
+  dual. Journal of Computational and Graphical Statistics 9~(2), 319--337.
+
+\bibitem[{Sanderson(2010)}]{armadillo}
+Sanderson, C., 2010. Armadillo: An open source {C++} linear algebra library for
+  fast prototyping and computationally intensive experiments. Tech. rep.,
+  NICTA.
+\newline\urlprefix\url{http://http://arma.sourceforge.net/}
+
+\bibitem[{Simon et~al.(2011)Simon, Friedman, Hastie, and
+  Tibshirani}]{2011_JSS_Simon}
+Simon, N., Friedman, J.~H., Hastie, T., Tibshirani, R., 3 2011. Regularization
+  paths for cox's proportional hazards model via coordinate descent. Journal of
+  Statistical Software 39~(5), 1--13.
+\newline\urlprefix\url{http://www.jstatsoft.org/v39/i05}
+
+\bibitem[{Slawski et~al.(2010)Slawski, zu~Castell, and Tutz}]{2010_AOS_Slawski}
+Slawski, M., zu~Castell, W., Tutz, G., 2010. Feature selection guided by
+  structural information. The Annals of Applied Statistics 4~(2), 1056--1080.
+
+\bibitem[{Turlach et~al.(2005)Turlach, Venables, and Wright}]{Turlach05}
+Turlach, B.~A., Venables, W.~N., Wright, S.~J., 2005. Simultaneous variable
+  selection. Technometrics 47~(3), 349--363.
+
+\bibitem[{Zhao and Yu(2006)}]{2006_JMLR_Zhao}
+Zhao, P., Yu, B., 2006. On model selection consistency of lasso. Journal of
+  Machine Learning Research 7, 2541--2567.
+
+\bibitem[{Zou and Hastie(2005)}]{2005_JRSS_Zou}
+Zou, H., Hastie, T., 2005. Regularization and variable selection via the
+  elastic net. Journal of the Royal Statistical Society: Series B (Statistical
+  Methodology) 67~(2), 301--320.
+
+\end{thebibliography}

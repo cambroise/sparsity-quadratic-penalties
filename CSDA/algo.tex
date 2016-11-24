@@ -1,0 +1,418 @@
+\section{Algorithm}\label{sec:algo}
+
+The unified derivation for the problems presented in Section
+\ref{sec:gammaperturb} suggests a unified processing based on the iterative
+resolution of quadratic problems. 
+This general algorithm is summarized in this section.
+We then show that the new derivation can also be used in the analysis of this 
+algorithm by describing an alternative to Fenchel duality 
+\citep[used for example by][]{2012_FML_Bach} to assess convergence.
+% by computing an upper-bound for the gap between the current solution and the
+% optimal one.
+
+\iflong
+  \subsection{Active Set Approach}
+\fi
+
+The efficient approaches developed for sparse regression take advantage of the sparsity
+of the solution by solving a series of small linear systems, whose sizes are
+incrementally increased/decreased.  
+Here, as for the Lasso~\citep{2000_JCGS_Osborne,2004_AS_Efron}, this process boils down to an
+iterative optimization scheme involving the resolution of quadratic problems.
+
+The algorithm is based on the iterative update of the set of ``active''
+variables, $\supp$, indexing the coefficients $\bfbeta_{\!\supp}$ currently
+identified as being non-zero. 
+It is started from a sparse initial guess, say $\supp=\emptyset$ ($\bfbeta=0$),
+and iterates the three following steps:
+\begin{enumerate}
+\item \label{item:algo:step1} the first step solves
+  Problem~\eqref{eq:general:dual} considering that $\supp$, the set of
+  ``active'' variables, is correct; that is, the
+  objective~\eqref{eq:general:dual} is optimized with respect to
+  $\bfbeta_{\!\supp}$.  This penalized least squares problem is defined
+  from $\mathbf{X}_{\centerdot\supp}$, which is the submatrix of
+  $\mathbf{X}$ comprising all rows and the columns indexed by $\supp\,$
+  and $\bfgamma_{\!\supp}$, which is set to
+  its current most adversarial value.~\footnote{%
+    When several $\bfgamma_{\!\supp}$ are equally unfavorable to
+    $\bfbeta_{\!\supp}$, we use gradient information to pick the worst one
+    among those when $\bfbeta_{\!\supp}$ moves along the steepest descent
+    direction.
+  }
+
+\item \label{item:algo:step2} the second step updates $\bfbeta_{\!\supp}$
+  if necessary (and possibly $\bfgamma_{\!\supp}$), so that
+  $\bfgamma_{\!\supp}$ is indeed (one of) the most adversarial value of
+  the current $\bfbeta_{\!\supp}$.
+  This is easily checked with the problems given in
+  Section~\ref{sec:gammaperturb}, where $\clD_{\bfgamma}$ is a convex polytope
+  whose vertices (that is, extreme $\bfgamma$-values) are associated with a
+  cone of coherent $\bfbeta$-value.
+%  defined by the intersection of the hyperplanes that cut the middle of
+%  the neighboring edges, normally to these edges.
+
+\item  \label{item:algo:step3} the last step updates the active set $\supp$. 
+  It relies on the ``worst-case gradient'' with respect to
+  $\bfbeta$, where $\bfgamma$ is chosen so as to minimize infinitesimal
+  improvements of the current solution.
+  Again picking the right $\bfgamma$ is easy for the problems given in
+  Section~\ref{sec:gammaperturb}.
+  Once this is done, we first check whether some variables should quit the
+  active set, and if this is not the case, we assess the completeness of
+  $\supp$, by checking the optimality conditions with respect to inactive
+  variables.  We add the variable, or the group of variables that most violates
+  the worst-case optimality conditions.  When no such violation exists, the
+  current solution is optimal, since, at this stage, the problem is solved
+  exactly within the active set $\supp$.
+\end{enumerate}
+Algorithm~\ref{algo:active_set} provides a more comprehensive technical
+description.
+%
+\begin{algorithm}[t!]
+  \begin{small}
+ \SetSideCommentLeft
+%  \DontPrintSemicolon
+  \nlset{Init.} $\bfbeta \leftarrow \bfbeta^0$\\
+  Determine the active set: $\supp \leftarrow \{j:\beta_{j} > 0 \} $\\
+  Pick a worst admissible $\bfgamma$, that is,  $\displaystyle\bfgamma \in 
+  \argmax_{\bfg \in \clD_{\bfgamma}} \norm{\bfbeta - \bfg}^2$
+  \BlankLine 
+  \nlset{Step 1} Update active variables $\bfbeta_{\!\supp}$ assuming that $\supp$ and $\bfgamma_{\!\supp}$ are optimal \\
+  $\bfbeta_{\!\supp}^\mathrm{old} \leftarrow \bfbeta_{\!\supp}$ \\
+  $\bfbeta_{\!\supp} \leftarrow 
+   \left(\mathbf{X}_{\centerdot\supp}^\intercal
+      \mathbf{X}_{\centerdot\supp} + \lambda \mathbf{I}_{|\supp|}\right)^{-1}
+    \left(\mathbf{X}_{\centerdot\supp}^\intercal\mathbf{y} +
+      \lambda \bfgamma_{\!\supp}\right)  
+  $ \\ 
+  \nlset{Step 2} Verify coherence of $\bfgamma_{\!\supp}$ with the updated $\bfbeta_{\!\supp}$\\
+  \If(\tcp*[f]{if $\bfgamma_{\!\supp}$ is not worst-case})
+   {$\displaystyle\norm{\bfbeta_{\!\supp} - \bfgamma_{\!\supp}}^2 < \max_{\bfg \in \clD_{\bfgamma}} \norm{\bfbeta_{\!\supp}-\bfg_{\!\supp}}^2$}
+   {%
+    \tcc{Backtrack towards the last $\bfgamma_{\!\supp}$-coherent solution:}
+    $\bfbeta_{\!\supp} \leftarrow \bfbeta_{\!\supp}^\mathrm{old} + \rho (\bfbeta_{\!\supp} - \bfbeta_{\!\supp}^\mathrm{old})$ \\
+    $\bfgamma_{\!\supp}$ is worst-case for $\bfbeta_{\!\supp}$, and there is another worst-case value $\widetilde\bfgamma_{\!\supp}$ \\
+    \tcc{Check whether progress can be made with $\widetilde\bfgamma_{\!\supp}$}
+    $\widetilde\bfbeta_{\!\supp} \leftarrow
+    \left(\mathbf{X}_{\centerdot\supp}^\intercal
+      \mathbf{X}_{\centerdot\supp} + \lambda \mathbf{I}_{|\supp|}\right)^{-1}
+    \left(\mathbf{X}_{\centerdot\supp}^\intercal\mathbf{y} +
+      \lambda \widetilde\bfgamma_{\!\supp}\right)  
+  $ \\ 
+  \If(\tcp*[f]{if $\widetilde\bfgamma_{\!\supp}$ is worst-case\ldots})
+   {$\displaystyle\norm{\widetilde\bfbeta_{\!\supp} - \widetilde\bfgamma_{\!\supp}}^2 = \max_{\bfg \in \clD_{\bfgamma}} \norm{\widetilde\bfbeta_{\!\supp}-\bfg_{\!\supp}}^2$}
+     {%
+%        $\bfbeta_{\!\supp}^\mathrm{old} \leftarrow \bfbeta_{\!\supp}$ \\
+       $(\bfbeta_{\!\supp},\bfgamma_{\!\supp}) \leftarrow
+          (\widetilde\bfbeta_{\!\supp},\widetilde\bfgamma_{\!\supp})$
+        \tcp*[f]{$ (\widetilde\bfbeta_{\!\supp},\widetilde\bfgamma_{\!\supp})$ is better than $(\bfbeta_{\!\supp},\bfgamma_{\!\supp})$}
+     }
+    }
+    \tcc{The current $\bfgamma_{\!\supp}$ is coherent with $\bfbeta_{\!\supp}$}
+
+  \nlset{Step 3} Update active set $\supp$ \\
+  $\displaystyle g_j \leftarrow \min_{\bfgamma\in\clD_{\bfgamma}} \left|
+    \mathbf{x}_j^\intercal(\mathbf{X}_{\centerdot\supp}\bfbeta_{\!\supp} - \mathbf{y})  + \lambda (\beta_j - \gamma_j) \right|
+  \enspace j=1,\ldots,p$
+  \tcp*[f]{worst-case gradient} \\
+  \eIf{$\exists\, j \in\supp:\beta_j = 0 \ \text{and}\ g_j = 0$}{
+       $\displaystyle \supp \leftarrow \supp\backslash\{j\}$ \tcp*[r]{Downgrade $j$} 
+       \tcc{Go to Step 1}
+   }{%
+  \eIf{$\max_{j\in\supp^c} g_j \neq0$}{ 
+   \tcc{Identify the greatest violation of optimality conditions:}
+    $\displaystyle j^\star \leftarrow \argmax_{j\in\supp^c} g_j \,,\enspace$
+    $\supp \leftarrow \supp \cup \{j^\star\}$ \tcp*[r]{Upgrade $j^\star$} 
+    \tcc{Go to Step 1}
+  }{
+   \tcc{Stop and return $\bfbeta$, which is optimal}
+   }
+  }
+  \end{small} 
+\caption{Worst-Case Quadratic Penalty Active Set Algorithm}
+\label{algo:active_set}
+\end{algorithm}
+%
+Note that the structure is essentially identical to the one proposed by
+\citet{2000_JCGS_Osborne} or \cite{2004_AS_Efron} for the Lasso, but that it 
+applies to any penalty that can be decomposed as in 
+Problem~\eqref{eq:general:dual}.
+Our viewpoint is also radically different, as the global non-smooth problem
+is dealt with subdifferentials by \citet{2000_JCGS_Osborne}, whereas we rely on
+the maximum of smooth functions.
+This approach suggests a new assessment of convergence, as detailed below.
+%
+\iflong
+  \subsection{Monitoring Convergence}
+
+  At each iteration of the algorithm, the current $\bfbeta$ is computed assuming
+  that the current active set $\supp$ and the current
+  $\bfgamma_\supp$-value are optimal.
+  When the current active set is not optimal, the current $\bfbeta$ (where
+  $\bfbeta_\supp$ is completed by zeros on the complement $\supp^c$) is
+  nevertheless optimal for a $\bfgamma$-value defined in $\Rset^p$ (where
+  $\bfgamma_\supp$ is completed by ad hoc values on the complement
+  $\supp^c$). However this $\bfgamma$ fails to belong to $\clD_{\bfgamma}$ 
+  (otherwise, the problem would be solved: $\supp$, $\bfgamma$ and $\bfbeta$
+  would indeed be optimal).
+  The following proposition relates the current objective function, associated
+  with an infeasible $\bfgamma$-value ($\bfgamma\notin\clD_{\bfgamma}$), to the
+  global optimum of the optimization problem.
+
+  \begin{proposition}\label{prop:monitoring}
+    For any $\eta_\gamma>0$, and for all vectorial norm $\norm[*]{\cdot}$,
+    when 
+    $\clD_{\bfgamma}$ is defined as 
+    $\clD_{\bfgamma}=\left\{\bfgamma \in \mathbb{R}^{p}:
+                        \norm[*]{\bfgamma} \leq\eta_\gamma
+                      \right\}$, then, 
+    $\forall \bfgamma \in \mathbb{R}^{p}:\norm[*]{\bfgamma} \geq\eta_\gamma$, we have:
+    \begin{equation*}
+      \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma' \in \clD_{\bfgamma}} 
+      J_\lambda(\bfbeta,\bfgamma') 
+      \geq
+      \frac{\eta_\gamma}{\norm[*]{\bfgamma}} 
+      J_\lambda\left(\bfbeta^\star\left(\bfgamma\right), \bfgamma \right) -
+      \frac{\lambda\eta_\gamma(\norm[*]{\bfgamma}-\eta_\gamma)}{\norm[*]{\bfgamma}^2}\norm{\bfgamma}^2        
+      \enspace,
+    \end{equation*}
+    where 
+    \begin{equation*}
+      J_\lambda(\bfbeta,\bfgamma) = \norm{\bfX \bfbeta - \bfy}^2 + 
+        \lambda \norm{\bfbeta - \bfgamma}^2
+      \enspace \text{and} \enspace
+      \bfbeta^\star(\bfgamma) = \argmin_{\bfbeta\in\mathbb{R}^{p}} J_\lambda(\bfbeta,\bfgamma)
+      \enspace.
+    \end{equation*}
+    See proof in Appendix \ref{sec:proof:prop:monitoring}.
+  \end{proposition}
+
+  This proposition can be used to compute an optimality gap at Step 3 of
+  Algorithm \ref{algo:active_set}, by picking a $\bfgamma$-value such that the
+  current worst-case gradient $\bfg$ is null (the current $\bfbeta$-value then
+  being the optimal $\bfbeta^\star(\bfgamma)$).
+  Note that more precise upper bounds could be computed relying on significant extra computation.
+  The generic optimality gap computed from Proposition \ref{prop:monitoring} differs
+  from the Fenchel duality gap \citep[see][]{2012_FML_Bach}. 
+  For the elastic net expressed in \eqref{eq:elastic-net}, Fenchel inequality
+  \citep[see details in][]{Mairal10} yields the following optimality gap:
+   \begin{align*}
+      \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma' \in \clD_{\bfgamma}} 
+      J_\lambda(\bfbeta,\bfgamma') 
+      \geq &
+      J_\lambda\left(\bfbeta^\star\left(\bfgamma\right), \bfgamma \right) -
+      \frac{\eta_\gamma^{2}}{\norm[*]{\bfgamma}^{2}}
+      \left(
+        \norm{\bfX \bfbeta^\star\left(\bfgamma\right) - \bfy}^2 + 
+        \lambda \norm{\bfbeta^\star\left(\bfgamma\right)}^{2}
+      \right) \\
+      & - 2 \frac{\eta_\gamma}{\norm[*]{\bfgamma}}
+      \left(
+         \bfX \bfbeta^\star\left(\bfgamma\right) - \bfy
+     \right)^\intercal \bfy
+     \enspace.
+   \end{align*}
+  %
+  \begin{figure}
+    \centering 
+    \xylabellarge{../figures/monitoring_bounds}{\# of iterations}{Optimality gap}{$n=50$, $p=200$}
+    \caption{Monitoring convergence: true optimality gap (solid black) versus
+    our generic upper bound (dashed blue) and Fenchel's duality gap for elastic
+    net (dotted red) computed at each iteration of
+    Algorithm~\ref{algo:active_set}.}
+    \label{fig:monitoring}
+  \end{figure}
+  %
+  The two optimality gaps are empirically compared in 
+  Figure~\ref{fig:monitoring} for the elastic net, along a short regularization 
+  path with five values of the $\ell_{1}$-penalization parameter.  
+  We see that the two optimality gaps can be used to assess convergence, though
+  Fenchel's duality gap is more accurate for the rougher solutions. 
+  Note however that both gaps are fairly coarse until a very accurate
+  solution is reached, which makes them both unsuitable for deriving loose stopping 
+  criteria.
+%   Fenchel's duality gap is more accurate here, especially for the rougher
+%   solutions.  However, the practical use of these upper bounds is rather limited
+%   as they are both fairly coarse unless a very accurate solution is reached.
+%   These optimality gaps may thus be used to assess convergence, but they are
+%   ineffective as stopping rules when fast and rough solutions are sought.
+  Proposition~\ref{prop:monitoring} is thus of limited scope, but it illustrates
+  that, besides its algorithmic consequences, our original view of sparse
+  penalties opens new ways for analysis.
+  As a final note on this topic, we provide a slightly tighter inequality for
+  computing the optimality gap in Appendix~\ref{sec:proof:prop:monitoring}, and
+  we conjecture that it could be further tightened (see in particular the
+  derivation of inequality \eqref{eq:crude_inequality}).
+
+  \iffalse
+    What is a good value for $\bfgamma$?
+    Computationally, it is a value for which we already have computed 
+    $\min_{\bfbeta\in\mathbb{R}^{p}} J_\lambda(\bfbeta,\bfgamma)$, regarding the 
+    tightness of the bound, ${\norm[*]{\bfgamma}}$ should be as close to 
+    $\eta_\gamma$ as possible, while $\min_{\bfbeta\in\mathbb{R}^{p}} 
+    J_\lambda(\bfbeta,\bfgamma)$ should be as large as possible.
+    
+    Hence, a tight optimality gap can be computed provided one can guess a
+    near-optimal $\bfgamma$-value.
+    When entering Step \ref{item:algo:step3} of Algorithm~\ref{algo:active_set}, the current best guess
+    $\widehat\bfgamma_{\supp}$ has to be completed on the complement $\supp^c$.
+    We propose to do so by minimizing the magnitude of the gradient with respect to $\bfbeta$ at the current solution:
+    \begin{align*}
+      \widehat\bfgamma_{\supp^c} & = \argmin_{\bfgamma_{\supp^c}:\bfgamma \in \clD_{\bfgamma}}
+                                 \left|  \bfX_{\centerdot\supp^c}^\intercal(\bfX_{\centerdot\supp}\bfbeta_{\supp}-\bfy) - 
+                                 \lambda \bfgamma_{\supp^c} \right|
+        \enspace.
+    \end{align*}
+    Finally, the full vector $\widehat\bfgamma$ can be used to compute the lower
+    bound on the optimal objective function $J(\widehat{\bfbeta}
+    (\widehat\bfgamma),\widehat\bfgamma)$. 
+    This lower bound, which requires to solve a linear system of size $p$, is
+    lighter to compute than the duality gap \citep[see details
+    in][]{2012_FML_Bach}, and was observed to provide a tight bound. As a sanity
+    check, note that when $\bfbeta$ is optimal, the corresponding optimal
+    $\widehat\bfgamma$ is known to be null on $\supp^c$, so that the bound is exact.
+    Two typical behaviors are displayed in Figure~\ref{fig:monitoring} for the
+    elastic net.
+    The two plots show the true distance to the optimum, measured by the
+    difference in objective function, and the value of the bound, both computed at each
+    iteration of Algorithm~\ref{algo:active_set} at the entrance of Step
+    \ref{item:algo:step3}.
+    The left-hand side plot shows the unfavorable case where $p$ is larger than
+    $n$, where the bound is not as precise as in the opposite setup, displayed in
+    the right-hand side plot, where it is very close to the true optimality
+    gap.
+  
+    \begin{figure}
+      \centering 
+      \begin{tabular}{c@{\hspace*{3em}}c}
+        \xylabelsquare{../figures/monitoring_small_n}{\# of iterations}
+                      {Optimality gap}{$n=50$, $p=200$}% 
+        \xylabelsquare{../figures/monitoring_large_n}{\# of iterations}
+                      {Optimality gap}{$n=400$, $p=200$}% 
+      \end{tabular}
+      \caption{Monitoring convergence: true optimality gap (solid blue) versus our
+        upper bound (dashed red) computed at each iteration of
+        Algorithm~\ref{algo:active_set}.}
+      \label{fig:monitoring}
+    \end{figure}
+    % $\rho=0.9$, $\lambda_1=0.5$, $\lambda_2=0.ˆ1$, $R^2\simeq0.8$.
+    \begin{align*}
+      \bfbeta_\supp & = \argmin_{\bfbeta\in\mathbb{R}^{|\supp|}} 
+                      \norm{\bfX_{\centerdot\supp} \bfbeta - \bfy}^2 + \lambda_1 \norm[1]{\bfbeta}
+      \\
+      \widehat\bfbeta_{\supp^c} & = \bfzero \\ 
+      \widehat\bfgamma_{\supp^c} & = \argmin_{\bfgamma_{\supp^c} \in [-1,1]^{|\supp^c|}}
+                               \left|  \bfX_{\centerdot\supp^c}^\intercal(\bfX\widehat\bfbeta-\bfy) + 
+                                 \lambda_1 \bfgamma_{\supp^c} \right|
+        \enspace. 
+    \end{align*}
+    We can then compute 
+    \begin{align*}
+      \widetilde{\bfbeta} & = \argmin_{\bfbeta\in\mathbb{R}^{p}} 
+                      \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\widehat\bfgamma
+        \enspace. 
+    \end{align*}
+    We then have:
+    \begin{align*}
+    J(\bfbeta^\star) & = \min_{\bfbeta\in\mathbb{R}^p} 
+      \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1  \norm[1]{\bfbeta} \\
+      &= \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
+          \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\bfgamma \Big\} \\
+      &= \max_{\bfgamma \in \clD_{\bfgamma}} \min_{\bfbeta\in\mathbb{R}^p}
+          \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\bfgamma \Big\} \\
+      & \geq \min_{\bfbeta\in\mathbb{R}^p}
+          \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\widehat\bfgamma \Big\}  \\
+      & = \norm{\bfX \widetilde{\bfbeta} - \bfy}^2 + \lambda_1 \widetilde{\bfbeta}^{(t)^\intercal}\widehat\bfgamma
+      \enspace,
+    \end{align*}
+    which provides a lower bound for $J(\bfbeta^\star)$.
+    Meanwhile, we obviously have:
+    \begin{align*}
+    J(\bfbeta^\star) & = \min_{\bfbeta\in\mathbb{R}^p} 
+      \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \norm[1]{\bfbeta} \\
+      &\leq \norm{\bfX \widehat\bfbeta - \bfy}^2 + \lambda_1  \norm[1]{\widehat\bfbeta} 
+      \enspace,
+    \end{align*}
+    So that $J(\bfbeta^\star)$ is easily bracketed during the optimization process. 
+    Note that when $\bfbeta_\supp=\bfbeta^\star$, we have that
+    $\widetilde{\bfbeta}=\bfbeta_\supp$.
+
+    The additional computational cost for monitoring (that is, the cost of evaluating
+    the upper and lower bounds for an intermediate solution can be important because
+    $\widetilde{\bfbeta}$ requires to solve a linear system of size $p$\ldots 
+    We could do better than that if we can prove that $\big(\widetilde{\bfbeta}\big)_j=0$ if
+    the subgradient at  $\widehat\bfbeta_{\supp^c}$ comprises zero. In this situation, we 
+    should only consider adding the variables for which the optimality conditions
+    are violated.
+
+    \subsection{Monitoring Convergence: Lasso-Case}
+
+    \begin{align*}
+      \bfbeta_\supp & = \argmin_{\bfbeta\in\mathbb{R}^{|\supp|}} 
+                      \norm{\bfX_{\centerdot\supp} \bfbeta - \bfy}^2 + \lambda_1 \norm[1]{\bfbeta}
+      \\
+      \widehat\bfbeta_{\supp^c} & = \bfzero \\ 
+      \widehat\bfgamma_{\supp^c} & = \argmin_{\bfgamma_{\supp^c} \in [-1,1]^{|\supp^c|}}
+                               \left|  \bfX_{\centerdot\supp^c}^\intercal(\bfX\widehat\bfbeta-\bfy) + 
+                                 \lambda_1 \bfgamma_{\supp^c} \right|
+        \enspace. 
+    \end{align*}
+    We can then compute 
+    \begin{align*}
+      \widetilde{\bfbeta} & = \argmin_{\bfbeta\in\mathbb{R}^{p}} 
+                      \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\widehat\bfgamma
+        \enspace. 
+    \end{align*}
+    We then have:
+    \begin{align*}
+    J(\bfbeta^\star) & = \min_{\bfbeta\in\mathbb{R}^p} 
+      \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1  \norm[1]{\bfbeta} \\
+      &= \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
+          \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\bfgamma \Big\} \\
+      &= \max_{\bfgamma \in \clD_{\bfgamma}} \min_{\bfbeta\in\mathbb{R}^p}
+          \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\bfgamma \Big\} \\
+      & \geq \min_{\bfbeta\in\mathbb{R}^p}
+          \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\widehat\bfgamma \Big\}  \\
+      & = \norm{\bfX \widetilde{\bfbeta} - \bfy}^2 + \lambda_1 \widetilde{\bfbeta}^{(t)^\intercal}\widehat\bfgamma
+      \enspace,
+    \end{align*}
+    which provides a lower bound for $J(\bfbeta^\star)$.
+    Meanwhile, we obviously have:
+    \begin{align*}
+    J(\bfbeta^\star) & = \min_{\bfbeta\in\mathbb{R}^p} 
+      \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \norm[1]{\bfbeta} \\
+      &\leq \norm{\bfX \widehat\bfbeta - \bfy}^2 + \lambda_1  \norm[1]{\widehat\bfbeta} 
+      \enspace,
+    \end{align*}
+    So that $J(\bfbeta^\star)$ is easily bracketed during the optimization process. 
+    Note that when $\bfbeta_\supp=\bfbeta^\star$, we have that
+    $\widetilde{\bfbeta}=\bfbeta_\supp$.
+    \fi
+\else
+  a simple lower bound on the objective function. 
+
+  Let $J$ be the objective function of the generic
+  Problem~\eqref{eq:general:dual}, we trivially have that, for any
+  $\bfgamma$-value,
+  $\min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma \in \clD_{\bfgamma}}
+  J(\bfbeta,\bfgamma) \geq \min_{\bfbeta\in\mathbb{R}^{p}} J(\bfbeta,\bfgamma)$.
+  %
+  Hence, a tight optimality gap can be computed provided one can guess a
+  near-optimal $\bfgamma$-value.
+  When entering Step \ref{item:algo:step3} of Algorithm~\ref{algo:active_set}, the current best guess
+  $\widehat\bfgamma_{\supp}$ has to be completed on the complement $\supp^c$.
+  We propose to do so by minimizing the magnitude of the gradient with respect to $\bfbeta$ at the current solution:
+  \begin{align*}
+    \widehat\bfgamma_{\supp^c} & = \argmin_{\bfgamma_{\supp^c}:\bfgamma \in \clD_{\bfgamma}}
+                               \left|  \bfX_{\centerdot\supp^c}^\intercal(\bfX_{\centerdot\supp}\bfbeta_{\supp}-\bfy) - 
+                               \lambda \bfgamma_{\supp^c} \right|
+      \enspace.
+  \end{align*}
+  The resulting vector $\widehat\bfgamma$ is then used to compute the lower
+  bound on the optimal objective function as $\min_{\bfbeta\in\mathbb{R}^{p}} J(\bfbeta,\widehat\bfgamma)$. 
+  This lower bound, which requires to solve a linear system of size $p$, is
+  much lighter to compute than the duality gap \citep[see details
+  in][]{2012_FML_Bach}, and was observed to provide a tight bound (as a sanity
+  check, note that when $\bfbeta$ is optimal, our estimated optimality gap is null).
+\fi

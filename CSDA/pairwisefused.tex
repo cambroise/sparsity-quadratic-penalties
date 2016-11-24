@@ -1,0 +1,68 @@
+\subsection{Pairwise Fused Lasso}
+
+The sparsity inducing penalties can be adapted to pursue different goals, such
+as having equal coefficients.  This was first implemented for ordered features
+with the fused Lasso \citep{Tibshirani05}, which encourages sparse and locally
+constant solutions by penalizing the $\ell_1$-norm of both the coefficients and
+their successive differences.
+
+The pairwise fused Lasso \citep{Petry11} does not assume that predictors are
+ordered.  It selects features and favors some grouping by penalizing the
+$\ell_1$-norm of both the coefficients and the differences between all pairs,
+thus considering the following hypothesis space for
+$\bfbeta^*$:
+%
+\begin{equation*}
+  \mathcal{\clH}^\mathrm{PFL}_{\bfbeta^*} = \left\{ \bfbeta \in \mathbb{R}^p : 
+    \norm[1]{\bfbeta}  + c
+    \sum_{j=1}^{p} \sum_{k<j} \left| \beta_{j} - \beta_k \right| \leq \eta_\beta
+  \right\}
+  \enspace,
+\end{equation*}
+%
+whose dual set is:
+%
+\begin{align*}
+  \mathcal{D}^\mathrm{PFL}_{\bfgamma} & = 
+    \left\{ \bfgamma \in \mathbb{R}^p : 
+            \sup_{\bfbeta \in \mathcal{\clH}^\mathrm{PFL}_{\bfbeta^*}}
+            \bfgamma^\intercal\bfbeta \leq 1 
+    \right\}
+    \\
+    & = \left\{ ? \right\}
+  \enspace,
+\end{align*}
+{\color{red}{YG: I believe that the definition of $\bfgamma$ is wrong for the fused Lasso}}
+\begin{equation*}
+  \bfD = 
+  \begin{pmatrix}
+      1      &  0     & 0      & \cdots & 0\\
+     -1      &  1     & 0      & \ddots & \vdots  \\
+      0      & -1     & 1      & \ddots & 0 \\
+     \vdots  & \ddots & \ddots & \ddots & 0 \\
+      0      & \cdots & 0      & -1     & -1 
+  \end{pmatrix}
+  \enspace,
+\end{equation*}
+%
+so that Problem \eqref{eq:robust:general:form3} reads:
+%
+\begin{align*}
+  & \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma_1 \in \left\{ -\eta_\gamma, \eta_\gamma \right\}^p}
+    \max_{\bfgamma_2 \in \left\{ -\nu_\gamma, \nu_\gamma \right\}^{p-1}}
+      \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda \norm{\bfbeta - \bfgamma_1 - \bfD \bfgamma_2}^2 \Big\} \\
+  \Leftrightarrow
+    & \min_{\bfbeta\in\mathbb{R}^p}
+      \norm{\bfX \bfbeta - \bfy}^2 + \lambda \eta_\gamma \norm[1]{\bfbeta} + \lambda \norm{\bfbeta}^2 
+  \enspace,
+\end{align*}
+%
+
+
+The Lagrangian formulation of the fused Lasso optimization problem is expressed
+as:
+\begin{equation}
+  \min_{\bfbeta\in\mathbb{R}^p} \norm{\bfX \bfbeta - \bfy}^2 + 
+    \lambda \sum_{j=1}^p \left|\beta_{j}\right| + \theta \sum_{j=1}^{p-1} \left| \beta_{j+1} - \beta_j \right|
+  \enspace, 
+\end{equation}

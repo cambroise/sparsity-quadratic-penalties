@@ -1,0 +1,125 @@
+\section{Introduction}
+
+% # Quadrupen
+
+% ## Introduction
+
+% - Interprétation géométrique et aspect algorithmique, pourquoi c’est bien:
+%     - c’est générique
+%     - c’est  précis
+%     - dans quel cadre c’est bien
+%         - problèmes de taille intermédiaire
+
+% ## Arguments
+
+% - résolution exacte
+%     - intérêt pour l’interprétabilité
+%     - voir la conclusion
+% - point de vue unifiant
+% - dualité
+%     - qui permet le calcul de la borne
+%     - on remplace le sous gradient par le worst case
+% - créativité (attention surtout valable en 2d
+% - stabilité
+% - linéaire par morceau
+% - ...
+% - code
+% - expériences
+% - borne
+%     - mais moins bonne que Fenchel
+% - plus de sous gradient
+
+% ## Contre-Arguments
+
+% - rien de vraiment neuf
+% - coût quadratique
+
+% ## Conclusion
+
+% - c’est un package qui devrait être utilisé pour interpréter les variables sélectionnées
+%     - parcque c’est plus précis
+%     - parce qu’en conséquences on gagne en précision sur le support, mais pas en terme de MSE
+
+% ## Consigne CSDA
+
+% - The journal requires that the manuscript contain either computational or data analysis component.  Papers which are purely theoretical are not appropriate.  Manuscripts describing simulation studies must
+%     - 1. be thorough with regard to the choice of parameter settings,
+%     - 2. not over-generalize the conclusions,
+%     - 3. carefully describe the limitations of the simulation studies, and
+%     - 4. should guide the user regarding when the recommended methods areappropriated.It is recommended that the author indicate why comparisons cannot be made theoretically.
+
+% ## TODO
+
+% - Reprendre l’intro
+%     - une vue unifiante
+%     - fondée sur une dualité alternative
+%     - qui permet
+%         - une vision géométrique
+%             - créativité
+%         - une analyse sans sous gradient
+%         - solution exacte
+%             - précision
+%             - stabilité
+%             - le calcul d’une borne
+%     - analyse de la vitesse de convergence difficile
+%         - donc nous faisons des simulations
+
+Inferential statistics aim at drawing conclusions from data and from some kind
+of assumptions or prior information about the underlying distribution.  It is
+well known that processes where data guide the choice of assumptions can lead to
+paradoxes, resulting from overfitting issues, in particular in the large
+dimensional setup when data are used to select explicative variables: the
+seeming explanatory power of weakly relevant variables can be important when the
+number of variables is similar to the number of data
+points~\citep{Freedman83b,Ambroise02}.
+In this context, we present here an unusual reformulation of variable selection
+methods based on sparsity-inducing penalties: we show that these methods can be
+interpreted as adaptive penalties, where adaptivity refers to the choice of the
+eventual penalty from data.
+Contrary to the available reformulations so far, ours shows that the adaptation
+of the sparsity-inducing penalty to data follows a disagreement principle, where
+the least-favorable penalty is selected from data.
+
+We believe that our new viewpoint can be instrumental in unified analyses of
+algorithms and their derived estimators, and we show here two such examples:
+first, we provide a generic algorithm for solving the data fitting problem;
+then, we derive the general form of an optimality gap that may be used to
+monitor convergence.
+Our experimental section illustrates the effectiveness of the generic algorithm
+motivated by our interpretation, when instanced on the elastic-net estimator:
+the algorithm, which relies on solving linear systems
+is accurate, and computationally efficient up to medium scale problems (thousands of
+variables).
+As a side experimental result, we show that solving problems with high
+precision, as with the proposed approach, benefits to the performances, either
+measured in terms of prediction accuracy or in terms of support error rate.
+
+
+% % Coordinate descent as implemented in \mytexttt{glmnet} \citep{2009_JSS_Friedman}
+% % is a versatile approach allowing to solve various sparse regression
+% % problems in a simple and fast procedure. In a nutshell, it
+% % consists in cycling through the parameters and updating each in turn
+% % until convergence. Proximal methods are popular in the machine learning community since
+% % they  are optimal  among the  first-order  techniques.   These methods
+% % minimize  objective  functions with  a  nonsmooth  part by  successive
+% % quadratic approximations. \mytexttt{SPAMS} (SPArse Modeling
+% % Software) \citep{2012_FML_Bach} represents an effective  implementation  of  this
+% % approach for sparse regression problems.  
+
+
+% Section \ref{sec:robust} introduces our general robust regression formalization,
+% which allows numerous variants that follow from the definition of the
+% uncertainty set on the adversarial noise, thereby leading to different sparse
+% regression problems.  
+% Section \ref{sec:quadra} fully details the derivations for the Lasso and the
+% group-Lasso (using the $\ell_{\infty,1}$ mixed-norm) problems, applied together
+% with an $\ell_2$ ridge penalty (leading to what is known as the elastic net for
+% the Lasso).
+% %
+% A description of the general-purpose active set algorithm derived from this
+% formalism is given in Section \ref{sec:algo}, which also introduces a new bound
+% on the optimality gap stemming from the new formalization and the resolution scheme.
+% Finally, Section \ref{sec:experiments} demonstrates that our solver is highly
+% efficient compared to existing algorithms and popular implementations.
+
+

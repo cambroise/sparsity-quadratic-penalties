@@ -1,0 +1,21 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Adaptive Quadratic Penalties }{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Background}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Dual Norms}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Relations with Other Methods}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{Assumptions on the Spurious Regression Coefficients }{}% 6
+\BOOKMARK [2][-]{subsection.3.1}{Elastic Net}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.2}{Group-Lasso}{section.3}% 8
+\BOOKMARK [1][-]{section.4}{Algorithm}{}% 9
+\BOOKMARK [2][-]{subsection.4.1}{Active Set Approach}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.2}{Monitoring Convergence}{section.4}% 11
+\BOOKMARK [1][-]{section.5}{Numerical Experiments}{}% 12
+\BOOKMARK [2][-]{subsection.5.1}{Data Generation}{section.5}% 13
+\BOOKMARK [2][-]{subsection.5.2}{Comparing Optimization Strategies}{section.5}% 14
+\BOOKMARK [2][-]{subsection.5.3}{Comparing Stand-Alone Implementations}{section.5}% 15
+\BOOKMARK [2][-]{subsection.5.4}{Link between accuracy of solutions and prediction performances}{section.5}% 16
+\BOOKMARK [1][-]{section.6}{Discussion}{}% 17
+\BOOKMARK [1][-]{appendix.A}{Proofs}{}% 18
+\BOOKMARK [2][-]{subsection.A.1}{Proof of Proposition ??}{appendix.A}% 19
+\BOOKMARK [2][-]{subsection.A.2}{Proof of Proposition ??}{appendix.A}% 20
+\BOOKMARK [2][-]{subsection.A.3}{Proof of Proposition 1}{appendix.A}% 21

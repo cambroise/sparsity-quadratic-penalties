@@ -1,0 +1,115 @@
+\section{Code-like proof}
+
+
+First, rewrite code-like expression like paper-like expression:
+
+Code-like expression:
+\[
+ \tilde J(\bfbeta,\tilde\bfgamma) = \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + 
+    \frac{\lambda_2}{2} \norm{\bfbeta}^2 - 
+    \bfbeta^\intercal\tilde\bfgamma 
+\]
+with $\norm[\infty]{\tilde\bfgamma} \leq \lambda_1$.
+
+Paper-like expression:
+\begin{align*}
+  \frac{1}{2} J_{\lambda_2}(\bfbeta,\bfgamma) & = 
+    \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + 
+    \frac{\lambda_2}{2} \norm{\bfbeta - \bfgamma}^2 \\
+     & = 
+    \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + 
+    \frac{\lambda_2}{2} \norm{\bfbeta}^2 - 
+    \lambda_2 \bfbeta^\intercal\bfgamma + 
+    \frac{\lambda_2}{2} \norm{\bfgamma}^2 
+\end{align*}
+with $\norm[\infty]{\bfgamma} \leq \eta_\gamma$.
+
+
+We want, 
+\begin{align*}
+   \lambda_2 \bfgamma = \tilde\bfgamma 
+   & \Rightarrow
+   \eta_\gamma = \frac{\lambda_1}{\lambda_2} \\
+   & \Rightarrow
+   \frac{1}{2} J_{\lambda_2}(\bfbeta,\bfgamma) = \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + 
+    \frac{\lambda_2}{2} \norm{\bfbeta}^2 - 
+    \bfbeta^\intercal\tilde\bfgamma + 
+    \frac{1}{2\lambda_2} \norm{\tilde\bfgamma}^2 \\
+   & \Rightarrow
+   \frac{1}{2} J_{\lambda_2}(\bfbeta,\bfgamma) = \tilde J(\bfbeta,\tilde\bfgamma) + \frac{1}{2\lambda_2} \norm{\tilde\bfgamma}^2
+\end{align*}
+
+Let's apply the proposition to these settings, that is: $\forall \bfgamma: \norm[\infty]{\bfgamma} \geq \eta_\gamma$,
+
+\begin{equation*}
+  \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma' \in \clD_{\bfgamma}} 
+  \frac{1}{2} J_\lambda(\bfbeta,\bfgamma') 
+  \geq
+  \frac{1}{2} \frac{\eta_\gamma}{\norm[\infty]{\bfgamma}} 
+  J_\lambda\left(\bfbeta^\star\left(\bfgamma\right), \bfgamma \right) -
+  \frac{1}{2} \frac{\lambda\eta_\gamma(\norm[\infty]{\bfgamma}-\eta_\gamma)}{\norm[\infty]{\bfgamma}^2}\norm{\bfgamma}^2        
+  \enspace.
+\end{equation*}
+It now becomes: $\forall \tilde\bfgamma: \norm[\infty]{\tilde\bfgamma} \geq \lambda_1$
+\begin{align*}
+  \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma\in \clD_{\bfgamma}} 
+  \frac{1}{2} J_{\lambda_2}(\bfbeta,\bfgamma) 
+  & \geq
+  \frac{\lambda_1}{2 \lambda_2\norm[\infty]{\bfgamma}} 
+  J_{\lambda_2}\left(\bfbeta^\star\left(\bfgamma\right), \bfgamma \right) -
+  \frac{\lambda_1(\norm[\infty]{\bfgamma}-\lambda_1/\lambda_2)}{2\norm[\infty]{\bfgamma}^2}\norm{\bfgamma}^2
+  \\
+  & \geq
+  \frac{\lambda_1}{\lambda_2\norm[\infty]{\bfgamma}} 
+  \frac{1}{2} 
+  J_{\lambda_2}\left(\bfbeta^\star\left(\bfgamma\right), \bfgamma \right) -
+  \frac{\lambda_1(\lambda_2\norm[\infty]{\bfgamma}-\lambda_1)}{2 \lambda_2}\frac{\norm{\bfgamma}^2}{\norm[\infty]{\bfgamma}^2}
+  \\
+  & \geq
+  \frac{\lambda_1}{\norm[\infty]{\tilde\bfgamma}} 
+  \left( \tilde J(\bfbeta^\star\left(\tilde\bfgamma\right),\tilde\bfgamma) + \frac{1}{2\lambda_2} \norm{\tilde\bfgamma}^2 \right)
+  - \frac{\lambda_1(\norm[\infty]{\tilde\bfgamma}-\lambda_1)\norm{\tilde\bfgamma}^2}{2 \lambda_2 \norm[\infty]{\tilde\bfgamma}^2}
+  \\
+  & \geq
+  \frac{\lambda_1}{\norm[\infty]{\tilde\bfgamma}} \tilde J(\bfbeta^\star\left(\tilde\bfgamma\right),\tilde\bfgamma) + 
+  \frac{\lambda_1 \norm{\tilde\bfgamma}^2}{2\lambda_2\norm[\infty]{\tilde\bfgamma}}
+  - \frac{\lambda_1(\norm[\infty]{\tilde\bfgamma}-\lambda_1)\norm{\tilde\bfgamma}^2}{2 \lambda_2 \norm[\infty]{\tilde\bfgamma}^2}
+  \\
+  & \geq
+  \frac{\lambda_1}{\norm[\infty]{\tilde\bfgamma}} \tilde J(\bfbeta^\star\left(\tilde\bfgamma\right),\tilde\bfgamma) + 
+  \frac{\lambda_1 \norm{\tilde\bfgamma}^2}{2\lambda_2 \norm[\infty]{\tilde\bfgamma}}
+  \left( 1 - \frac{(\norm[\infty]{\tilde\bfgamma}-\lambda_1)}{\norm[\infty]{\tilde\bfgamma}} \right)  
+  \\
+  \tilde J(\bfbeta^\star\left(\tilde\bfgamma^\star\right),\tilde\bfgamma^\star) 
+  + \frac{1}{2\lambda_2} \norm{\tilde\bfgamma^\star}^2
+  & \geq
+  \frac{\lambda_1}{\norm[\infty]{\tilde\bfgamma}} \tilde J(\bfbeta^\star\left(\tilde\bfgamma\right),\tilde\bfgamma) + 
+  \frac{\lambda_1^2\norm{\tilde\bfgamma}^2}{2 \lambda_2 \norm[\infty]{\tilde\bfgamma}^2}
+\end{align*}
+Note that $\tilde\bfgamma^\star$ has to be at bound everywhere, so that we
+finally have:
+\begin{align*}
+  \tilde J(\bfbeta^\star\left(\tilde\bfgamma^\star\right),\tilde\bfgamma^\star) 
+  + \frac{\lambda_1^{2}}{2\lambda_2} p
+  & \geq
+  \frac{\lambda_1}{\norm[\infty]{\tilde\bfgamma}} \tilde J(\bfbeta^\star\left(\tilde\bfgamma\right),\tilde\bfgamma) + 
+  \frac{\lambda_1^2\norm{\tilde\bfgamma}^2}{2 \lambda_2 \norm[\infty]{\tilde\bfgamma}^2}
+  \\
+  \tilde J(\bfbeta^\star\left(\tilde\bfgamma^\star\right),\tilde\bfgamma^\star) 
+  & \geq
+  \frac{\lambda_1}{\norm[\infty]{\tilde\bfgamma}} \tilde J(\bfbeta^\star\left(\tilde\bfgamma\right),\tilde\bfgamma) + 
+  \frac{\lambda_1^2}{2 \lambda_2} \left( \frac{\norm{\tilde\bfgamma}^2}{\norm[\infty]{\tilde\bfgamma}^2}-p\right).
+\end{align*}
+Note (for the Lasso/Elastic net) that when $\tilde\bfgamma\to\tilde\bfgamma^{\star}$ then
+$\norm[\infty]{\tilde\bfgamma}\to\lambda_1$  and $\norm{\tilde\bfgamma}^2\to
+\lambda_1^2p$, and the bound is  met with equality in that case, which
+mean convergence of the algorithm.
+\begin{align*}
+  \tilde J(\bfbeta^\star\left(\tilde\bfgamma^\star\right),\tilde\bfgamma^\star) 
+  & \geq
+  \frac{\lambda_1}{\norm[\infty]{\tilde\bfgamma}} \tilde J(\bfbeta^\star\left(\tilde\bfgamma\right),\tilde\bfgamma) + 
+  \frac{\lambda_1^2}{2 \lambda_2} \left(
+    \frac{\lambda_{1}|\supp|}{\norm[\infty]{\tilde\bfgamma}} +
+    \frac{\norm{\tilde\bfgamma_{\!\supp^c}}^2}{\norm[\infty]{\tilde\bfgamma}^2} -p
+  \right).
+\end{align*}

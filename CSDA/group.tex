@@ -1,0 +1,198 @@
+\subsection{Group-Lasso}
+
+We consider here the $\ell_{\infty,1}$ variant of the group-Lasso, which was
+first proposed by \citet{Turlach05} to perform variable selection in the
+multiple response setup, which is first detailed before introducing the general
+situation.
+Following the previous example, we now consider the regularity assumption stating
+that the $\ell_\infty$-norm of $\bfbeta^\star$ should be small:
+%
+\begin{equation*}
+  \clH^\mathrm{Max}_{\bfbeta^*} = \left\{ \bfbeta \in \mathbb{R}^p : \norm[\infty]{\bfbeta} \leq \eta_\beta \right\}
+  \enspace.
+\end{equation*}
+%
+The dual assumption is that the $\ell_1$-norm of $\bfgamma$ should be
+controlled:
+%
+\begin{align*}
+  \mathcal{D}^\mathrm{Max}_{\bfgamma} & = \left\{ \bfgamma \in \mathbb{R}^p :
+\sup_{\bfbeta\in\clH^\mathrm{Max}_{\bfbeta^*}} \bfgamma^\intercal\bfbeta \leq 1 \right\} \\
+    & = \left\{ \bfgamma \in \mathbb{R}^p : \norm[1]{\bfgamma} \leq \eta_\gamma \right\} \\
+    & = \mathbf{conv} \left\{\eta_\gamma\bfe^p_1, \ldots, \eta_\gamma\bfe^p_p,-\eta_\gamma\bfe^p_1, \ldots, -\eta_\gamma\bfe^p_p \right\}
+  \enspace,
+\end{align*}
+where $\eta_\gamma=1/\eta_\beta$ and $\bfe^p_j$ is the $j$th element of the
+canonical basis of $\Rset^p$, that is $e_{jj'} = 1$ if $j=j'$ and $e_{jj'} = 0$
+otherwise.
+Then, Problem \eqref{eq:general:dual} becomes:
+%
+\begin{align*}
+  & \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \mathcal{D}^\mathrm{Max}_{\bfgamma}}
+      \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda \norm{\bfbeta - \bfgamma}^2 \Big\} \\
+  \Leftrightarrow
+    & \min_{\bfbeta\in\mathbb{R}^p}
+      \norm{\bfX \bfbeta - \bfy}^2 + 2 \lambda \eta_\gamma \norm[\infty]{\bfbeta} + \lambda \norm{\bfbeta}^2 
+  \enspace,
+\end{align*}
+%
+% Again, when $\eta_\gamma$ is null, we recover ridge regression, and when the magnitude
+% of $\eta_\gamma$ grows, the penalty approaches a pure $\ell_\infty$ norm penalty.
+
+%\subsubsection{Group-Lasso}
+
+Now, consider the more general situation where a group structure is defined on
+the set of variables by setting a partition of the index set
+$\mathcal{I}=\{1,\ldots,p\}$, that is,
+\iflong
+\begin{equation*}
+  \mathcal{I}=\bigcup_{k=1}^K\group \enspace,\, \text{with}\enspace 
+  \group \cap \group[\ell]=\emptyset \enspace
+  \text{for}\enspace k\neq\ell \enspace.
+\end{equation*}
+\else
+$
+  \mathcal{I}=\bigcup_{k=1}^K\group \enspace,\, \text{with}\enspace 
+  \group \cap \group[\ell]=\emptyset \enspace
+  \text{for}\enspace k\neq\ell \enspace.
+$
+\fi
+Let $p_k$ denote the cardinality of group $k$, and $\bfbeta_{\group} \in
+\Rset^{p_k}$ be the vector $(\beta_j)_{j\in \group}$.
+%
+\iflong
+We now consider the regularity assumption stating that the $\ell_{\infty,1}$
+mixed-norm of $\bfbeta^\star$ (that is, its groupwise $\ell_\infty$-norm) should
+be small:
+% Table
+% \ref{table:summary}  displays  the  norm,  dual  norm  and  criterion
+% associated to this particular penalty. 
+\begin{equation*}
+  \clH^{\ell_{\infty,1}}_{\bfbeta^*} = \left\{ 
+    \bfbeta \in \mathbb{R}^p :\sum_{k=1}^K \norm[\infty]{\bfbeta_{\group}} \leq \eta_\beta
+  \right\}
+  \enspace.
+\end{equation*}
+%
+The dual assumption is that the groupwise $\ell_1$-norm of $\bfgamma$ should be
+controlled:
+%
+\begin{align*}
+  \mathcal{D}^{\ell_{\infty,1}}_{\bfgamma} & = \left\{ \bfgamma \in \mathbb{R}^p :
+\sup_{\bfbeta\in\clH^{\ell_{\infty,1}}_{\bfbeta^*}} \bfgamma^\intercal\bfbeta \leq 1 \right\} \\
+    & = \left\{ \bfgamma \in \mathbb{R}^p : \max_{k\in\{1,...,K\}}  \norm[1]{\bfgamma_{\group}} \leq \eta_\gamma \right\} \\
+    & = \mathbf{conv} \big\{ 
+                        \left\{\eta_\gamma\bfe^{p_1}_1, \ldots, \eta_\gamma\bfe^{p_1}_{p_1},-\eta_\gamma\bfe^{p_1}_1, \ldots, -\eta_\gamma\bfe^{p_1}_{p_1} \right\} 
+                        \times \ldots \\
+    & \hspace*{4em} \times 
+                        \left\{\eta_\gamma\bfe^{p_K}_1, \ldots, \eta_\gamma\bfe^{p_K}_{p_K},-\eta_\gamma\bfe^{p_K}_1, \ldots, -\eta_\gamma\bfe^{p_K}_{p_K} \right\} 
+                      \big\}
+  \enspace,
+\end{align*}
+so that Problem \eqref{eq:general:dual} becomes:
+%
+\begin{align*}
+  & \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \mathcal{D}^{\ell_{\infty,1}}_{\bfgamma}}
+      \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda \norm{\bfbeta - \bfgamma}^2 \Big\} \\
+  \Leftrightarrow
+    & \min_{\bfbeta\in\mathbb{R}^p}
+      \norm{\bfX \bfbeta - \bfy}^2 + 2 \lambda \eta_\gamma \sum_{k=1}^K \norm[\infty]{\bfbeta_{\group}} + \lambda \norm{\bfbeta}^2 
+  \enspace,
+\end{align*}
+%
+\else
+Considering the regularity assumption stating that the $\ell_{\infty,1}$
+mixed-norm of $\bfbeta^\star$ (that is, its groupwise $\ell_\infty$-norm) should
+be small, one derives the dual assumption is that the groupwise $\ell_1$-norm of
+$\bfgamma$ should be controlled, leading to the following uncertainty set:
+%
+\begin{align*}
+  \mathcal{D}^{\ell_{\infty,1}}_{\bfgamma} & = \mathbf{conv} \big\{ 
+                        \left\{\eta_\gamma\bfe^{p_1}_1, \ldots, \eta_\gamma\bfe^{p_1}_{p_1},-\eta_\gamma\bfe^{p_1}_1, \ldots, -\eta_\gamma\bfe^{p_1}_{p_1} \right\} 
+                        \times \ldots \\
+    & \hspace*{4em} \times 
+                        \left\{\eta_\gamma\bfe^{p_K}_1, \ldots, \eta_\gamma\bfe^{p_K}_{p_K},-\eta_\gamma\bfe^{p_K}_1, \ldots, -\eta_\gamma\bfe^{p_K}_{p_K} \right\} 
+                      \big\}
+  \enspace,
+\end{align*}
+so that Problem \eqref{eq:general:dual} becomes:
+%
+\begin{align*}
+  & \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \mathcal{D}^{\ell_{\infty,1}}_{\bfgamma}}
+      \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda \norm{\bfbeta - \bfgamma}^2 \Big\} \\
+  \Leftrightarrow
+    & \min_{\bfbeta\in\mathbb{R}^p}
+      \norm{\bfX \bfbeta - \bfy}^2 + 2 \lambda \eta_\gamma \sum_{k=1}^K \norm[\infty]{\bfbeta_{\group}} + \lambda \norm{\bfbeta}^2 
+  \enspace,
+\end{align*}
+%
+\fi
+Notice that the limiting cases of this penalty are two classical problems: ridge
+regression and the $\ell_{\infty,1}$ group-Lasso.
+A 2D pictorial illustration of this evolution is given in
+Figure~\ref{fig:group-penalty}, where the shape of the uncertainty set
+$\mathcal{D}_{\bfgamma}$ is the convex hull of the points located on the axes at $\pm
+\eta_\gamma$, which are identified by the cross markers.
+Then, the sublevel set 
+$\{\bfbeta : \max_{\bfgamma \in \mathcal{D}_{\bfgamma}} \norm{\bfbeta-\bfgamma}^2 \leq t\}$
+is simply defined as the intersection of the four sublevel sets
+$\{\bfbeta : \norm{\bfbeta - \bfgamma}^2 \leq t\}$ for 
+$\bfgamma=\pm \eta_\gamma\bfe^{2}_1$ and $\bfgamma=\pm \eta_\gamma\bfe^{2}_1$,
+which are Euclidean balls centered at these $\bfgamma$ values.
+%
+\begin{figure}
+  \begin{center} 
+    \smallxylabelsquare{../figures/linf_decomposition1}{$\beta_1$}{$\beta_2$}{}%
+    \smallxylabelsquare{../figures/linf_decomposition2}{$\beta_1$}{$\beta_2$}{}%
+    \smallxylabelsquare{../figures/linf_decomposition3}{$\beta_1$}{$\beta_2$}{}%
+    \smallxylabelsquare{../figures/linf_decomposition4}{$\beta_1$}{$\beta_2$}{}%
+    \caption{Sublevel sets for the $\ell_{\infty,1}$ group-Lasso penalties
+             (represented by the darker colored patches).
+             Each set is defined as the intersection of the the Euclidean balls
+             (represented by the lighter color patches) whose centers are
+             represented by crosses.}
+    \label{fig:group-penalty}
+    \end{center} 
+\end{figure}
+
+\iffalse
+The  lagrangian formulation  of the  $\ell_{\infty,1}$ version  of the
+group-Lasso as a constrained optimization can be expressed as
+$$
+ \min_{\bfbeta}     \norm{\bfX  \bfbeta  - \bfy  }^2+\lambda \sum_{g=1}^G \|\bfbeta_g\|_\infty,
+$$
+with $\bfbeta_g=(\beta_{gk})$ the coefficients of $\bfbeta$ corresponding to group $g$.
+
+
+The penalty term can be expressed in a form close to our adverse quadratic penalty. Let us consider  the adverse vector domain to be
+$$
+ \clD_{\bfgamma}=\left\{ \bfgamma \in \mathbb{R}^p | \bfgamma= 
+(\alpha_j \mathbb{I}_{(\mbox{rank}\left(  \max_k |\beta|_{gk}\right)=j) })_{j=1
+      \cdots p } 
+\norm[\infty]{(\alpha_1,\cdots,\alpha_p)} \leq \eta_\alpha \right\} .
+$$
+
+We can reformulate the previous lagrangian as 
+\begin{equation}
+    \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
+    \norm{\bfX \bfbeta - \bfy } + \lambda \norm{\bfbeta +
+    \bfgamma } \enspace.
+\end{equation}
+
+This  rewriting  of the  problem  allows to  see  that  the very  same
+optimization adaptive  constraint algorithm  used for the  elastic net
+can be used to solve the Group  $\ell_{\infty,1}$ problem.
+
+
+{\color{red}{YG : Could'nt we derive the usual group-Lasso from the robust
+optimization viewpoint, simply by changing the definition of $\clD_{\bfX}$, with
+groupwise Frobenius norms?}
+
+Christophe: Si  tu fais cela tu écris  bien le group Lasso  mais je ne
+vois pas comment cela permet de faciliter la résolution du problème avec les mêmes
+techniques que pour les autres....
+}
+
+{\color{blue}{Christophe:  une version group  oscar devrait  donner de
+    meilleurs résultats}}
+\fi

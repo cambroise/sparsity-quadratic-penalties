@@ -1,0 +1,248 @@
+\section{Adaptive Quadratic Penalties \label{sec:quadra}}
+
+\subsection{Background}
+
+We consider the linear regression model 
+\begin{equation}
+  \label{eq:linear_reg_group}
+  Y = X \bfbeta^\star + \varepsilon
+  \enspace,
+\end{equation}
+where $Y$ is a continuous response variable, $X=(X_1,\dots,X_p)$ is a vector of
+$p$ predictor variables, $\bfbeta^\star$ is the vector of unknown parameters and
+$\varepsilon$ is a zero-mean Gaussian error variable with variance $\sigma^2$.
+We will assume throughout this paper that $\bfbeta^\star$ has few non-zero
+coefficients.
+
+The estimation and inference of $\bfbeta^\star$ is based on training data,
+consisting of a vector
+$\mathbf{y}=(y_1,\dots,y_n)^\intercal$ for responses and a
+$n\times  p$ design  matrix $\mathbf{X}$  whose $j$th  column contains
+$\mathbf{x}_j  = (x_j^1,\dots,x_j^n)^\intercal$, the  $n$ observations
+for variable $X_j$.  For  clarity, we assume that both $\mathbf{y}$
+and $\{\mathbf{x}_j\}_{j=1,\dots,p}$ are centered so as to eliminate the
+intercept from fitting criteria.
+
+Penalization methods that build on the $\ell_1$-norm, referred to as
+\emph{Lasso} procedures (Least Absolute Shrinkage and Selection Operator), are
+now widely used to tackle simultaneously variable estimation and selection in
+sparse problems.  They define a shrinkage estimator of the form
+\begin{equation}\label{eq:general:original}
+  \hat{\bfbeta} = \argmin_{\bfbeta\in\mathbb{R}^p} 
+    \norm{\bfX \bfbeta - \bfy}^2 + 
+    \lambda \norm[]{\bfbeta}
+  \enspace, 
+\end{equation}
+where $\norm[2]{\cdot}$ is the Euclidean norm and $\norm[]{\cdot}$ is an
+arbitrary norm, chosen to induce some assumed sparsity pattern (typically
+$\ell_1$ or $\ell_{c,1}$ norms, where $c \in (1,\infty]$).
+%
+% The tuning parameter $\lambda\geq  0$ controls the overall amount  of penalty.
+
+The existence of computationally efficient optimization procedures plays an
+important role in the popularity of these methods.
+Though various general-purpose convex optimization solvers could be used
+\citep{boyd2004convex}, exploiting the structure of the regularization problem,
+and especially the sparsity of solutions, is essential in terms of computational
+efficiency.
+%
+\citet{2012_FML_Bach} provided an overview of the families of techniques 
+specifically  designed for solving this type of problems:
+proximal methods, coordinate descent algorithms, reweighted-$\ell_{2}$
+algorithms, working-set methods.
+Stochastic gradient methods \citep{moulines2011non}, the
+Frank-Wolfe algorithm \citep{lacoste2012block} or ADMM \citep[Alternating Direction
+Method of Multipliers,][]{boyd2011distributed} have also recently gained in
+popularity to the resolution of sparse problems.
+
+We present below a new formulation of Problem~\eqref{eq:general:original} that
+motivates an algorithm that may seem reminiscent of reweighted-$\ell_{2}$
+algorithms, but which is in fact more closely related to working-set methods.
+%
+As for reweighted-$\ell_{2}$ algorithms, our proposal is based on the
+reformulation of the sparsity-inducing penalty in terms of penalties that are
+simpler to handle (linear or quadratic).  However, whereas
+reweighted-$\ell_{2}$ algorithms rely on a
+variational formulation of the sparsity-inducing norm that ends up in an
+augmented minimization problem, our proposal is rooted in the duality principle,
+eventually leading to a minimax problem that lends itself to a working-set 
+algorithm that will be presented in Section~\ref{sec:algo}.
+
+\subsection{Dual Norms}
+
+When the sparsity-inducing penalty is a norm, its sublevel sets can always be
+defined as the intersection of linear or quadratic sublevel sets.  In other
+terms, if the optimization problem is written in the form of a constrained
+optimization problem with inequality constraints pertaining to the penalty,
+then, the feasible region can be defined as the intersection of linear or
+quadratic regions. 
+This fact, which is illustrated in Figures~\ref{fig:en-penalty} and
+\ref{fig:group-penalty}, stems from the definition of dual norms:
+%
+\begin{equation*}%\label{eq:lasso_generic}
+  \norm[]{\bfbeta} = \max_{\bfgamma\in\uball[*]} \bfgamma^\intercal \bfbeta
+  \enspace,
+\end{equation*}
+where $\uball[*]$ is the unit ball centered at the origin defined from the dual
+norm $\norm[*]{\cdot}$,
+$\uball[*]=\left\{\bfgamma\in\mathbb{R}^p:\norm[*]{\bfgamma}\leq 1\right\}$.
+Using this definition, Problem~\eqref{eq:general:original} can be reformulated
+as
+%
+\begin{equation}\label{eq:general:primal}
+  \hat{\bfbeta} = \argmin_{\bfbeta\in\mathbb{R}^p} 
+  \max_{\bfgamma\in\uball[*]}
+    \norm{\bfX \bfbeta - \bfy}^2 + 
+    \lambda \bfgamma^\intercal \bfbeta
+  \enspace. 
+\end{equation}
+%
+Technically, this formulation is the primal form of the original 
+Problem~\eqref{eq:general:original} using the coupling function defined by the 
+dual norm \citep[see e.g.][]{Gilbert16, Bonnans06}. 
+It is interesting in the sense that the problem
+%
+\begin{equation*}
+  \min_{\bfbeta\in\mathbb{R}^p} 
+  \norm{\bfX \bfbeta - \bfy}^2 + 
+  \lambda \bfgamma^\intercal \bfbeta
+\end{equation*}
+%
+is simple to solve for any value of $\bfgamma$, since it only requires solving 
+a linear system.
+The problem
+%
+\begin{eqnarray*}
+  \hat{\bfgamma} & = & \argmax_{\bfgamma\in\uball[*]}
+    \norm{\bfX \bfbeta - \bfy}^2 + 
+    \lambda \bfgamma^\intercal \bfbeta \\
+     & = & \argmax_{\bfgamma\in\uball[*]}
+    \bfgamma^\intercal \bfbeta
+\end{eqnarray*}
+%
+is usually straightforward to solve.
+Besides the sparsity of $\hat{\bfbeta}$, the overall efficiency of our algorithm
+relies also on the fact that $\hat{\bfgamma}$ is often invariant with respect to
+large changes in $\bfbeta$ for the penalties we are interested in, typically
+taking a finite number of possible values.  
+This number typically increases exponentially in $p$, but, with the working-set
+strategy, the number of configuration actually visited usually grows linearly
+with the number of non-zero coefficients in the solution $\hat{\bfbeta}$.
+
+% In practice, Problem \eqref{eq:robust:general:form2} will be solved by
+% considering an equivalent form amenable to a simpler resolution in
+% $\bfbeta$ for any $\bfgamma$, that is:
+% %
+% \begin{equation}\label{eq:general:dual}
+%   \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
+%     \norm{\bfX \bfbeta - \bfy}^2 + \lambda \norm{\bfbeta - \bfgamma}^2
+%   \enspace,
+% \end{equation}
+% where there is a one-to-one mapping between $\eta_X$ and $\lambda$.
+% %
+% Penalised approaches in machine learning are related to constrained optimization
+% problems of the form minimize $f (\bfbeta; data)$, such that $\Omega(\bfbeta)
+% \leq c$.
+
+\subsection{Relations with Other Methods}
+
+The expansion in dual norm expressed in Problem \eqref{eq:general:primal} bears
+some similarities with the first step of the derivation of very general duality
+schemes, such as Fenchel duality or Lagrangian duality.
+It is however dedicated to the category of problems expressed as in
+\eqref{eq:general:original}, thereby offering an interesting novel view of this
+category of problems.
+In particular, it provides geometrical insights on these methods and a generic
+algorithm for computing solutions.  The associated algorithm, that relies on
+solving linear systems is accurate, and efficient up to medium scale problems
+(thousands of variables).
+
+
+% We do consider  regression problems where $\hat{\bfbeta}$ minimizes 
+% \begin{equation*}
+%       \hat{\bfbeta} = \argmin_{\bfbeta\in\mathbb{R}^p} \left\{ \max_{\bfgamma \in \clD_{\bfgamma}} 
+%       \norm{\boldmath{X} \bfbeta - \boldmath{y}}^2 + \lambda \norm{\bfbeta - \bfgamma}^2 \right\},
+% \end{equation*}
+% where 
+%     \begin{itemize}
+%     \item $\clD_\bfgamma$ describes an uncertainty set for the parameters,
+%     \item $\bfgamma$ acts as a spurious \emph{adversary} over the true $\bfbeta^\star$.
+%     \end{itemize}
+%  Maximizing over $\clD_\bfgamma$ leads to the worst-case formulation. 
+%  Choosing  $\clD_\bfgamma$  allows  to  recover many known $\ell_1$ penalizer via $\bfgamma^\intercal \bfbeta$,
+%  
+% The  $\norm{\bfgamma}^2$  does not change the minimization and may be
+% discarded leading to 
+%      \begin{equation*}
+%       \minimize_{\bfbeta\in\mathbb{R}^p} \left\{  \norm{\boldmath{X} \bfbeta - \boldmath{y}}^2
+%         + \lambda \norm{\bfbeta}^2 -  \lambda \max_{\bfgamma \in \clD_{\bfgamma}} \bfgamma^\intercal \bfbeta
+%        \right\},
+%     \end{equation*}
+
+
+\section{Assumptions on the Spurious Regression Coefficients \label{sec:quadra}}
+\label{sec:gammaperturb}
+
+Our framework is amenable to many variations.
+Here, we simply present two examples following the same pattern:
+assuming a given regularity on the regression coefficients $\bfbeta^\star$, we
+consider the adversarial dual assumption on the spurious coefficients
+$\bfgamma$.
+When the initial regularity conditions on $\bfbeta^\star$ are expressed by
+$\ell_1$ or $\ell_\infty$ norms, this process results in uncertainty sets
+$\mathcal{D}_{\bfgamma}$ which are convex polytopes that are
+easy to manage when solving Problem~\eqref{eq:general:dual}, since they
+can be defined as the convex hulls of a finite number possible perturbations.
+
+% In this paper, we restrict our examples to 
+The two sparsity-inducing penalizers presented below have a grouping effect.
+The elastic net implements this grouping without predefining the group
+structure: strongly correlated predictors tend to be in or out of the model
+together \citep{2005_JRSS_Zou}.  
+The $\ell_{\infty,1}$ group-Lasso that is presented subsequently is based on a
+prescribed group structure and favors regression coefficients with identical
+magnitude within activated groups.
+
+\input{elastic} 
+
+% \input{pairwisefused}
+
+\input{group}
+
+%\input{oscar}
+
+
+
+\ifverylong
+% \subsection{More General Assumptions}
+% 
+% We now consider the more general assumption where the regularity of $\bfbeta^\star$ 
+% is measured by the following norm:
+% \begin{eqnarray*}
+%  \left\| \bfbeta \right\| & = & \min_{\bftheta\in\clO} \min(-\bftheta^\intercal\bfbeta,\bftheta^\intercal\bfbeta)  \\
+%  \text{with} \enspace 
+%  \clO & = & \left\{ \{\bftheta_1,\ldots,\bftheta_r\}: \bftheta_i \in \Rset^p \ 
+%    \text{and} \ 
+%    \bfTheta = (\bftheta_1,\ldots,\bftheta_r) 
+%    \ \text{is of rank $p$} \right\}
+% \end{eqnarray*}
+% 
+\begin{figure}
+  \begin{center} 
+    \xylabelsquare{../figures/en_decomposition}{$\beta_1$}{$\beta_2$}{Elastic Net}% 
+    \xylabelsquare{../figures/linf_decomposition}{$\beta_1$}{$\beta_2$}{$\ell_\infty$} 
+    \xylabelsquare{../figures/oscar_decomposition}{$\beta_1$}{$\beta_2$}{OSCAR}%
+    \caption{Penalty shapes (patches) built from the quadratic functions whose
+             isocontour are displayed in white.}
+    \label{fig:penalties}
+    \end{center} 
+\end{figure}
+\fi
+
+%
+% LASSO
+% RIDGE
+% ELASTIC NET
+% STRUCTURE ELASTIC NET
+% FUSED
+% OSCAR
