@@ -1,4 +1,4 @@
-\section{Adaptive Quadratic Penalties \label{sec:quadra}}
+\section{Adaptive Quadratic Penalties \label{sec:adaptquadra}}
 
 \subsection{Background}
 
@@ -112,43 +112,46 @@ is simple to solve for any value of $\bfgamma$, since it only requires solving
 a linear system.
 The problem
 %
-\begin{eqnarray*}
+\begin{eqnarray}
   \hat{\bfgamma} & = & \argmax_{\bfgamma\in\uball[*]}
     \norm{\bfX \bfbeta - \bfy}^2 + 
-    \lambda \bfgamma^\intercal \bfbeta \\
+    \lambda \bfgamma^\intercal \bfbeta \nonumber \\
      & = & \argmax_{\bfgamma\in\uball[*]}
-    \bfgamma^\intercal \bfbeta
-\end{eqnarray*}
+    \bfgamma^\intercal \bfbeta \label{eq:optimal_gamma}
+%   \enspace,
+\end{eqnarray}
 %
+% which defines ``the worst case penalty'' in $\bfbeta$, 
 is usually straightforward to solve.
 Besides the sparsity of $\hat{\bfbeta}$, the overall efficiency of our algorithm
-relies also on the fact that $\hat{\bfgamma}$ is often invariant with respect to
-large changes in $\bfbeta$ for the penalties we are interested in, typically
-taking a finite number of possible values.  
-This number typically increases exponentially in $p$, but, with the working-set
-strategy, the number of configuration actually visited usually grows linearly
+relies also on the invariance of $\hat{\bfgamma}$ with respect to
+large changes in $\bfbeta$. 
+For the penalties we are interested in, $\hat{\bfgamma}$ takes its value in a
+finite set, defined by the extreme points of the convex polytope $\uball[*]$.
+This number of points typically increases exponentially in $p$, but, with the working-set
+strategy, the number of configuration actually visited typically grows linearly
 with the number of non-zero coefficients in the solution $\hat{\bfbeta}$.
 
-% In practice, Problem \eqref{eq:robust:general:form2} will be solved by
-% considering an equivalent form amenable to a simpler resolution in
-% $\bfbeta$ for any $\bfgamma$, that is:
-% %
-% \begin{equation}\label{eq:general:dual}
-%   \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
-%     \norm{\bfX \bfbeta - \bfy}^2 + \lambda \norm{\bfbeta - \bfgamma}^2
-%   \enspace,
-% \end{equation}
-% where there is a one-to-one mapping between $\eta_X$ and $\lambda$.
-% %
-% Penalised approaches in machine learning are related to constrained optimization
-% problems of the form minimize $f (\bfbeta; data)$, such that $\Omega(\bfbeta)
-% \leq c$.
+In practice, Problem \eqref{eq:robust:general:form2} will be solved by
+considering an equivalent form amenable to a simpler resolution in
+$\bfbeta$ for any $\bfgamma$, that is:
+%
+\begin{equation}\label{eq:general:dual}
+  \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
+    \norm{\bfX \bfbeta - \bfy}^2 + \lambda \norm{\bfbeta - \bfgamma}^2
+  \enspace,
+\end{equation}
+where there is a one-to-one mapping between $\eta_X$ and $\lambda$.
+%
+Penalised approaches in machine learning are related to constrained optimization
+problems of the form minimize $f (\bfbeta; data)$, such that $\Omega(\bfbeta)
+\leq c$.
 
 \subsection{Relations with Other Methods}
 
 The expansion in dual norm expressed in Problem \eqref{eq:general:primal} bears
 some similarities with the first step of the derivation of very general duality
-schemes, such as Fenchel duality or Lagrangian duality.
+schemes, such as Fenchel's duality or Lagrangian duality.
 It is however dedicated to the category of problems expressed as in
 \eqref{eq:general:original}, thereby offering an interesting novel view of this
 category of problems.
