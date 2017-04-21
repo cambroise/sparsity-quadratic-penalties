@@ -1,5 +1,49 @@
 \section{Numerical Experiments}\label{sec:experiments}
 
+\subsection{Introductive example: Quantitative Trait Loci and Association Mapping}
+
+
+Many quantitative traits in plants and animals are heritable.  When
+considering Mendelian traits a single polymorphic section of DNA (the
+Quantitative Trait Locus) explains a significant fraction of the
+phenotypic variability. However many traits are subject to the control
+of several genes. These associated genes
+ may prove difficult to find because of their limited individual effect.  
+
+Yield or tasseling time of corn is typically a complex trait whose
+heritability is explained by more than one gene. A possible method for
+mapping association between trait and Genotype consists in regressing
+the phenotype of interest  against the genotype using penalized regression.
+
+In this introductive example, we considered a Maize Association
+Mapping Panel described in \citep{RincentEtAl2014} where 269
+individuals were genotyped with a 50k SNPs array. After classical data
+cleaning, we kept 261 individuals and 29849 markers (SNPs).
+
+
+We tested two different implementations of Lasso for selecting markers
+explaining tasseling time: \mytexttt{glmnet} \citep[Generalized Linear
+Models regularized by Lasso and elastic-NET,][]{2009_JSS_Friedman} and
+our own implementation, by resolution of the worst-case quadratic
+problem, which is shipped within an \mytexttt{R} package
+\mytexttt{quadrupen} publicly available at the second author's web
+page\footnote{or directly at
+  \mytexttt{\href{http://stat.genopole.cnrs.fr/logiciels/quadrupen}}. This
+  will be made available on the CRAN (Comprehensive R Archive
+  Network)}.
+
+
+The two implementation defaults were used and the optimal penalty selected by leave one out. \mytexttt{glmnet} selected 169 markers among the 29849 SNPs whereas \mytexttt{quadrupen} selected only a subset of 156 markers. 
+
+Where does this $10\%$ difference in the number of QTL comes from since there is theoritically one unique solution to our convex Lasso problem ? 
+
+In the following we argue  that \mytexttt{glmnet} precision is highly affected by the threshold controling the stopping condition. A first hint ....
+
+
+
+
+\subsection{Synthetic data}
+
 This section compares the performances of our algorithm to its state-of-the-art
 competitors from an optimization viewpoint.  Efficiency may then be assessed by
 accuracy and speed:  accuracy is the difference between the optimum of the
