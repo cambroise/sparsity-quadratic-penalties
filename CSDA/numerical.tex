@@ -37,7 +37,15 @@ The two implementation defaults were used and the optimal penalty selected by le
 
 Where does this $10\%$ difference in the number of QTL comes from since there is theoritically one unique solution to our convex Lasso problem ? 
 
-In the following we argue  that \mytexttt{glmnet} precision is highly affected by the threshold controling the stopping condition. A first hint ....
+In the following we argue that \mytexttt{glmnet} precision is highly affected by the threshold controling the stopping condition. A first hint of the difference of precision of the two methods can be seen in the  absolute  value of the gradient component for all non zero entries of the parameter vector (see Figure  \ref{fig:gradient}).
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=5cm]{../figures/gradient}
+  \caption{Distribution of the abolute value of the gradient for all non zero entries of the parameter vector according the optimization method (\mytexttt{quadrupen} on the left and \mytexttt{glmnet} on the right)}.
+  \label{fig:gradient}
+\end{figure}
 
 
 
@@ -274,13 +282,15 @@ Modeling     Software,][]{2012_FML_Bach},     with     two     options
 method,   and  \mytexttt{SPAMS-LARS}   which   is  a   \mytexttt{lars}
 substitute.   Note that  \mytexttt{glmnet} does  most of  its internal
 computations  in \mytexttt{Fortran}, \mytexttt{lars}  in \mytexttt{R},
-and  \mytexttt{SPAMS} in \mytexttt{C++}.   Our own  implementation, by
-resolution  of the worst-case quadratic  problem,  is  shipped within  an
-\mytexttt{R} package \mytexttt{quadrupen} publicly available at the second
-author's        web         page\footnote{or        directly        at
-  \mytexttt{\href{http://stat.genopole.cnrs.fr/logiciels/quadrupen}}. This
-  will  be  made  available  on  the  CRAN  (Comprehensive  R  Archive
-  Network)}.
+and  \mytexttt{SPAMS} in \mytexttt{C++}.   
+
+%Our own  implementation, by
+%resolution  of the worst-case quadratic  problem,  is  shipped within  an
+%\mytexttt{R} package \mytexttt{quadrupen} publicly available at the second
+%author's        web         page\footnote{or        directly        at
+%  \mytexttt{\href{http://stat.genopole.cnrs.fr/logiciels/quadrupen}}. This
+%  will  be  made  available  on  the  CRAN  (Comprehensive  R  Archive
+%  Network)}.
 
 We benchmark these packages by computing  regularization paths for the
 Lasso\footnote{%
