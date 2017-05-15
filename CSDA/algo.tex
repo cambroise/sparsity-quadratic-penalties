@@ -76,19 +76,19 @@ description.
   \nlset{Init.} $\bfbeta \leftarrow \bfbeta^0$\\
   Determine the active set: $\supp \leftarrow \{j:\beta_{j} > 0 \} $\\
   Pick a worst admissible $\bfgamma$, that is,  $\displaystyle\bfgamma \in 
-  \argmax_{\bfg \in \clD_{\bfgamma}} \norm{\bfbeta - \bfg}^2$
+  \argmax_{\bfg \in \uball[*]} \bfg^\intercal\bfbeta$
   \BlankLine 
   \nlset{Step 1} Update active variables $\bfbeta_{\!\supp}$ assuming that $\supp$ and $\bfgamma_{\!\supp}$ are optimal \\
   $\bfbeta_{\!\supp}^\mathrm{old} \leftarrow \bfbeta_{\!\supp}$ \\
   $\bfbeta_{\!\supp} \leftarrow 
    \left(\mathbf{X}_{\centerdot\supp}^\intercal
       \mathbf{X}_{\centerdot\supp} + \lambda \mathbf{I}_{|\supp|}\right)^{-1}
-    \left(\mathbf{X}_{\centerdot\supp}^\intercal\mathbf{y} +
+    \left(\mathbf{X}_{\centerdot\supp}^\intercal\mathbf{y} -
       \lambda \bfgamma_{\!\supp}\right)  
   $ \\ 
   \nlset{Step 2} Verify coherence of $\bfgamma_{\!\supp}$ with the updated $\bfbeta_{\!\supp}$\\
   \If(\tcp*[f]{if $\bfgamma_{\!\supp}$ is not worst-case})
-   {$\displaystyle\norm{\bfbeta_{\!\supp} - \bfgamma_{\!\supp}}^2 < \max_{\bfg \in \clD_{\bfgamma}} \norm{\bfbeta_{\!\supp}-\bfg_{\!\supp}}^2$}
+   {$\displaystyle\norm{\bfbeta_{\!\supp} - \bfgamma_{\!\supp}}^2 < \max_{\bfg \in \uball[*]} \norm{\bfbeta_{\!\supp}-\bfg_{\!\supp}}^2$}
    {%
     \tcc{Backtrack towards the last $\bfgamma_{\!\supp}$-coherent solution:}
     $\bfbeta_{\!\supp} \leftarrow \bfbeta_{\!\supp}^\mathrm{old} + \rho (\bfbeta_{\!\supp} - \bfbeta_{\!\supp}^\mathrm{old})$ \\
@@ -97,11 +97,11 @@ description.
     $\widetilde\bfbeta_{\!\supp} \leftarrow
     \left(\mathbf{X}_{\centerdot\supp}^\intercal
       \mathbf{X}_{\centerdot\supp} + \lambda \mathbf{I}_{|\supp|}\right)^{-1}
-    \left(\mathbf{X}_{\centerdot\supp}^\intercal\mathbf{y} +
+    \left(\mathbf{X}_{\centerdot\supp}^\intercal\mathbf{y} -
       \lambda \widetilde\bfgamma_{\!\supp}\right)  
   $ \\ 
   \If(\tcp*[f]{if $\widetilde\bfgamma_{\!\supp}$ is worst-case\ldots})
-   {$\displaystyle\norm{\widetilde\bfbeta_{\!\supp} - \widetilde\bfgamma_{\!\supp}}^2 = \max_{\bfg \in \clD_{\bfgamma}} \norm{\widetilde\bfbeta_{\!\supp}-\bfg_{\!\supp}}^2$}
+   {$\displaystyle\norm{\widetilde\bfbeta_{\!\supp} - \widetilde\bfgamma_{\!\supp}}^2 = \max_{\bfg \in \uball[*]} \norm{\widetilde\bfbeta_{\!\supp}-\bfg_{\!\supp}}^2$}
      {%
 %        $\bfbeta_{\!\supp}^\mathrm{old} \leftarrow \bfbeta_{\!\supp}$ \\
        $(\bfbeta_{\!\supp},\bfgamma_{\!\supp}) \leftarrow
@@ -112,7 +112,7 @@ description.
     \tcc{The current $\bfgamma_{\!\supp}$ is coherent with $\bfbeta_{\!\supp}$}
 
   \nlset{Step 3} Update active set $\supp$ \\
-  $\displaystyle g_j \leftarrow \min_{\bfgamma\in\clD_{\bfgamma}} \left|
+  $\displaystyle g_j \leftarrow \min_{\bfgamma\in\uball[*]} \left|
     \mathbf{x}_j^\intercal(\mathbf{X}_{\centerdot\supp}\bfbeta_{\!\supp} - \mathbf{y})  + \lambda (\beta_j - \gamma_j) \right|
   \enspace j=1,\ldots,p$
   \tcp*[f]{worst-case gradient} \\
@@ -153,11 +153,11 @@ This approach suggests a new assessment of convergence, as detailed below.
   $\bfbeta_\supp$ is completed by zeros on the complement $\supp^c$) is
   nevertheless optimal for a $\bfgamma$-value defined in $\Rset^p$ (where
   $\bfgamma_\supp$ is completed by ad hoc values on the complement
-  $\supp^c$). However this $\bfgamma$ fails to belong to $\clD_{\bfgamma}$ 
+  $\supp^c$). However this $\bfgamma$ fails to belong to $\uball[*]$ 
   (otherwise, the problem would be solved: $\supp$, $\bfgamma$ and $\bfbeta$
   would indeed be optimal).
   The following proposition relates the current objective function, associated
-  with an infeasible $\bfgamma$-value ($\bfgamma\notin\clD_{\bfgamma}$), to the
+  with an infeasible $\bfgamma$-value ($\bfgamma\notin\uball[*]$), to the
   global optimum of the optimization problem.
 
   \begin{proposition}\label{prop:monitoring}

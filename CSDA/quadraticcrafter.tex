@@ -1,4 +1,4 @@
-\section{Adaptive Quadratic Penalties \label{sec:adaptquadra}}
+\section{Adaptive Penalties \label{sec:adaptquadra}}
 
 \subsection{Background}
 
@@ -29,7 +29,7 @@ now widely used to tackle simultaneously variable estimation and selection in
 sparse problems.  They define a shrinkage estimator of the form
 \begin{equation}\label{eq:general:original}
   \hat{\bfbeta} = \argmin_{\bfbeta\in\mathbb{R}^p} 
-    \norm{\bfX \bfbeta - \bfy}^2 + 
+    \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + 
     \lambda \norm[]{\bfbeta}
   \enspace, 
 \end{equation}
@@ -92,7 +92,7 @@ as
 \begin{equation}\label{eq:general:primal}
   \hat{\bfbeta} = \argmin_{\bfbeta\in\mathbb{R}^p} 
   \max_{\bfgamma\in\uball[*]}
-    \norm{\bfX \bfbeta - \bfy}^2 + 
+    \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + 
     \lambda \bfgamma^\intercal \bfbeta
   \enspace. 
 \end{equation}
@@ -104,7 +104,7 @@ It is interesting in the sense that the problem
 %
 \begin{equation*}
   \min_{\bfbeta\in\mathbb{R}^p} 
-  \norm{\bfX \bfbeta - \bfy}^2 + 
+  \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + 
   \lambda \bfgamma^\intercal \bfbeta
 \end{equation*}
 %
@@ -114,7 +114,7 @@ The problem
 %
 \begin{eqnarray}
   \hat{\bfgamma} & = & \argmax_{\bfgamma\in\uball[*]}
-    \norm{\bfX \bfbeta - \bfy}^2 + 
+    \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + 
     \lambda \bfgamma^\intercal \bfbeta \nonumber \\
      & = & \argmax_{\bfgamma\in\uball[*]}
     \bfgamma^\intercal \bfbeta \label{eq:optimal_gamma}
@@ -138,7 +138,7 @@ $\bfbeta$ for any $\bfgamma$, that is:
 %
 \begin{equation}\label{eq:general:dual}
   \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
-    \norm{\bfX \bfbeta - \bfy}^2 + \lambda \norm{\bfbeta - \bfgamma}^2
+    \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + \lambda \norm{\bfbeta - \bfgamma}^2
   \enspace,
 \end{equation}
 where there is a one-to-one mapping between $\eta_X$ and $\lambda$.
