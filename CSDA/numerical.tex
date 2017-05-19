@@ -1,57 +1,5 @@
 \section{Numerical Experiments}\label{sec:experiments}
 
-\subsection{Introductive example: Quantitative Trait Loci and Association Mapping}
-
-
-Many quantitative traits in plants and animals are heritable.  When
-considering Mendelian traits a single polymorphic section of DNA (the
-Quantitative Trait Locus) explains a significant fraction of the
-phenotypic variability. However many traits are subject to the control
-of several genes. These associated genes
- may prove difficult to find because of their limited individual effect.  
-
-Yield or tasseling time of corn is typically a complex trait whose
-heritability is explained by more than one gene. A possible method for
-mapping association between trait and Genotype consists in regressing
-the phenotype of interest  against the genotype using penalized regression.
-
-In this introductive example, we considered a Maize Association
-Mapping Panel described in \citep{RincentEtAl2014} where 269
-individuals were genotyped with a 50k SNPs array. After classical data
-cleaning, we kept 261 individuals and 29849 markers (SNPs).
-
-
-We tested two different implementations of Lasso for selecting markers
-explaining tasseling time: \mytexttt{glmnet} \citep[Generalized Linear
-Models regularized by Lasso and elastic-NET,][]{2009_JSS_Friedman} and
-our own implementation, by resolution of the worst-case quadratic
-problem, which is shipped within an \mytexttt{R} package
-\mytexttt{quadrupen} publicly available at the second author's web
-page\footnote{or directly at
-  \mytexttt{\href{http://stat.genopole.cnrs.fr/logiciels/quadrupen}}. This
-  will be made available on the CRAN (Comprehensive R Archive
-  Network)}.
-
-
-The two implementation defaults were used and the optimal penalty selected by leave one out. \mytexttt{glmnet} selected 169 markers among the 29849 SNPs whereas \mytexttt{quadrupen} selected only a subset of 156 markers. 
-
-Where does this $10\%$ difference in the number of QTL comes from since there is theoritically one unique solution to our convex Lasso problem ? 
-
-In the following we argue that \mytexttt{glmnet} precision is highly affected by the threshold controling the stopping condition. A first hint of the difference of precision of the two methods can be seen in the  absolute  value of the gradient component for all non zero entries of the parameter vector (see Figure  \ref{fig:gradient}).
-
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=5cm]{../figures/gradient}
-  \caption{Distribution of the abolute value of the gradient for all non zero entries of the parameter vector according the optimization method (\mytexttt{quadrupen} on the left and \mytexttt{glmnet} on the right)}.
-  \label{fig:gradient}
-\end{figure}
-
-
-
-
-\subsection{Synthetic data}
-
 This section compares the performances of our algorithm to its state-of-the-art
 competitors from an optimization viewpoint.  Efficiency may then be assessed by
 accuracy and speed:  accuracy is the difference between the optimum of the
@@ -60,6 +8,63 @@ speed is the computing time required for returning this solution.
 Obviously, the timing of two algorithms/packages has to be compared at similar
 precision requirements, which are rather crude in statistical learning, far from
 machine precision \citep{Bottou08}.
+
+We start by showing an experiment on a real dataset illustrating that optimization is an actual issue from the data analysis viewpoint. We then provide an in-depth analysis on simulated data, thereby covering a wide range of well-controlled situations, where  our conclusions are derived from numerous simulations.
+Finally, the available ground truths will also be useful to show that optimization issues during training have notable effects in terms of prediction accuracy and support recovery.
+
+\subsection{Introductory Example: Quantitative Trait Loci and Association Mapping}
+
+Many quantitative traits in plants and animals are heritable.  When
+considering Mendelian traits, the Quantitative Trait Loci (QTL) are sections of
+DNA that explain the trait variability.
+As traits are typically controlled by several QTL, the association 
+between traits and QTL involves several limited effects that are difficult to detect individually.
+
+A possible method for mapping genotype to trait consists in regressing
+the trait (that is, phenotype) of interest  against the QTL (that is, genotype), using penalized regression.
+%
+In this introductory example, we consider the maize association
+mapping panel described in \citep{RincentEtAl2014},where 269
+individuals were genotyped with a 50k single-nucleotide polymorphisms (SNPs) array. 
+After classical data
+cleaning, 261 individuals with 29849 markers (that is, SNPs) were kept.
+%
+
+We focus here on the tasseling time of maize, whose heritability is explained by many genes.
+We used two different implementations of Lasso for detecting the relevant markers: \mytexttt{glmnet} \citep[Generalized Linear
+Models regularized by Lasso and elastic-NET,][]{2009_JSS_Friedman} and
+our own implementation, 
+% by resolution of the worst-case quadratic problem, which is
+publicly available through the
+\mytexttt{R} package
+\mytexttt{quadrupen}%
+% publicly available at the second author's web page
+\footnote{The \mytexttt{quadrupen} package is available on the CRAN (Comprehensive R Archive Network
+  {\url{https://cran.r-project.org/web/packages/quadrupen/}}}.
+
+The two implementations were run using their default parameters, with the 
+same penalty strength $\lambda$, selected by leave-one-out cross-validation with 
+\mytexttt{glmnet}.
+The latter selected 169 markers among the 29849 SNPs, whereas \mytexttt{quadrupen} was more stringent, selecting only a subset of 156 markers. 
+% Where does this $10\%$ difference in the number of SNPs comes from since there is theoretically one unique solution to our convex Lasso problem ? 
+This notable difference is unexpected considering that the two implementations attempt to solve the very same convex optimization problem.
+
+In the following, we show how the speed and precision of \mytexttt{glmnet} are affected by the threshold controlling the stopping condition. 
+Regarding precision, a first hint is provided in 
+Figure \ref{fig:gradient}, which displays the absolute value of the derivatives of the objective function with respect to the non-zero coefficients of the parameter vectors returned by \mytexttt{glmnet} and \mytexttt{quadrupen}, respectively. 
+The departure from zero for \mytexttt{glmnet} illustrates its relative imprecision, which is responsible for the difference in the set of selected markers.
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=5cm]{../figures/gradient}
+  \caption{Distribution of the absolute value of the derivatives with respect to the non-zero coefficients of the parameter vectors returned by \mytexttt{glmnet} (left) and \mytexttt{quadrupen} (right)}.
+  \label{fig:gradient}
+\end{figure}
+
+
+
+
+\subsection{Synthetic data}
 
 We compare the performance of the proposed quadratic solver with
 representatives of the most successful competing algorithms.
@@ -93,9 +98,7 @@ sparsity of the unknown true parameter (which affects the sparsity of
 the solution), which also heavily impacts the running times of most
 optimization algorithms available today.
 
-\iflong
-  \subsection{Data Generation}
-\fi
+\subsubsection{Data Generation}
 
 The above-mentioned characteristics are explored without difficulty in the
 framework of linear regression. We generate samples of size $n$ from the model
@@ -129,9 +132,7 @@ quantifies the well/ill-posedness of the problem.
 % %\citep{2009_JSS_Friedman} which is a reference tool in genomic studies and more
 % %generally in the statistics community.
  
-\iflong
-  \subsection{Comparing Optimization Strategies} 
-\fi
+\subsubsection{Comparing Optimization Strategies} 
 
 We compare here the performance of three state-of-the-art optimization
 strategies implemented in our own computational framework:
@@ -266,9 +267,7 @@ $\lambda_2$, attached to the quadratic penalty, reaches high values for which al
 problems are well-conditioned, and where the elastic net is leaning towards
 univariate soft thresholding, in which case all algorithms behave similarly.
 
-\iflong
-  \subsection{Comparing Stand-Alone Implementations}
-\fi
+\subsubsection{Comparing Stand-Alone Implementations}
 
 We  now  proceed  to the  evaluation  of  our  code with  three  other
 stand-alone programs publicly  available as \mytexttt{R} packages.  We
@@ -374,7 +373,7 @@ computes the solutions at identical $\lambda$ values, as defined above.
       & \xylabelsquare{../figures/timing_others_med}{CPU time (in seconds, $\log_{10}$)}
                     {$\mathrm{D}(\mytexttt{method})$ ($\log_{10}$)}
                     {$n=200$, $p=1\,000$}% 
-      \\[2ex] % 
+      \\[4ex] % 
       \xylabelsquare{../figures/timing_others_hig}{CPU time (in seconds, $\log_{10}$)}
                     {$\mathrm{D}(\mytexttt{method})$ ($\log_{10}$)}
                     {$n=400$, $p=10\,000$}% 
@@ -478,11 +477,7 @@ computes the solutions at identical $\lambda$ values, as defined above.
   \end{figure}
 \fi
 
-
-
-
-
-\subsection{Link between accuracy of solutions and prediction performances}
+\subsubsection{Link between accuracy of solutions and prediction performances}
 \label{sec:fromatop}
 
 When the ``irrepresentable condition'' \citep{2006_JMLR_Zhao} holds, the
@@ -525,7 +520,7 @@ test error and the support error rate.
     \rotatebox{90.0}{\makebox[.6\textwidth]{\hspace{.3\textwidth} Support Error 
     Rate \hspace{.35\textwidth} MSE}}
     &
-    \includegraphics[angle=0,width=\textwidth]{../figures/accuracy}
+    \includegraphics[trim={0.5cm 0.5cm 0.5cm 0.5cm},clip,angle=0,width=\textwidth]{../figures/accuracy}
   \end{tabular}
   \caption{Test performances according to the penalty parameter for the
     Lasso estimates returned by \mytexttt{quadrupen} and \mytexttt{glmnet} at various level

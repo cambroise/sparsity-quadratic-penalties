@@ -55,21 +55,23 @@
 \newtheorem{lemma}{Lemma}
 \newtheorem{proposition}{Proposition}
 \newcommand\xylabellarge[4]{% #1 Image, #2=XText, #3=YText,, #4=Title,
-  \setlength{\unitlength}{0.9\textwidth}%
+%   \setlength{\unitlength}{0.9\textwidth}%
+  \setlength{\unitlength}{13cm}%
   \begin{picture}(1,0.6)%
-    \put(0.025,0.025){\includegraphics[width=0.95\unitlength]{#1}}
-    \put(0.525,0){\makebox[0cm]{\small#2}}
+    \put(0.04,0.025){\includegraphics[width=0.95\unitlength]{#1}}
+    \put(0.54,0){\makebox[0cm]{\small#2}}
     \put(0,0.3){\rotatebox{90.0}{\makebox[0cm]{\small#3}}}
     \put(0.525,0.6){\makebox[0cm]{#4}}
   \end{picture}%
 }
 \newcommand\xylabelsquare[4]{% #1 Image, #2=XText, #3=YText,, #4=Title,
-  \setlength{\unitlength}{0.4\linewidth}%
+%   \setlength{\unitlength}{0.4\linewidth}%
+  \setlength{\unitlength}{6.5cm}%
   \begin{picture}(1,1)%
-    \put(0.05,0.05){\includegraphics[width=0.90\unitlength]{#1}}
-    \put(0.525,0){\makebox[0cm]{\small#2}}
+    \put(0.075,0.075){\includegraphics[width=0.90\unitlength]{#1}}
+    \put(0.575,0){\makebox[0cm]{\small#2}}
     \put(0,0.525){\rotatebox{90.0}{\makebox[0cm]{\small#3}}}
-    \put(0.525,0.975){\makebox[0cm]{#4}}
+    \put(0.525,1){\makebox[0cm]{#4}}
   \end{picture}%
 }
 \newcommand\smallxylabelsquare[4]{% #1 Image, #2=XText, #3=YText,, #4=Title,
