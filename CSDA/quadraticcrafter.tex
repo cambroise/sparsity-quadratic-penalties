@@ -132,20 +132,78 @@ This number of points typically increases exponentially in $p$, but, with the wo
 strategy, the number of configuration actually visited typically grows linearly
 with the number of non-zero coefficients in the solution $\hat{\bfbeta}$.
 
-In practice, Problem \eqref{eq:robust:general:form2} will be solved by
-considering an equivalent form amenable to a simpler resolution in
-$\bfbeta$ for any $\bfgamma$, that is:
+
+
+
+\subsection{Interpretation in terms of quadratic penalties}
+
+
+Penalised approaches in machine learning are related to constrained optimization
+problems of the form minimize $f (\bfbeta; data)$, such that $\Omega(\bfbeta)
+\leq c$. This last constraint has a geometric intrepretation. The optimal solution 
+belongs to the geometrical volume defined by  $\Omega(\bfbeta)\leq c$ while minimizing 
+$f()$. 
+
+In practice, Problem \eqref{eq:robust:general:primal} can rewritten as
+% will be solved by
+% considering an equivalent form amenable to a simpler resolution in
+%$ \bfbeta$ for any $\bfgamma$, that is:
 %
 \begin{equation}\label{eq:general:dual}
   \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
     \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + \lambda \norm{\bfbeta - \bfgamma}^2
   \enspace,
 \end{equation}
-where there is a one-to-one mapping between $\eta_X$ and $\lambda$.
+%where there is a one-to-one mapping between $\eta_X$ and $\lambda$.
 %
-Penalised approaches in machine learning are related to constrained optimization
-problems of the form minimize $f (\bfbeta; data)$, such that $\Omega(\bfbeta)
-\leq c$.
+if the norm of $\bfgamma$ is finite.  In this later case, the penalty
+is quadratic, which constrains the optimal solution to belong to a ball
+centered in the worst $\bfgamma$. 
+
+This view of the geometry of the constraint as a union of balls 
+illustrates the basic idea of our approach: for a fixed worst case $\bfgamma$ 
+our optimization problem boils down to a simple quadratic optimization problem. 
+
+Various classical sparse problems such as may be expressed by means of
+such a quadratic penalty. The is the case for the classical Lasso,
+the $\ell_{1,\infty}$ version of the group-lasso, where the
+magnitude of regression coefficients are assumed to be equal within groups,
+either zero or non-zero, and for OSCAR (Octagonal Shrinkage and Clustering
+Algorithm for Regression) which is based on a penalizer encouraging the
+sparsity of the regression coefficients and the equality of the
+non-zero entries \citep{Bondell08}.  
+
+
+Figure \ref{fig:penalties} illustrates  those three  sparse problems
+with their  associated worst case quadratic penalty.
+
+
+\ifverylong
+% \subsection{More General Assumptions}
+% 
+% We now consider the more general assumption where the regularity of $\bfbeta^\star$ 
+% is measured by the following norm:
+% \begin{eqnarray*}
+%  \left\| \bfbeta \right\| & = & \min_{\bftheta\in\clO} \min(-\bftheta^\intercal\bfbeta,\bftheta^\intercal\bfbeta)  \\
+%  \text{with} \enspace 
+%  \clO & = & \left\{ \{\bftheta_1,\ldots,\bftheta_r\}: \bftheta_i \in \Rset^p \ 
+%    \text{and} \ 
+%    \bfTheta = (\bftheta_1,\ldots,\bftheta_r) 
+%    \ \text{is of rank $p$} \right\}
+% \end{eqnarray*}
+% 
+\begin{figure}
+  \begin{center} 
+    \xylabelsquare{../figures/en_decomposition}{$\beta_1$}{$\beta_2$}{Elastic Net}% 
+    \xylabelsquare{../figures/linf_decomposition}{$\beta_1$}{$\beta_2$}{$\ell_\infty$} 
+    \xylabelsquare{../figures/oscar_decomposition}{$\beta_1$}{$\beta_2$}{OSCAR}%
+    \caption{Penalty shapes (patches) built from the quadratic functions whose
+             isocontour are displayed in white.}
+    \label{fig:penalties}
+    \end{center} 
+\end{figure}
+\fi
+
 
 \subsection{Relations with Other Methods}
 
@@ -216,31 +274,6 @@ magnitude within activated groups.
 
 
 
-\ifverylong
-% \subsection{More General Assumptions}
-% 
-% We now consider the more general assumption where the regularity of $\bfbeta^\star$ 
-% is measured by the following norm:
-% \begin{eqnarray*}
-%  \left\| \bfbeta \right\| & = & \min_{\bftheta\in\clO} \min(-\bftheta^\intercal\bfbeta,\bftheta^\intercal\bfbeta)  \\
-%  \text{with} \enspace 
-%  \clO & = & \left\{ \{\bftheta_1,\ldots,\bftheta_r\}: \bftheta_i \in \Rset^p \ 
-%    \text{and} \ 
-%    \bfTheta = (\bftheta_1,\ldots,\bftheta_r) 
-%    \ \text{is of rank $p$} \right\}
-% \end{eqnarray*}
-% 
-\begin{figure}
-  \begin{center} 
-    \xylabelsquare{../figures/en_decomposition}{$\beta_1$}{$\beta_2$}{Elastic Net}% 
-    \xylabelsquare{../figures/linf_decomposition}{$\beta_1$}{$\beta_2$}{$\ell_\infty$} 
-    \xylabelsquare{../figures/oscar_decomposition}{$\beta_1$}{$\beta_2$}{OSCAR}%
-    \caption{Penalty shapes (patches) built from the quadratic functions whose
-             isocontour are displayed in white.}
-    \label{fig:penalties}
-    \end{center} 
-\end{figure}
-\fi
 
 %
 % LASSO
