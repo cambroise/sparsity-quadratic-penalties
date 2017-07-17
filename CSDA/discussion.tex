@@ -5,10 +5,10 @@
 % PRINCIPLE
 This paper presents a new viewpoint on sparsity-inducing penalties
 where the dual norms associated with these penalties play a central role. 
-Our formulation can be seen as a dual formulation of the original problem
-where the dual variables defines a series of quadratic convex set the
-intersection of which defines the feasible set of the original
-problem.
+Technically, our formulation is a simple dual form of the original problem.
+The dual variables define a series of linear or quadratic penalties whose 
+sublevel sets define the feasible set of the original problem through
+intersection.
 
 This  viewpoint  enables  to  cast   in  the  same  framework  several
 well-known penalties. In particular, we detailed how the Lasso and the
@@ -19,9 +19,9 @@ the elastic net for the Lasso) can be derived.
 
 % ALGORITHM AND MAGIC BOUND
 We derived a  general-purpose algorithm that computes  the solution to
-their companion  penalized regression problem,  and to obtain  a lower
-bound  on the  minimum  of  the objective  function  that provides  an
-assessment of convergence.  The proposed  algorithm solves a series of
+the penalized regression problem,  and obtained a lower
+bound  on the  minimum  of  the objective  function  to
+assess convergence.  The proposed  algorithm solves a series of
 quadratic  problems defined  from  the dual  variables.   It has  been
 thoroughly tested  and compared with  state-of-the-art implementations
 for the elastic  net and the Lasso, comparing favorably  in most cases
