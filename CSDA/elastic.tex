@@ -1,48 +1,42 @@
 \subsection{Elastic Net} \label{sec:elasticnet}
 
-As an introductory example, let us consider the regularity assumption stating
-that the $\ell_1$-norm of $\bfbeta^\star$ should be small:
-%
-\begin{equation*}
-  \clH^\mathrm{Lasso}_{\bfbeta^*} = \left\{ \bfbeta \in \mathbb{R}^p : \norm[1]{\bfbeta} \leq \eta_\beta \right\}
-  \enspace.
-\end{equation*}
-%
-The dual assumption is that the $\ell_\infty$-norm of $\bfgamma$ should be
-controlled, say:
+As an introductory example, let us consider the assumption stating that the
+$\ell_1$-norm of $\bfbeta^\star$ should be small. 
+The dual norm is the $\ell_\infty$-norm:
 %
 \begin{align*}
-  \mathcal{D}^\mathrm{Lasso}_{\bfgamma} & = \left\{ \bfgamma \in \mathbb{R}^p :
-\sup_{\bfbeta\in\clH^\mathrm{Lasso}_{\bfbeta^*}} \bfgamma^\intercal\bfbeta \leq 1 \right\} \\
-    & = \left\{ \bfgamma \in \mathbb{R}^p : \norm[\infty]{\bfgamma} \leq \eta_\gamma \right\} \\
-    & = \mathbf{conv} \big\{ \left\{ -\eta_\gamma, \eta_\gamma \right\}^p \big\}
+  \uball[*]^\eta & = \left\{ \bfgamma \in \mathbb{R}^p :
+\sup_{\norm[1]{\bfbeta}\leq1} \bfgamma^\intercal\bfbeta \leq \eta \right\} \\
+    & = \left\{ \bfgamma \in \mathbb{R}^p : \norm[\infty]{\bfgamma} \leq \eta \right\} \\
+    & = \mathbf{conv} \big\{ \left\{ -\eta, \eta \right\}^p \big\}
   \enspace,
 \end{align*}
-where $\eta_\gamma=1/\eta_\beta$ and $\mathbf{conv}$ denotes convex hull, so that Problem
+where $\mathbf{conv}$ denotes convex hull, so that Problem
 \eqref{eq:general:dual} reads:
 %
 \begin{align}
-  & \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \left\{ -\eta_\gamma, \eta_\gamma \right\}^p}
-      \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda \norm{\bfbeta - \bfgamma}^2 
+  & \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in\uball[*]^\eta}
+      \Big\{ \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + \frac{\lambda}{2} \norm{\bfbeta - \bfgamma}^2 
       \Big\} \nonumber \\
   \Leftrightarrow
     & \min_{\bfbeta\in\mathbb{R}^p}
-      \norm{\bfX \bfbeta - \bfy}^2 + 2 \lambda \eta_\gamma \norm[1]{\bfbeta} + \lambda \norm{\bfbeta}^2 
+       \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + \lambda \eta
+       \norm[1]{\bfbeta} + \frac{\lambda}{2} \norm{\bfbeta}^2
   \enspace, \label{eq:elastic-net}
 \end{align}
 %
 which is recognized as an elastic net problem.
-When $\eta_\gamma$ is null, we recover ridge regression, and when the magnitude
-of $\eta_\gamma$ grows, the problem approaches a Lasso problem. 
+When $\eta$ is null, we recover ridge regression, and when $\eta$ goes to 
+infinity, the problem approaches a Lasso problem.
 A 2D pictorial illustration of this evolution is given in
 Figure~\ref{fig:en-penalty}, where the shape of the uncertainty set
-$\mathcal{D}_{\bfgamma}$ is the convex hull of the points located at $(\pm
-\eta_\gamma, \pm \eta_\gamma)^\intercal$, which are identified by the cross markers.
+$\uball[*]^\eta$ is the convex hull of the points located at 
+$(\pm \eta, \pm \eta)^\intercal$, which are identified by the cross markers.
 Then, the sublevel set 
-$\{\bfbeta : \max_{\bfgamma \in \mathcal{D}_{\bfgamma}} \norm{\bfbeta-\bfgamma}^2 \leq t\}$
+$\{\bfbeta : \max_{\bfgamma \in \uball[*]^\eta} \norm{\bfbeta-\bfgamma}^2 \leq t\}$
 is simply defined as the intersection of the four sublevel sets
 $\{\bfbeta : \norm{\bfbeta - \bfgamma}^2 \leq t\}$ for $\bfgamma=(\pm
-\eta_\gamma, \pm \eta_\gamma)^\intercal$, which are Euclidean balls centered at
+1, \pm 1)^\intercal$, which are Euclidean balls centered at
 these $\bfgamma$ values.
 %
 \begin{figure}
@@ -60,123 +54,3 @@ these $\bfgamma$ values.
     \end{center} 
 \end{figure}
 
-\begin{table}[htbp!]
-  \centering
-\rotatebox{-90}{
-\begin{tiny}
-    \begin{tabular}{l | m{3cm} | m{5cm}| m{4cm} | m{4cm}|}
-\cline{2-5}
-   & \textbf{Norm} & { \textbf{Dual Norm}}& \textbf{Criterion} & \textbf{2D Representation }\\ \hline
- \multicolumn{1}{|c|}{\rotatebox{90.0}{\makebox[0cm]{\textbf{ Elastic Net}}}} & 
-  $\left\{   \bfbeta  \in   \mathbb{R}^p   :  \norm[1]{\bfbeta}   \leq
-    \eta_\beta \right\}$ &
-{
-\begin{align*}
-  \mathcal{D}^\mathrm{Lasso}_{\bfgamma} & = \left\{ \bfgamma \in \mathbb{R}^p :
-\sup_{\bfbeta\in\clH^\mathrm{Lasso}_{\bfbeta^*}} \bfgamma^\intercal\bfbeta \leq 1 \right\} \\
-    & = \left\{ \bfgamma \in \mathbb{R}^p : \norm[\infty]{\bfgamma} \leq \eta_\gamma \right\} \\
-    & = \mathbf{conv} \big\{ \left\{ -\eta_\gamma, \eta_\gamma \right\}^p \big\}
-  \enspace,
-\end{align*}
-where $\eta_\gamma=1/\eta_\beta$ and $\mathbf{conv}$ denotes convex hull
-}
- &
-{\begin{align*}
-  & \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \mathcal{D}^\mathrm{Lasso}_{\bfgamma} }
-      \norm{\bfX \bfbeta - \bfy}^2 + \lambda \norm{\bfbeta - \bfgamma}^2  \\
-  \Leftrightarrow
-    & \min_{\bfbeta\in\mathbb{R}^p}
-      \norm{\bfX \bfbeta - \bfy}^2 + 2 \lambda \eta_\gamma \norm[1]{\bfbeta} + \lambda \norm{\bfbeta}^2 
-\end{align*}
-}
- & 
-\mediumxylabelsquare{../figures/en_decomposition}{$\beta_1$}{$\beta_2$}{}% 
-\\ \hline
- \multicolumn{1}{|c|}{\rotatebox{90.0}{\makebox[0cm]{\textbf{     Group $\ell_\infty$}}}} & 
-{
-\begin{equation*}
-\{       \bfbeta       \in       \mathbb{R}^p       :\sum_{k=1}^K  \norm[\infty]{\bfbeta_{\group}} \leq \eta_\beta \}
-\end{equation*}
-}
-&
-{
-\begin{align*}
-  \mathcal{D}^{\ell_{\infty,1}}_{\bfgamma} & = \left\{ \bfgamma \in \mathbb{R}^p :
-\sup_{\bfbeta\in\clH^{\ell_{\infty,1}}_{\bfbeta^*}} \bfgamma^\intercal\bfbeta \leq 1 \right\} \\
-    & = \left\{ \bfgamma \in \mathbb{R}^p : \sum_{k=1}^K  \norm[1]{\bfgamma_{\group}} \leq \eta_\gamma \right\} \\
-    & = \mathbf{conv} \big\{ 
-                        \{\eta_\gamma\bfe^{p_1}_1,         \ldots,
-                          \eta_\gamma\bfe^{p_1}_{p_1},\\
- &-\eta_\gamma\bfe^{p_1}_1, \ldots, -\eta_\gamma\bfe^{p_1}_{p_1} \} 
-                        \times \ldots \\
-    & \hspace*{4em} \times 
-                        \{\eta_\gamma\bfe^{p_K}_1,              \ldots,
-                        \eta_\gamma\bfe^{p_K}_{p_K},\\
-  & -\eta_\gamma\bfe^{p_K}_1, \ldots, -\eta_\gamma\bfe^{p_K}_{p_K} \}            \big\}
-  \enspace,
-\end{align*}
-where $\bfe^{p_k}_j$ is the $j$th element of the
-canonical basis of $\Rset^{p_k}$}
- & 
-{
-\begin{align*}
-  & \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \mathcal{D}^{\ell_{\infty,1}}_{\bfgamma}}
-       \norm{\bfX \bfbeta - \bfy}^2 + \lambda \norm{\bfbeta - \bfgamma}^2  \\
-  \Leftrightarrow
-    & \min_{\bfbeta\in\mathbb{R}^p}
-      \norm{\bfX   \bfbeta   -  \bfy}^2   +   2  \lambda   \eta_\gamma
-      \sum_{k=1}^K \norm[\infty]{\bfbeta_{\group}} \\
- & + \lambda \norm{\bfbeta}^2 
-\end{align*}
-}
-& 
-\mediumxylabelsquare{../figures/linf_decomposition}{$\beta_1$}{$\beta_2$}{}% 
-\\ \hline
- \multicolumn{1}{|c|}{\rotatebox{90.0}{\makebox[0cm]{\textbf{ Oscar}}}}
- &
-{
-\begin{align*}
-\{ \bfbeta \in \mathbb{R}^p : \norm[1]{\bfbeta} + &\\
-c\sum_{j<k}   \max { (|\beta_j|, |\beta_k| ) } \ \leq
-    \eta_\beta \}&
-\end{align*}
-}
- & 
-{
-\begin{align*}
- \clD_{\bfgamma} =& \Big\{ \bfgamma \in \mathbb{R}^p | \bfgamma= 
-\begin{pmatrix}
-\alpha_1 1\\
-\alpha_2 (c+1) \\
-\alpha_3 (2c+1) \\
-\vdots \\
-\alpha_p (p-1) c+1
-\end{pmatrix}, \\
-&  \ c\in \mathbb{R}^+, \norm[\infty]{(\alpha_1,\cdots,\alpha_p)} \leq \eta_\alpha \Big\}
-\end{align*}
-and the permutation matrix
-$$
- P_{\bfbeta} = \left\{ \mathbb{I}_{(\mbox{rank}\left( |\beta|_{(i)}=j \right)} \right\}_{i = 1 \cdots p, j=1 \cdots p}
-$$
-}
-& 
-{
-\begin{align*}
-  & \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
-    \norm{\bfX \bfbeta - \bfy } + \lambda \norm{\bfbeta +
-    P_{\bfbeta} \bfgamma } \\
-\Leftrightarrow & \min_{\bfbeta} \norm{\bfX \bfbeta - \bfy }^2+ \\
-& \lambda \sum_{j=1}^p \left( c(j-1)+1 \right) |\beta|_{(j)} + \lambda \norm{\bfbeta}^2
-\end{align*}
-}
-& 
-\mediumxylabelsquare{../figures/oscar_decomposition}{$\beta_1$}{$\beta_2$}{}% 
-\\ \hline
-   \end{tabular}
- \end{tiny}
-}
-  \caption{\label{table:summary} Various classical sparse problems may be expressed by
-    means of  a quadratic penalty. Each  line of the  table presents a
-    different problem with its associated worst case quadratic penalty.}
-
-\end{table}
