@@ -1,29 +1,9 @@
-%% 
-%% Copyright 2007, 2008, 2009 Elsevier Ltd
-%% 
-%% This file is part of the 'Elsarticle Bundle'.
-%% ---------------------------------------------
-%% 
-%% It may be distributed under the conditions of the LaTeX Project Public
-%% License, either version 1.2 of this license or (at your option) any
-%% later version.  The latest version of this license is in
-%%    http://www.latex-project.org/lppl.txt
-%% and version 1.2 or later is part of all distributions of LaTeX
-%% version 1999/12/01 or later.
-%% 
-%% The list of all files belonging to the 'Elsarticle Bundle' is
-%% given in the file `manifest.txt'.
-%% 
-%% Template article for Elsevier's document class `elsarticle'
-%% with harvard style bibliographic references
-%% SP 2008/03/01
-
-\documentclass[preprint,12pt,authoryear]{elsarticle}
+\documentclass[review,authoryear]{elsarticle}
 
 %% Use the option review to obtain double line spacing
 %% \documentclass[authoryear,preprint,review,12pt]{elsarticle}
 
-%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
+%% Use the options 1p, twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
 %% for a journal layout:
 %% \documentclass[final,1p,times,authoryear]{elsarticle}
 %% \documentclass[final,1p,times,twocolumn,authoryear]{elsarticle}
@@ -32,30 +12,20 @@
 %% \documentclass[final,5p,times,authoryear]{elsarticle}
 %% \documentclass[final,5p,times,twocolumn,authoryear]{elsarticle}
 
-%% For including figures, graphicx.sty has been loaded in
-%% elsarticle.cls. If you prefer to use the old commands
-%% please give \usepackage{epsfig}
-
 %% The amssymb package provides various useful mathematical symbols
-\usepackage{amssymb}
-%% The amsthm package provides extended theorem environments
-\usepackage{amsthm}
-\usepackage{amsmath}
+\usepackage{amssymb,amsthm,amsmath}
 \usepackage{array}
 \usepackage{natbib}
 \usepackage{hyperref}
 \usepackage{xcolor}
 \usepackage[ruled,vlined]{algorithm2e}
 
-
 % Definitions of handy macros can go here
-
 \input{preamble}
 \newtheorem{assumption}{Assumption}
 \newtheorem{lemma}{Lemma}
 \newtheorem{proposition}{Proposition}
 \newcommand\xylabellarge[4]{% #1 Image, #2=XText, #3=YText,, #4=Title,
-%   \setlength{\unitlength}{0.9\textwidth}%
   \setlength{\unitlength}{13cm}%
   \begin{picture}(1,0.6)%
     \put(0.04,0.025){\includegraphics[width=0.95\unitlength]{#1}}
@@ -65,7 +35,6 @@
   \end{picture}%
 }
 \newcommand\xylabelsquare[4]{% #1 Image, #2=XText, #3=YText,, #4=Title,
-%   \setlength{\unitlength}{0.4\linewidth}%
   \setlength{\unitlength}{6.5cm}%
   \begin{picture}(1,1)%
     \put(0.075,0.075){\includegraphics[width=0.90\unitlength]{#1}}
@@ -90,7 +59,8 @@
 %% The lineno packages adds line numbers. Start line numbering with
 %% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
 %% for the whole article with \linenumbers.
-%% \usepackage{lineno}
+\usepackage{lineno}
+\linenumbers
 
 \journal{CSDA}
 
@@ -126,41 +96,33 @@
 
 \title{Sparsity by Worst-Case Penalties}
 
-\author{Yves Grandvalet}
+\author[label1]{Yves Grandvalet}
 \ead{yves.grandvalet@utc.fr}
-%\ead[url]{home page}
-\address{Sorbonne universit\'es, Universit\'e de technologie de Compi\`egne, 
-CNRS, \\ Heudiasyc UMR 7253, CS 60 319, 60 203 Compi\`egne cedex, France}
-\author{Julien Chiquet}
+\author[label2]{Julien Chiquet}
 \ead{julien.chiquet@inra.fr}
-\address{AgroParisTech, INRA, Universit\'e Paris-Saclay\\
-UMR MIA-Paris, 16 rue Claude Bernard, 75005, Paris, France}
-\author{Christophe Ambroise}
+\author[label3]{Christophe Ambroise}
 \ead{christophe.ambroise@genopole.cnrs.fr}
-\address{Universit\'e d'\'Evry Val d'Essonne, Universit\'e Paris-Saclay,  ENSIIE, USC INRA\\
-UMR CNRS 8071, LaMME, 91000 \'Evry, France}
+\address[label1]{Sorbonne universit\'es, Universit\'e de technologie de Compi\`egne, CNRS, \\ Heudiasyc UMR 7253, CS 60 319, 60 203 Compi\`egne cedex, France}
+\address[label2]{AgroParisTech, INRA, Universit\'e Paris-Saclay\\UMR MIA-Paris, 16 rue Claude Bernard, 75005, Paris, France}
+\address[label3]{Universit\'e d'\'Evry Val d'Essonne, Universit\'e Paris-Saclay,  ENSIIE, USC INRA\\ UMR CNRS 8071, LaMME, 91000 \'Evry, France}
 
 \begin{abstract}% 
-This paper proposes a new interpretation of sparse penalties 
-such as the elastic net and the group-lasso.
-Beyond providing a new viewpoint on these
-penalization schemes, our approach results in a unified optimization strategy.
-Our evaluation experiments demonstrate that this strategy, implemented on the
-elastic net, is computationally extremely efficient for small to medium size
-problems.  Our accompanying software solves problems at machine precision in the
-time required to get a rough estimate with competing  state-of-the-art 
-algorithms.
+  This paper proposes a new interpretation of sparse penalties such as
+  the elastic-net and the group-lasso.  Beyond providing a new
+  viewpoint on these penalization schemes, our approach results in a
+  unified optimization strategy.  Our evaluation experiments
+  demonstrate that this strategy, implemented on the elastic-net, is
+  computationally extremely efficient for small to medium size
+  problems.  Our accompanying software solves problems at machine
+  precision in the time required to get a rough estimate with
+  competing state-of-the-art algorithms.
 \end{abstract} 
 
 \begin{keyword}
-sparse regression, robust optimization, lasso, elastic net, group-lasso
+  sparsity, adaptive penalty, dual norm, optimality gap
 \end{keyword}
 
 \end{frontmatter}
-
-%% \linenumbers
-
-%% main text
 
 \input{intro}
 

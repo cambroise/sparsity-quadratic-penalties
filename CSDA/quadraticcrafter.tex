@@ -28,7 +28,7 @@ Penalization methods that build on the $\ell_1$-norm, referred to as
 now widely used to tackle simultaneously variable estimation and selection in
 sparse problems.  They define a shrinkage estimator of the form
 \begin{equation}\label{eq:general:original}
-  \hat{\bfbeta} = \argmin_{\bfbeta\in\mathbb{R}^p} 
+  \hatbbeta = \argmin_{\bfbeta\in\mathbb{R}^p} 
     \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + 
     \lambda \norm[]{\bfbeta}
   \enspace, 
@@ -41,9 +41,9 @@ $\ell_1$ or $\ell_{c,1}$ norms, where $c \in (1,\infty]$).
 
 The existence of computationally efficient optimization procedures plays an
 important role in the popularity of these methods.
-Though various general-purpose convex optimization solvers could be used
-\citep{boyd2004convex}, exploiting the structure of the regularization problem,
-and especially the sparsity of solutions, is essential in terms of computational
+Although various general-purpose convex optimization solvers could be used
+\citep{boyd2004convex}, exploiting the structure of the regularization problem -- 
+ especially the sparsity of solutions -- is essential in terms of computational
 efficiency.
 %
 \citet{2012_FML_Bach} provided an overview of the families of techniques 
@@ -55,24 +55,25 @@ Frank-Wolfe algorithm \citep{lacoste2012block} or ADMM \citep[Alternating Direct
 Method of Multipliers,][]{boyd2011distributed} have also recently gained in
 popularity to the resolution of sparse problems.
 
-We present below a new formulation of Problem~\eqref{eq:general:original} that
-motivates an algorithm that may seem reminiscent of reweighted-$\ell_{2}$
-algorithms, but which is in fact more closely related to working-set methods.
+We present below a new formulation of
+Problem~\eqref{eq:general:original} that motivates an algorithm that
+may seem reminiscent of reweighted-$\ell_{2}$ algorithms, but which is
+in fact more closely related to working-set methods.
 %
 As for reweighted-$\ell_{2}$ algorithms, our proposal is based on the
-reformulation of the sparsity-inducing penalty in terms of penalties that are
-simpler to handle (linear or quadratic).  However, whereas
-reweighted-$\ell_{2}$ algorithms rely on a
-variational formulation of the sparsity-inducing norm that ends up in an
-augmented minimization problem, our proposal is rooted in the duality principle,
-eventually leading to a minimax problem that lends itself to a working-set 
+reformulation of the sparsity-inducing penalty in terms of penalties
+that are simpler to handle (linear or quadratic).  However, whereas
+reweighted-$\ell_{2}$ algorithms rely on a variational formulation of
+the sparsity-inducing norm that ends up in an augmented minimization
+problem, our proposal is rooted in the duality principle, eventually
+leading to a minimax problem that lends itself to a working-set
 algorithm that will be presented in Section~\ref{sec:algo}.
 
 \subsection{Dual Norms}
 
 When the sparsity-inducing penalty is a norm, its sublevel sets can always be
 defined as the intersection of linear or quadratic sublevel sets.  In other
-terms, if the optimization problem is written in the form of a constrained
+words, if the optimization problem is written in the form of a constrained
 optimization problem with inequality constraints pertaining to the penalty,
 then, the feasible region can be defined as the intersection of linear or
 quadratic regions. 
@@ -84,13 +85,13 @@ This fact, which is illustrated in Figures~\ref{fig:en-penalty} and
   \enspace,
 \end{equation*}
 where $\uball[*]$ is the unit ball centered at the origin defined from the dual
-norm $\norm[*]{\cdot}$,
+norm $\norm[*]{\cdot}$, \textit{i.e.}
 $\uball[*]=\left\{\bfgamma\in\mathbb{R}^p:\norm[*]{\bfgamma}\leq 1\right\}$.
 Using this definition, Problem~\eqref{eq:general:original} can be reformulated
 as
 %
 \begin{equation}\label{eq:general:primal}
-  \hat{\bfbeta} = \argmin_{\bfbeta\in\mathbb{R}^p} 
+  \hatbbeta = \argmin_{\bfbeta\in\mathbb{R}^p} 
   \max_{\bfgamma\in\uball[*]}
     \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + 
     \lambda \bfgamma^\intercal \bfbeta
@@ -109,11 +110,11 @@ It is interesting in the sense that the problem
 \end{equation*}
 %
 is simple to solve for any value of $\bfgamma$, since it only requires solving 
-a linear system.
-The problem
+a linear system. 
+Indeed, the problem
 %
 \begin{eqnarray}
-  \hat{\bfgamma} & = & \argmax_{\bfgamma\in\uball[*]}
+  \hatbgamma & = & \argmax_{\bfgamma\in\uball[*]}
     \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + 
     \lambda \bfgamma^\intercal \bfbeta \nonumber \\
      & = & \argmax_{\bfgamma\in\uball[*]}
@@ -123,14 +124,14 @@ The problem
 %
 % which defines ``the worst case penalty'' in $\bfbeta$, 
 is usually straightforward to solve.
-Besides the sparsity of $\hat{\bfbeta}$, the overall efficiency of our algorithm
-relies also on the invariance of $\hat{\bfgamma}$ with respect to
+Besides the sparsity of $\hatbbeta$, the overall efficiency of our algorithm
+relies also on the invariance of $\hatbgamma$ with respect to
 large changes in $\bfbeta$. 
-For the penalties we are interested in, $\hat{\bfgamma}$ takes its value in a
+For the penalties we are interested in, $\hatbgamma$ takes its value in a
 finite set, defined by the extreme points of the convex polytope $\uball[*]$.
 This number of points typically increases exponentially in $p$, but, with the working-set
 strategy, the number of configuration actually visited typically grows linearly
-with the number of non-zero coefficients in the solution $\hat{\bfbeta}$.
+with the number of non-zero coefficients in the solution $\hatbbeta$.
 
 \subsection{Relations with Other Methods}
 
@@ -176,13 +177,13 @@ defined as $\left\{\bfgamma\in\mathbb{R}^p:\norm[*]{\bfgamma}\leq
 The penalty $\lambda\norm{\bfbeta - \bfgamma}^2$ corresponds to a hard
 constraint $\norm{\bfbeta - \bfgamma}^2\leq c$, which states that the 
 solution in $\bfbeta$ belongs to a $\ell_{2}$ ball centered in $\bfgamma$.
-Then, as $\hat{\bfgamma}$ maximizes $\norm{\hat{\bfbeta} - \bfgamma}^2$, the
-solution $\hat{\bfbeta}$ belongs to the intersection of all the balls
+Then, as $\hatbgamma$ maximizes $\norm{\hatbbeta - \bfgamma}^2$, the
+solution $\hatbbeta$ belongs to the intersection of all the balls
 centered in $\bfgamma\in\uball[*]$.
 Eventually, the active constraints will be defined by the $\bfgamma$ values for
-which $\norm{\hat{\bfbeta} - {\bfgamma}^2}$ is maximal, that is for the
-worst-case $\hat{\bfgamma}$ values. 
-For the penalties we are interested in, $\hat{\bfgamma}$ takes its value in a
+which $\norm{\hatbbeta - {\bfgamma}^2}$ is maximal, that is for the
+worst-case $\hatbgamma$ values. 
+For the penalties we are interested in, $\hatbgamma$ takes its value in a
 finite set, defined by the extreme points of the convex polytope $\uball[*]$.
 % 
 % 
@@ -228,9 +229,9 @@ with their  associated worst case quadratic penalty.
 
 
 
-% We do consider  regression problems where $\hat{\bfbeta}$ minimizes 
+% We do consider  regression problems where $\hatbbeta$ minimizes 
 % \begin{equation*}
-%       \hat{\bfbeta} = \argmin_{\bfbeta\in\mathbb{R}^p} \left\{ \max_{\bfgamma \in \clD_{\bfgamma}} 
+%       \hatbbeta = \argmin_{\bfbeta\in\mathbb{R}^p} \left\{ \max_{\bfgamma \in \clD_{\bfgamma}} 
 %       \norm{\boldmath{X} \bfbeta - \boldmath{y}}^2 + \lambda \norm{\bfbeta - \bfgamma}^2 \right\},
 % \end{equation*}
 % where 
@@ -264,7 +265,7 @@ easy to manage when solving Problem~\eqref{eq:general:dual}, since they
 can be defined as the convex hulls of a finite number of values.
 
 The two sparsity-inducing penalizers presented below have a grouping effect.
-The elastic net implements this grouping without predefining the group
+The elastic-net implements this grouping without predefining the group
 structure: strongly correlated predictors tend to be in or out of the model
 together \citep{2005_JRSS_Zou}.  
 The $\ell_{\infty,1}$ group-Lasso that is presented subsequently is based on a
