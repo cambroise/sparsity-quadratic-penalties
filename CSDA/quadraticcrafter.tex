@@ -132,19 +132,15 @@ This number of points typically increases exponentially in $p$, but, with the wo
 strategy, the number of configuration actually visited typically grows linearly
 with the number of non-zero coefficients in the solution $\hat{\bfbeta}$.
 
-
-
-
 \subsection{Interpretation in terms of quadratic penalties}
 
-
-Penalised approaches in machine learning are related to constrained optimization
+Penalized approaches can be formulated as constrained optimization
 problems of the form minimize $f (\bfbeta; data)$, such that $\Omega(\bfbeta)
-\leq c$. This last constraint has a geometric intrepretation. The optimal solution 
-belongs to the geometrical volume defined by  $\Omega(\bfbeta)\leq c$ while minimizing 
-$f()$. 
+\leq c$. 
+This constrained formulation has, among other things, a geometric interpretation: 
+the solution belongs to the geometrical shape defined by  $\Omega(\bfbeta)\leq c$.
 
-In practice, Problem \eqref{eq:robust:general:primal} can rewritten as
+In practice, Problem \eqref{eq:general:primal} can rewritten as
 % will be solved by
 % considering an equivalent form amenable to a simpler resolution in
 %$ \bfbeta$ for any $\bfgamma$, that is:
