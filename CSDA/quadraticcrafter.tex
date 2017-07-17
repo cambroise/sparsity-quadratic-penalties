@@ -250,21 +250,19 @@ with their  associated worst case quadratic penalty.
 %     \end{equation*}
 
 
-\section{Assumptions on the Spurious Regression Coefficients \label{sec:quadra}}
+\section{Worst-Case Quadratic Penalties \label{sec:quadra}}
 \label{sec:gammaperturb}
 
 Our framework is amenable to many variations.
-Here, we simply present two examples following the same pattern:
-assuming a given regularity on the regression coefficients $\bfbeta^\star$, we
-consider the adversarial dual assumption on the spurious coefficients
-$\bfgamma$.
-When the initial regularity conditions on $\bfbeta^\star$ are expressed by
-$\ell_1$ or $\ell_\infty$ norms, this process results in uncertainty sets
-$\mathcal{D}_{\bfgamma}$ which are convex polytopes that are
+Here, we simply present two examples where
+the desired penalty on the regression coefficients $\bfbeta$ ensues from the 
+definition of the dual norm on the coefficients $\bfgamma$.
+When the desired penalty on $\bfbeta$ is expressed by
+$\ell_1$ or $\ell_\infty$ norms, this process results in unit balls
+$\uball[*]$ which are convex polytopes that are 
 easy to manage when solving Problem~\eqref{eq:general:dual}, since they
-can be defined as the convex hulls of a finite number possible perturbations.
+can be defined as the convex hulls of a finite number of values.
 
-% In this paper, we restrict our examples to 
 The two sparsity-inducing penalizers presented below have a grouping effect.
 The elastic net implements this grouping without predefining the group
 structure: strongly correlated predictors tend to be in or out of the model
