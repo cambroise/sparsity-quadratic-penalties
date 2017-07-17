@@ -56,13 +56,14 @@ The departure from zero for \mytexttt{glmnet} illustrates its relative imprecisi
 %
 \begin{figure}
   \centering
-  \includegraphics[width=5cm]{../figures/gradient}
-  \caption{Distribution of the absolute value of the derivatives with respect to the non-zero coefficients of the parameter vectors returned by \mytexttt{glmnet} (left) and \mytexttt{quadrupen} (right)}.
+  \begin{tabular}{lc}
+  \rotatebox{90}{\small \hspace{2.25cm} count}
+    & \includegraphics[width=.6\textwidth]{../figures/gradient} \\
+    & \small $\left| \mathbf{x}_j^\intercal\left(\mathbf{y}  -\mathbf{X}\hatbbeta\right) \right| -  \lambda$ \hspace{1cm} (log scale) \\
+  \end{tabular}
+  \caption{Histogram of the derivatives w.r.t. the non-zero coefficients of the parameter vectors returned by \mytexttt{glmnet} and \mytexttt{quadrupen}}.
   \label{fig:gradient}
 \end{figure}
-
-
-
 
 \subsection{Synthetic data}
 

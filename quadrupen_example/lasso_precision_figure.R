@@ -102,13 +102,19 @@ Vfold.l1$lambda.min*Nind
 
 Crit2 <- abs(crossprod(geno,yc-geno%*%BHL2))
 Crit2[NonNullCoeff2]   
-length(which(round(Crit2,10)==round(Vfold.l1$lambda.min*Nind,10)))
 
+lambda <- (Vfold.l1$lambda.min*Nind)
+length(which(round(Crit2,10)==round(Vfold.l1$lambda.min*Nind,10)))
 
 library(ggplot2)
 
-abs.gradient <-data.frame(gradient = c(Crit2[NonNullCoeff2],Crit1[NonNullCoeff1]), method = rep(c("quadrupen", "glmnet"),sapply(list(Crit2[NonNullCoeff2],Crit1[NonNullCoeff1]),length)))
-p <- ggplot(abs.gradient, aes(x=method, y=gradient,fill=method)) + geom_boxplot(outlier.colour="black", outlier.shape=16,  outlier.size=2,  notch = TRUE, notchwidth = 0.5)
-p+scale_fill_manual(values=c("#E69F00", "#56B4E9"))
+abs.gradient <- data.frame(gradient = c(Crit2[NonNullCoeff2],Crit1[NonNullCoeff1])-lambda, method = rep(c("quadrupen", "glmnet"),sapply(list(Crit2[NonNullCoeff2],Crit1[NonNullCoeff1]),length)))
 
-ggsave("gradient.pdf")
+p1 <- ggplot(abs.gradient, aes(gradient,fill=method, group=method)) 
+p1 <- p1 + theme_bw() + geom_histogram() + scale_x_log10()
+p1 <- p1 + xlab("") + ylab("") + theme(text = element_text(size = 30)) + scale_fill_grey()
+
+p2 <- ggplot(abs.gradient, aes(y=gradient,x=method, fill=method)) 
+p2 <- p2 + geom_boxplot(outlier.colour="black", outlier.shape=16,  outlier.size=2,  notch = TRUE, notchwidth = 0.5)
+
+ggsave("../figures/gradient.pdf", p1, width = 15, height=10)
