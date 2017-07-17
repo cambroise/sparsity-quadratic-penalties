@@ -4,149 +4,11 @@ We detail here a proof yielding a slightly tighter bound.
 Proposition~\ref{prop:monitoring} is simply a corollary of
 Proposition~\ref{prop:monitoring:appendix:v2} stated and proved below.
 
-When $\clD_{\bfgamma}$ is defined by a norm as in
+When $\uball[*]$ is defined by a norm as in
 Proposition~\ref{prop:monitoring}, the following Lemma relates the penalty
 associated with a infeasible $\bfgamma$-value 
-($\norm[*]{\bfgamma} > \eta_\gamma$) to the one obtained by shrinking this
-$\bfgamma$-value to reach the boundary of $\clD_{\bfgamma}$.
-
-\iffalse
-  %
-  \begin{lemma}\label{prop:lemma1}
-    For all $(\bfbeta,\bfgamma) \in \mathbb{R}^{p} \times \mathbb{R}^{p}$, for
-    all $\eta_\gamma>0$, and for all vectorial norm $\norm[*]{\cdot}$,
-    \begin{equation}\label{eq:lemma1}
-      \norm[*]{\bfgamma} \geq \eta_\gamma \enspace \Rightarrow 
-      \norm{\bfbeta-\frac{\eta_\gamma}{\norm[*]{\bfgamma}}\bfgamma}^2 \geq 
-      \frac{\eta_\gamma}{\norm[*]{\bfgamma}} \norm{\bfbeta-\bfgamma}^2 - 
-      {\eta_\gamma(\norm[*]{\bfgamma}-\eta_\gamma)}\frac{\norm{\bfgamma}^2}{\norm[*]{\bfgamma}^2}
-      \enspace.
-    \end{equation}
-    \begin{proof}
-      \begin{align*}
-        \norm{\bfbeta-\frac{\eta_\gamma}{\norm[*]{\bfgamma}}\bfgamma}^2 & =
-        \frac{\eta_\gamma}{\norm[*]{\bfgamma} }\norm{\bfbeta-\bfgamma}^2 +
-            \left(1 - \frac{\eta_\gamma}{\norm[*]{\bfgamma}}\right) \norm{\bfbeta}^2 -
-            \frac{\eta_\gamma(\norm[*]{\bfgamma}-\eta_\gamma)}{\norm[*]{\bfgamma}^2}\norm{\bfgamma}^2 \\
-        & \geq \frac{\eta_\gamma}{\norm[*]{\bfgamma}} \norm{\bfbeta-\bfgamma}^2 -
-            \frac{\eta_\gamma(\norm[*]{\bfgamma}-\eta_\gamma)}{\norm[*]{\bfgamma}^2}\norm{\bfgamma}^2
-        \enspace.
-      \end{align*}
-    \end{proof}
-  %   Note that the gap in the inequality is 
-  %   $\norm{\bfbeta}^2({\norm[*]{\bfgamma}-\eta_\gamma})/{\norm[*]{\bfgamma}}$,
-  %   so that the gap in Inequality~\eqref{eq:lemma1} is
-  %   $\norm{\bfbeta}^2(\norm[*]{\bfgamma}-\eta_\gamma)/\eta_\gamma\enspace$.
-  \end{lemma}
-  %
-  \begin{proposition}\label{prop:monitoring:appendix}
-    For any $\eta_\gamma>0$, and for all vectorial norm $\norm[*]{\cdot}$,
-    when 
-    $\clD_{\bfgamma}$ is defined as 
-    $\clD_{\bfgamma}=\left\{\bfgamma \in \mathbb{R}^{p}:
-                        \norm[*]{\bfgamma} \leq\eta_\gamma
-                      \right\}$, then, 
-    $\forall \bfgamma \in \mathbb{R}^{p}:\norm[*]{\bfgamma} \geq\eta_\gamma$, we have:
-    \begin{equation*}
-      \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma' \in \clD_{\bfgamma}} 
-      J_\lambda(\bfbeta,\bfgamma') 
-      \geq
-      \frac{\eta_\gamma}{\norm[*]{\bfgamma}} 
-      J_\lambda\left(\bfbeta^\star\left(\bfgamma\right), \bfgamma \right) -
-      \frac{\lambda\eta_\gamma(\norm[*]{\bfgamma}-\eta_\gamma)}{\norm[*]{\bfgamma}^2}\norm{\bfgamma}^2        
-      \enspace,
-    \end{equation*}
-    where 
-    \begin{equation*}
-      J_\lambda(\bfbeta,\bfgamma) = \norm{\bfX \bfbeta - \bfy}^2 + 
-        \lambda \norm{\bfbeta - \bfgamma}^2
-      \enspace \text{and} \enspace
-      \bfbeta^\star(\bfgamma) = \argmin_{\bfbeta\in\mathbb{R}^{p}} J_\lambda(\bfbeta,\bfgamma)
-      \enspace.
-    \end{equation*}
-    \begin{proof} 
-    For all $\bfbeta \in \mathbb{R}^{p}$, for
-    any $\eta_\gamma>0$, for any vectorial norm $\norm[*]{\cdot}$ and for any
-    $\bfgamma \in \mathbb{R}^{p}$, we have:
-    \begin{equation}\label{eq:maxgreater}
-      \max_{\bfgamma' \in \clD_{\bfgamma}} 
-      J_\lambda(\bfbeta,\bfgamma') 
-      \geq
-      J_\lambda\left(\bfbeta,\frac{\eta_\gamma}{\norm[*]{\bfgamma}}\bfgamma\right)
-      \enspace,
-    \end{equation}
-    since ${\eta_\gamma}/{\norm[*]{\bfgamma}}\bfgamma$ belongs to $\clD_{\bfgamma}$. 
-    We now compute a lower bound of the right-hand-side for $\bfgamma$ such that
-    $\norm[*]{\bfgamma} \geq \eta_\gamma$:
-      \begin{align}       
-        J_\lambda\left(\bfbeta,\frac{\eta_\gamma}{\norm[*]{\bfgamma}}\bfgamma\right) 
-          & = \frac{\eta_\gamma}{\norm[*]{\bfgamma}} \left( 
-                \frac{\norm[*]{\bfgamma}}{\eta_\gamma} \norm{\bfX \bfbeta - \bfy}^2 + 
-                \lambda \frac{\norm[*]{\bfgamma}}{\eta_\gamma} 
-                \norm{\bfbeta - \frac{\eta_\gamma}{\norm[*]{\bfgamma}}\bfgamma}^2
-              \right)  
-              \nonumber \\
-          & \geq \frac{\eta_\gamma}{\norm[*]{\bfgamma}} \left( 
-                \norm{\bfX \bfbeta - \bfy}^2 + 
-                \lambda \frac{\norm[*]{\bfgamma}}{\eta_\gamma} 
-                \norm{\bfbeta - \frac{\eta_\gamma}{\norm[*]{\bfgamma}}\bfgamma}^2
-              \right)  
-              \label{eq:crude_inequality} \\
-          & \geq \frac{\eta_\gamma}{\norm[*]{\bfgamma}} \left( 
-                \norm{\bfX \bfbeta - \bfy}^2 + 
-                \lambda \norm{\bfbeta - \bfgamma}^2
-              \right) -
-             \lambda\eta_\gamma(\norm[*]{\bfgamma}-\eta_\gamma)\frac{\norm{\bfgamma}^2}{\norm[*]{\bfgamma}^2}
-  %            \label{eq:inequality:general:appendix}
-             \enspace,
-      \end{align}
-      where the last inequality stems from Lemma~\ref{prop:lemma1}.
-      This inequality holds for any given $\bfbeta$-value, in particular for
-      $\bfbeta^\star({\eta_\gamma}/{\norm[*]{\bfgamma}}\bfgamma)=\argmin_{\bfbeta \in \mathbb{R}^{p}}
-      J_\lambda\left(\bfbeta,{\eta_\gamma}/{\norm[*]{\bfgamma}}\bfgamma\right)$:
-      \begin{align}       
-        \min_{\bfbeta\in\mathbb{R}^{p}} 
-        J_\lambda\left(\bfbeta,
-                       \frac{\eta_\gamma}{\norm[*]{\bfgamma}}\bfgamma
-                 \right) 
-        & \geq \frac{\eta_\gamma}{\norm[*]{\bfgamma}} 
-            J_\lambda\left(\bfbeta^\star\left(\frac{\eta_\gamma}{\norm[*]{\bfgamma}}\bfgamma\right),\bfgamma\right) -
-            \lambda\eta_\gamma(\norm[*]{\bfgamma}-\eta_\gamma) 
-            \frac{\norm{\bfgamma}^2}{\norm[*]{\bfgamma}^2} 
-            \nonumber \\
-        & \geq \frac{\eta_\gamma}{\norm[*]{\bfgamma}} 
-            J_\lambda\left(\bfbeta^\star\left(\bfgamma\right),\bfgamma\right) -
-            \lambda\eta_\gamma(\norm[*]{\bfgamma}-\eta_\gamma)\frac{\norm{\bfgamma}^2}{\norm[*]{\bfgamma}^2}
-            \label{eq:inequality:particular:appendix} 
-            \enspace,
-      \end{align}
-      where the second inequality follows from the definition of
-      $\bfbeta^\star(\bfgamma)$.
-      Inequality \eqref{eq:inequality:particular:appendix} can be restated as:
-       \begin{align*}       
-         \min_{\bfbeta\in\mathbb{R}^{p}} 
-         J_\lambda(\bfbeta,\frac{\eta_\gamma}{\norm[*]{\bfgamma}}\bfgamma)
-         & \geq
-           \frac{\eta_\gamma}{\norm[*]{\bfgamma}} \min_{\bfbeta\in\mathbb{R}^{p}} 
-           J_\lambda(\bfbeta,\bfgamma)  -
-           \lambda\eta_\gamma(\norm[*]{\bfgamma}-\eta_\gamma)\frac{\norm{\bfgamma}^2}{\norm[*]{\bfgamma}^2}
-         \enspace.
-      \end{align*}
-      We finally remark that,  
-      since ${\eta_\gamma}/{\norm[*]{\bfgamma}}\bfgamma \in \clD_{\bfgamma}$,
-      we trivially have:
-      \begin{align*}
-        \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma \in \clD_{\bfgamma}} J_\lambda(\bfbeta,\bfgamma) 
-        & \geq 
-        J_\lambda\left(\bfbeta^\star\left(\frac{\eta_\gamma \bfgamma}{\norm[*]{\bfgamma}}\right),
-                       \frac{\eta_\gamma}{\norm[*]{\bfgamma}}\bfgamma
-                 \right)
-        \enspace,
-      \end{align*}
-      which concludes the proof.
-    \end{proof}
-  \end{proposition}
-\fi
+($\norm[*]{\bfgamma} > 1$) to the one obtained by shrinking this
+$\bfgamma$-value to reach the boundary of $\uball[*]$.
 
 \begin{lemma}\label{prop:lemma1:v2}
   Let $\clS \subseteq \{1,...,p\}$, $\alpha\in(0,1)$, $\norm[*]{\cdot}$ be a vectorial norm and $\varphi^{*}(\cdot,\clS,\alpha) :
@@ -190,18 +52,15 @@ $\bfgamma$-value to reach the boundary of $\clD_{\bfgamma}$.
 \end{lemma}
 %
 \begin{proposition}\label{prop:monitoring:appendix:v2}
-  For any $\eta_\gamma>0$, and for all vectorial norm $\norm[*]{\cdot}$,
-  when 
-  $\clD_{\bfgamma}$ is defined as 
-  $\clD_{\bfgamma}=\left\{\bfgamma \in \mathbb{R}^{p}:
-                      \norm[*]{\bfgamma} \leq\eta_\gamma
-                    \right\}$, then, 
-  $\forall \bfgamma \in \mathbb{R}^{p}:\norm[*]{\bfgamma} \geq\eta_\gamma$, and 
+  For all vectorial norm $\norm[*]{\cdot}$, when 
+  $\uball[*]$ is defined as $\uball[*]=\left\{\bfgamma \in \mathbb{R}^{p}:
+                      \norm[*]{\bfgamma} \leq 1 \right\}$, then, 
+  $\forall \bfgamma \in \mathbb{R}^{p}:\norm[*]{\bfgamma} \geq 1$, and 
   $\forall (\clS,\alpha)\in2^{\{1,\ldots,p\}}\times(0,1)$ such that 
-  $\norm[*]{(\bfgamma_{\clS},\alpha\bfgamma_{\clS^c })}\leq\eta_\gamma$, we   
+  $\norm[*]{(\bfgamma_{\clS},\alpha\bfgamma_{\clS^c })}\leq 1$, we   
   have:
   \begin{equation*}
-    \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma' \in \clD_{\bfgamma}} 
+    \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma' \in \uball[*]} 
     J_\lambda(\bfbeta,\bfgamma') 
     \geq
     \alpha J_\lambda\left(\bfbeta^\star\left(\bfgamma\right),\bfgamma\right) -
@@ -220,17 +79,17 @@ $\bfgamma$-value to reach the boundary of $\clD_{\bfgamma}$.
   For all $\bfbeta \in \mathbb{R}^{p}$ and for any $(\bfgamma,\clS,\alpha) \in
   \mathbb{R}^{p}\times2^{\{1,\ldots,p\}}\times(0,1)$ such that
   $\varphi^{*}(\bfgamma,\clS,\alpha) \in \clD_{\bfgamma}$, with $\varphi^{*}$ 
-  defined as in Lemma \ref{prop:lemma1:v2} we have:
+  defined as in Lemma \ref{prop:lemma1:v2} we have
   \begin{equation}\label{eq:maxgreater:v2}
-    \max_{\bfgamma' \in \clD_{\bfgamma}} 
+    \max_{\bfgamma' \in \uball[*]} 
     J_\lambda(\bfbeta,\bfgamma') 
     \geq
     J_\lambda\left(\bfbeta,\varphi^{*}(\bfgamma,\clS,\alpha)\right)
     \enspace,
   \end{equation}
-  since $\varphi^{*}(\bfgamma,\clS,\alpha)$ belongs to $\clD_{\bfgamma}$. 
+  since $\varphi^{*}(\bfgamma,\clS,\alpha)$ belongs to $\uball[*]$. 
   We now compute a lower bound of the right-hand-side for $\bfgamma$ such that
-  $\norm[*]{\bfgamma} \geq \eta_\gamma$:
+  $\norm[*]{\bfgamma} \geq 1$:
     \begin{align}       
       J_\lambda\left(\bfbeta,\varphi^{*}(\bfgamma,\clS,\alpha)\right) 
         & = \alpha \left( 
@@ -284,7 +143,7 @@ $\bfgamma$-value to reach the boundary of $\clD_{\bfgamma}$.
        \enspace.
     \end{align*}
     We finally remark that,  
-    since $\varphi^{*}(\bfgamma,\clS,\alpha) \in \clD_{\bfgamma}$,
+    since $\varphi^{*}(\bfgamma,\clS,\alpha) \in \uball[*]$,
     we trivially have:
     \begin{align*}
       \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma \in \clD_{\bfgamma}} J_\lambda(\bfbeta,\bfgamma) 
@@ -297,130 +156,130 @@ $\bfgamma$-value to reach the boundary of $\clD_{\bfgamma}$.
   \end{proof}
 \end{proposition}
 
-\iffalse
-  Let $J$ be the objective function of the generic
-  Problem~\eqref{eq:robust:general:form3}, we trivially have that, for any
-  $\bfgamma$-value,
-  $\min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma \in \clD_{\bfgamma}}
-  J(\bfbeta,\bfgamma) \geq \min_{\bfbeta\in\mathbb{R}^{p}} J(\bfbeta,\bfgamma)$.
-  %
-  Hence, a tight optimality gap can be computed provided one can guess a
-  near-optimal $\bfgamma$-value.
-  When entering Step \ref{item:algo:step3} of Algorithm~\ref{algo:active_set}, the current best guess
-  $\widehat\bfgamma_{\clS}$ has to be completed on the complement $\clS^c$.
-  We propose to do so by minimizing the magnitude of the gradient with respect to $\bfbeta$ at the current solution:
-  \begin{align*}
-    \widehat\bfgamma_{\clS^c} & = \argmin_{\bfgamma_{\clS^c}:\bfgamma \in \clD_{\bfgamma}}
-                               \left|  \bfX_{\centerdot\supp^c}^\intercal(\bfX_{\centerdot\supp}\bfbeta_{\supp}-\bfy) - 
-                               \lambda \bfgamma_{\supp^c} \right|
-      \enspace.
-  \end{align*}
-  The resulting vector $\widehat\bfgamma$ is then used to compute the lower
-  bound on the optimal objective function as $\min_{\bfbeta\in\mathbb{R}^{p}} J(\bfbeta,\widehat\bfgamma)$. 
-  This lower bound, which requires to solve a linear system of size $p$, is
-  much lighter to compute than the duality gap \citep[see details
-  in][]{2012_FML_Bach}, and was observed to provide a tight bound (as a sanity
-  check, note that when $\bfbeta$ is optimal, our estimated optimality gap is null).
+% \iffalse
+%   Let $J$ be the objective function of the generic
+%   Problem~\eqref{eq:robust:general:form3}, we trivially have that, for any
+%   $\bfgamma$-value,
+%   $\min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma \in \clD_{\bfgamma}}
+%   J(\bfbeta,\bfgamma) \geq \min_{\bfbeta\in\mathbb{R}^{p}} J(\bfbeta,\bfgamma)$.
+%   %
+%   Hence, a tight optimality gap can be computed provided one can guess a
+%   near-optimal $\bfgamma$-value.
+%   When entering Step \ref{item:algo:step3} of Algorithm~\ref{algo:active_set}, the current best guess
+%   $\widehat\bfgamma_{\clS}$ has to be completed on the complement $\clS^c$.
+%   We propose to do so by minimizing the magnitude of the gradient with respect to $\bfbeta$ at the current solution:
+%   \begin{align*}
+%     \widehat\bfgamma_{\clS^c} & = \argmin_{\bfgamma_{\clS^c}:\bfgamma \in \clD_{\bfgamma}}
+%                                \left|  \bfX_{\centerdot\supp^c}^\intercal(\bfX_{\centerdot\supp}\bfbeta_{\supp}-\bfy) - 
+%                                \lambda \bfgamma_{\supp^c} \right|
+%       \enspace.
+%   \end{align*}
+%   The resulting vector $\widehat\bfgamma$ is then used to compute the lower
+%   bound on the optimal objective function as $\min_{\bfbeta\in\mathbb{R}^{p}} J(\bfbeta,\widehat\bfgamma)$. 
+%   This lower bound, which requires to solve a linear system of size $p$, is
+%   much lighter to compute than the duality gap \citep[see details
+%   in][]{2012_FML_Bach}, and was observed to provide a tight bound (as a sanity
+%   check, note that when $\bfbeta$ is optimal, our estimated optimality gap is null).
 
-%
+% %
 
-\begin{align*}
-  \bfbeta_\supp & = \argmin_{\bfbeta\in\mathbb{R}^{|\supp|}} 
-                  \norm{\bfX_{\centerdot\supp} \bfbeta - \bfy}^2 + \lambda_1 \norm[1]{\bfbeta}
-  \\
-  \widehat\bfbeta_{\supp^c} & = \bfzero \\ 
-  \widehat\bfgamma_{\supp^c} & = \argmin_{\bfgamma_{\supp^c} \in [-1,1]^{|\supp^c|}}
-                           \left|  \bfX_{\centerdot\supp^c}^\intercal(\bfX\widehat\bfbeta-\bfy) + 
-                             \lambda_1 \bfgamma_{\supp^c} \right|
-    \enspace. 
-\end{align*}
-We can then compute 
-\begin{align*}
-  \widetilde{\bfbeta} & = \argmin_{\bfbeta\in\mathbb{R}^{p}} 
-                  \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\widehat\bfgamma
-    \enspace. 
-\end{align*}
-We then have:
-\begin{align*}
-J(\bfbeta^\star) & = \min_{\bfbeta\in\mathbb{R}^p} 
-  \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1  \norm[1]{\bfbeta} \\
-  &= \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
-      \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\bfgamma \Big\} \\
-  &= \max_{\bfgamma \in \clD_{\bfgamma}} \min_{\bfbeta\in\mathbb{R}^p}
-      \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\bfgamma \Big\} \\
-  & \geq \min_{\bfbeta\in\mathbb{R}^p}
-      \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\widehat\bfgamma \Big\}  \\
-  & = \norm{\bfX \widetilde{\bfbeta} - \bfy}^2 + \lambda_1 \widetilde{\bfbeta}^{(t)^\intercal}\widehat\bfgamma
-  \enspace,
-\end{align*}
-which provides a lower bound for $J(\bfbeta^\star)$.
-Meanwhile, we obviously have:
-\begin{align*}
-J(\bfbeta^\star) & = \min_{\bfbeta\in\mathbb{R}^p} 
-  \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \norm[1]{\bfbeta} \\
-  &\leq \norm{\bfX \widehat\bfbeta - \bfy}^2 + \lambda_1  \norm[1]{\widehat\bfbeta} 
-  \enspace,
-\end{align*}
-So that $J(\bfbeta^\star)$ is easily bracketed during the optimization process. 
-Note that when $\bfbeta_\supp=\bfbeta^\star$, we have that
-$\widetilde{\bfbeta}=\bfbeta_\supp$.
+% \begin{align*}
+%   \bfbeta_\supp & = \argmin_{\bfbeta\in\mathbb{R}^{|\supp|}} 
+%                   \norm{\bfX_{\centerdot\supp} \bfbeta - \bfy}^2 + \lambda_1 \norm[1]{\bfbeta}
+%   \\
+%   \widehat\bfbeta_{\supp^c} & = \bfzero \\ 
+%   \widehat\bfgamma_{\supp^c} & = \argmin_{\bfgamma_{\supp^c} \in [-1,1]^{|\supp^c|}}
+%                            \left|  \bfX_{\centerdot\supp^c}^\intercal(\bfX\widehat\bfbeta-\bfy) + 
+%                              \lambda_1 \bfgamma_{\supp^c} \right|
+%     \enspace. 
+% \end{align*}
+% We can then compute 
+% \begin{align*}
+%   \widetilde{\bfbeta} & = \argmin_{\bfbeta\in\mathbb{R}^{p}} 
+%                   \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\widehat\bfgamma
+%     \enspace. 
+% \end{align*}
+% We then have:
+% \begin{align*}
+% J(\bfbeta^\star) & = \min_{\bfbeta\in\mathbb{R}^p} 
+%   \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1  \norm[1]{\bfbeta} \\
+%   &= \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
+%       \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\bfgamma \Big\} \\
+%   &= \max_{\bfgamma \in \clD_{\bfgamma}} \min_{\bfbeta\in\mathbb{R}^p}
+%       \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\bfgamma \Big\} \\
+%   & \geq \min_{\bfbeta\in\mathbb{R}^p}
+%       \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\widehat\bfgamma \Big\}  \\
+%   & = \norm{\bfX \widetilde{\bfbeta} - \bfy}^2 + \lambda_1 \widetilde{\bfbeta}^{(t)^\intercal}\widehat\bfgamma
+%   \enspace,
+% \end{align*}
+% which provides a lower bound for $J(\bfbeta^\star)$.
+% Meanwhile, we obviously have:
+% \begin{align*}
+% J(\bfbeta^\star) & = \min_{\bfbeta\in\mathbb{R}^p} 
+%   \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \norm[1]{\bfbeta} \\
+%   &\leq \norm{\bfX \widehat\bfbeta - \bfy}^2 + \lambda_1  \norm[1]{\widehat\bfbeta} 
+%   \enspace,
+% \end{align*}
+% So that $J(\bfbeta^\star)$ is easily bracketed during the optimization process. 
+% Note that when $\bfbeta_\supp=\bfbeta^\star$, we have that
+% $\widetilde{\bfbeta}=\bfbeta_\supp$.
 
 
 
-% \ifverylong
+% % \ifverylong
 
-The additional computational cost for monitoring (that is, the cost of evaluating
-the upper and lower bounds for an intermediate solution can be important because
-$\widetilde{\bfbeta}$ requires to solve a linear system of size $p$\ldots 
-We could do better than that if we can prove that $\big(\widetilde{\bfbeta}\big)_j=0$ if
-the subgradient at  $\widehat\bfbeta_{\supp^c}$ comprises zero. In this situation, we 
-should only consider adding the variables for which the optimality conditions
-are violated.
+% The additional computational cost for monitoring (that is, the cost of evaluating
+% the upper and lower bounds for an intermediate solution can be important because
+% $\widetilde{\bfbeta}$ requires to solve a linear system of size $p$\ldots 
+% We could do better than that if we can prove that $\big(\widetilde{\bfbeta}\big)_j=0$ if
+% the subgradient at  $\widehat\bfbeta_{\supp^c}$ comprises zero. In this situation, we 
+% should only consider adding the variables for which the optimality conditions
+% are violated.
 
-\subsection{Monitoring Convergence: Lasso-Case}
+% \subsection{Monitoring Convergence: Lasso-Case}
 
-\begin{align*}
-  \bfbeta_\supp & = \argmin_{\bfbeta\in\mathbb{R}^{|\supp|}} 
-                  \norm{\bfX_{\centerdot\supp} \bfbeta - \bfy}^2 + \lambda_1 \norm[1]{\bfbeta}
-  \\
-  \widehat\bfbeta_{\supp^c} & = \bfzero \\ 
-  \widehat\bfgamma_{\supp^c} & = \argmin_{\bfgamma_{\supp^c} \in [-1,1]^{|\supp^c|}}
-                           \left|  \bfX_{\centerdot\supp^c}^\intercal(\bfX\widehat\bfbeta-\bfy) + 
-                             \lambda_1 \bfgamma_{\supp^c} \right|
-    \enspace. 
-\end{align*}
-We can then compute 
-\begin{align*}
-  \widetilde{\bfbeta} & = \argmin_{\bfbeta\in\mathbb{R}^{p}} 
-                  \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\widehat\bfgamma
-    \enspace. 
-\end{align*}
-We then have:
-\begin{align*}
-J(\bfbeta^\star) & = \min_{\bfbeta\in\mathbb{R}^p} 
-  \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1  \norm[1]{\bfbeta} \\
-  &= \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
-      \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\bfgamma \Big\} \\
-  &= \max_{\bfgamma \in \clD_{\bfgamma}} \min_{\bfbeta\in\mathbb{R}^p}
-      \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\bfgamma \Big\} \\
-  & \geq \min_{\bfbeta\in\mathbb{R}^p}
-      \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\widehat\bfgamma \Big\}  \\
-  & = \norm{\bfX \widetilde{\bfbeta} - \bfy}^2 + \lambda_1 \widetilde{\bfbeta}^{(t)^\intercal}\widehat\bfgamma
-  \enspace,
-\end{align*}
-which provides a lower bound for $J(\bfbeta^\star)$.
-Meanwhile, we obviously have:
-\begin{align*}
-J(\bfbeta^\star) & = \min_{\bfbeta\in\mathbb{R}^p} 
-  \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \norm[1]{\bfbeta} \\
-  &\leq \norm{\bfX \widehat\bfbeta - \bfy}^2 + \lambda_1  \norm[1]{\widehat\bfbeta} 
-  \enspace,
-\end{align*}
-So that $J(\bfbeta^\star)$ is easily bracketed during the optimization process. 
-Note that when $\bfbeta_\supp=\bfbeta^\star$, we have that
-$\widetilde{\bfbeta}=\bfbeta_\supp$.
+% \begin{align*}
+%   \bfbeta_\supp & = \argmin_{\bfbeta\in\mathbb{R}^{|\supp|}} 
+%                   \norm{\bfX_{\centerdot\supp} \bfbeta - \bfy}^2 + \lambda_1 \norm[1]{\bfbeta}
+%   \\
+%   \widehat\bfbeta_{\supp^c} & = \bfzero \\ 
+%   \widehat\bfgamma_{\supp^c} & = \argmin_{\bfgamma_{\supp^c} \in [-1,1]^{|\supp^c|}}
+%                            \left|  \bfX_{\centerdot\supp^c}^\intercal(\bfX\widehat\bfbeta-\bfy) + 
+%                              \lambda_1 \bfgamma_{\supp^c} \right|
+%     \enspace. 
+% \end{align*}
+% We can then compute 
+% \begin{align*}
+%   \widetilde{\bfbeta} & = \argmin_{\bfbeta\in\mathbb{R}^{p}} 
+%                   \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\widehat\bfgamma
+%     \enspace. 
+% \end{align*}
+% We then have:
+% \begin{align*}
+% J(\bfbeta^\star) & = \min_{\bfbeta\in\mathbb{R}^p} 
+%   \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1  \norm[1]{\bfbeta} \\
+%   &= \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
+%       \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\bfgamma \Big\} \\
+%   &= \max_{\bfgamma \in \clD_{\bfgamma}} \min_{\bfbeta\in\mathbb{R}^p}
+%       \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\bfgamma \Big\} \\
+%   & \geq \min_{\bfbeta\in\mathbb{R}^p}
+%       \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\widehat\bfgamma \Big\}  \\
+%   & = \norm{\bfX \widetilde{\bfbeta} - \bfy}^2 + \lambda_1 \widetilde{\bfbeta}^{(t)^\intercal}\widehat\bfgamma
+%   \enspace,
+% \end{align*}
+% which provides a lower bound for $J(\bfbeta^\star)$.
+% Meanwhile, we obviously have:
+% \begin{align*}
+% J(\bfbeta^\star) & = \min_{\bfbeta\in\mathbb{R}^p} 
+%   \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \norm[1]{\bfbeta} \\
+%   &\leq \norm{\bfX \widehat\bfbeta - \bfy}^2 + \lambda_1  \norm[1]{\widehat\bfbeta} 
+%   \enspace,
+% \end{align*}
+% So that $J(\bfbeta^\star)$ is easily bracketed during the optimization process. 
+% Note that when $\bfbeta_\supp=\bfbeta^\star$, we have that
+% $\widetilde{\bfbeta}=\bfbeta_\supp$.
+% % \fi
 % \fi
-\fi
 
 % \input{codelikeproof}
 
