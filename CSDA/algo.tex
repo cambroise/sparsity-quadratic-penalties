@@ -68,8 +68,9 @@ and iterates the three following steps:
 \end{enumerate}
 Algorithm~\ref{algo:active_set} provides a more comprehensive technical
 description.
+
 %
-\begin{algorithm}[H]
+\begin{algorithm}[htbp]
   \begin{small}
  \SetSideCommentLeft
 %  \DontPrintSemicolon
@@ -184,7 +185,7 @@ This approach suggests a new assessment of convergence, as detailed below.
       \bfbeta^\star(\bfgamma) = \argmin_{\bfbeta\in\mathbb{R}^{p}} J_\lambda(\bfbeta,\bfgamma)
       \enspace.
     \end{equation*}
-    See proof in Appendix \ref{sec:proof:prop:monitoring}.
+    See proof in  \ref{sec:proof:prop:monitoring}.
   \end{proposition}
 
   This proposition can be used to compute an optimality gap at Step 3 of
