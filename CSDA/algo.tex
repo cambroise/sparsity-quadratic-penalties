@@ -46,7 +46,7 @@ and iterates the three following steps:
   $\bfgamma_{\!\supp}$ is indeed (one of) the most adversarial value of
   the current $\bfbeta_{\!\supp}$.
   This is easily checked with the problems given in
-  Section~\ref{sec:gammaperturb}, where $\uball[*]$ is a convex polytope
+  Section~\ref{sec:gammaperturb}, where $\uball[*]^\eta$ is a convex polytope
   whose vertices (that is, extreme $\bfgamma$-values) are associated with a
   cone of coherent $\bfbeta$-value.
 %  defined by the intersection of the hyperplanes that cut the middle of
@@ -77,7 +77,7 @@ description.
   \nlset{Init.} $\bfbeta \leftarrow \bfbeta^0$\\
   Determine the active set: $\supp \leftarrow \{j:\beta_{j} > 0 \} $\\
   Pick a worst admissible $\bfgamma$, that is,  $\displaystyle\bfgamma \in 
-  \argmax_{\bfgamma' \in \uball[*]} \left\| \bfgamma' - \bfbeta \right\|_2^2$
+  \argmax_{\bfgamma' \in \uball[*]^\eta} \left\| \bfgamma' - \bfbeta \right\|_2^2$
   \BlankLine 
   \nlset{Step 1} Update active variables $\bfbeta_{\!\supp}$ assuming that $\supp$ and $\bfgamma_{\!\supp}$ are optimal \\
   $\bfbeta_{\!\supp}^\mathrm{old} \leftarrow \bfbeta_{\!\supp}$ \\
@@ -89,7 +89,7 @@ description.
   $ \\ 
   \nlset{Step 2} Verify coherence of $\bfgamma_{\!\supp}$ with the updated $\bfbeta_{\!\supp}$\\
   \If(\tcp*[f]{if $\bfgamma_{\!\supp}$ is not worst-case})
-   {$\displaystyle\norm{\bfbeta_{\!\supp} - \bfgamma_{\!\supp}}^2 < \max_{\bfg \in \uball[*]} \norm{\bfbeta_{\!\supp}-\bfg_{\!\supp}}^2$}
+   {$\displaystyle\norm{\bfbeta_{\!\supp} - \bfgamma_{\!\supp}}^2 < \max_{\bfg \in \uball[*]^\eta} \norm{\bfbeta_{\!\supp}-\bfg_{\!\supp}}^2$}
    {%
     \tcc{Backtrack towards the last $\bfgamma_{\!\supp}$-coherent solution:}
     $\bfbeta_{\!\supp} \leftarrow \bfbeta_{\!\supp}^\mathrm{old} + \rho (\bfbeta_{\!\supp} - \bfbeta_{\!\supp}^\mathrm{old})$ \\
@@ -102,7 +102,7 @@ description.
       \lambda \widetilde\bfgamma_{\!\supp}\right)  
   $ \\ 
   \If(\tcp*[f]{if $\widetilde\bfgamma_{\!\supp}$ is worst-case\ldots})
-   {$\displaystyle\norm{\widetilde\bfbeta_{\!\supp} - \widetilde\bfgamma_{\!\supp}}^2 = \max_{\bfg \in \uball[*]} \norm{\widetilde\bfbeta_{\!\supp}-\bfg_{\!\supp}}^2$}
+   {$\displaystyle\norm{\widetilde\bfbeta_{\!\supp} - \widetilde\bfgamma_{\!\supp}}^2 = \max_{\bfg \in \uball[*]^\eta} \norm{\widetilde\bfbeta_{\!\supp}-\bfg_{\!\supp}}^2$}
      {%
 %        $\bfbeta_{\!\supp}^\mathrm{old} \leftarrow \bfbeta_{\!\supp}$ \\
        $(\bfbeta_{\!\supp},\bfgamma_{\!\supp}) \leftarrow
@@ -113,7 +113,7 @@ description.
     \tcc{The current $\bfgamma_{\!\supp}$ is coherent with $\bfbeta_{\!\supp}$}
 
   \nlset{Step 3} Update active set $\supp$ \\
-  $\displaystyle g_j \leftarrow \min_{\bfgamma\in\uball[*]} \left|
+  $\displaystyle g_j \leftarrow \min_{\bfgamma\in\uball[*]^\eta} \left|
     \mathbf{x}_j^\intercal(\mathbf{X}_{\centerdot\supp}\bfbeta_{\!\supp} - \mathbf{y})  + \lambda (\beta_j - \gamma_j) \right|
   \enspace j=1,\ldots,p$
   \tcp*[f]{worst-case gradient} \\
@@ -122,7 +122,7 @@ description.
        \tcc{Go to Step 1}
    }{%
   \eIf{$\max_{j\in\supp^c} g_j \neq0$}{ 
-   \tcc{Identify the greatest violation of optimality conditions:}
+   \tcc{Identify the greatest violation of optimality conditions}
     $\displaystyle j^\star \leftarrow \argmax_{j\in\supp^c} g_j \,,\enspace$
     $\supp \leftarrow \supp \cup \{j^\star\}$ \tcp*[r]{Upgrade $j^\star$} 
     \tcc{Go to Step 1}
@@ -155,26 +155,28 @@ This approach suggests a new assessment of convergence, as detailed below.
   $\bfbeta_\supp$ is completed by zeros on the complement $\supp^c$) is
   nevertheless optimal for a $\bfgamma$-value defined in $\Rset^p$ (where
   $\bfgamma_\supp$ is completed by ad hoc values on the complement
-  $\supp^c$). However this $\bfgamma$ fails to belong to $\uball[*]$ 
+  $\supp^c$). However this $\bfgamma$ fails to belong to $\uball[*]^\eta$ 
   (otherwise, the problem would be solved: $\supp$, $\bfgamma$ and $\bfbeta$
   would indeed be optimal).
   The following proposition relates the current objective function, associated
-  with an infeasible $\bfgamma$-value ($\bfgamma\notin\uball[*]$), to the
+  with an infeasible $\bfgamma$-value ($\bfgamma\notin\uball[*]^\eta$), to the
   global optimum of the optimization problem.
 
   \begin{proposition}\label{prop:monitoring}
-    For all vectorial norm $\norm[*]{\cdot}$, when 
-    $\uball[*]$ is defined as 
-    $\uball[*]=\left\{\bfgamma \in \mathbb{R}^{p}:
-                        \norm[*]{\bfgamma} \leq 1 \right\}$, then, 
-    $\forall \bfgamma \in \mathbb{R}^{p}:\norm[*]{\bfgamma} \geq 1$, we have:
+    For any vectorial norm $\norm[*]{\cdot}$, 
+%     when 
+%     $\uball[*]^\eta$ is defined as 
+%     $\uball[*]^\eta=\left\{\bfgamma \in \mathbb{R}^{p}:
+%                         \norm[*]{\bfgamma} \leq \eta \right\}$, 
+%     then, 
+    $\forall \bfgamma \in \mathbb{R}^{p}:\norm[*]{\bfgamma} \geq \eta$, we have:
     \begin{equation*}
       \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma' \in \uball[*]} 
       J_\lambda(\bfbeta,\bfgamma') 
       \geq
-      \frac{1}{\norm[*]{\bfgamma}} 
+      \frac{\eta}{\norm[*]{\bfgamma}} 
       J_\lambda\left(\bfbeta^\star\left(\bfgamma\right), \bfgamma \right) -
-      \frac{\lambda(\norm[*]{\bfgamma}-1)}{\norm[*]{\bfgamma}^2}\norm{\bfgamma}^2        
+      \frac{\lambda\eta(\norm[*]{\bfgamma}-\eta)}{\norm[*]{\bfgamma}^2}\norm{\bfgamma}^2        
       \enspace,
     \end{equation*}
     where 
@@ -198,16 +200,16 @@ This approach suggests a new assessment of convergence, as detailed below.
   For the elastic net expressed in \eqref{eq:elastic-net}, Fenchel inequality
   \citep[see details in][]{Mairal10} yields the following optimality gap:
    \begin{align*}
-      \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma' \in \uball[*]} 
+      \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma' \in \uball[*]^\eta} 
       J_\lambda(\bfbeta,\bfgamma') 
       \geq &
       J_\lambda\left(\bfbeta^\star\left(\bfgamma\right), \bfgamma \right) -
-      \frac{1}{\norm[*]{\bfgamma}^{2}}
+      \frac{\eta^{2}}{\norm[*]{\bfgamma}^{2}}
       \left(
         \norm{\bfX \bfbeta^\star\left(\bfgamma\right) - \bfy}^2 + 
         \lambda \norm{\bfbeta^\star\left(\bfgamma\right)}^{2}
       \right) \\
-      & - \frac{2}{\norm[*]{\bfgamma}}
+      & - \frac{2\eta}{\norm[*]{\bfgamma}}
       \left(
          \bfX \bfbeta^\star\left(\bfgamma\right) - \bfy
      \right)^\intercal \bfy

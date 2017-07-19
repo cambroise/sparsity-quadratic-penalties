@@ -42,7 +42,8 @@ The dual norm is the groupwise $\ell_1$-norm:
                       \big\}
   \enspace,
 \end{align*}
-so that Problem \eqref{eq:general:dual} becomes:
+where $\bfe^p_j$ is the $j$th element of the canonical basis of $\Rset^p$.
+Problem \eqref{eq:general:dual} becomes:
 %
 \begin{align*}
   & \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \uball[*]^\eta}
@@ -57,14 +58,14 @@ so that Problem \eqref{eq:general:dual} becomes:
 Notice that the limiting cases of this penalty are two classical problems: ridge
 regression and the $\ell_{\infty,1}$ group-Lasso.
 A 2D pictorial illustration of this evolution is given in
-Figure~\ref{fig:group-penalty}, where the shape of the uncertainty set
-$\mathcal{D}_{\bfgamma}$ is the convex hull of the points located on the axes at $\pm
-\eta$, which are identified by the cross markers.
+Figure~\ref{fig:group-penalty}, where $\uball[*]^\eta$ is the convex hull of the
+points located on the axes at $\pm \eta$, which are identified by the cross
+markers.
 Then, the sublevel set 
 $\{\bfbeta : \max_{\bfgamma \in \uball[*]^\eta} \norm{\bfbeta-\bfgamma}^2 \leq t\}$
 is simply defined as the intersection of the four sublevel sets
 $\{\bfbeta : \norm{\bfbeta - \bfgamma}^2 \leq t\}$ for 
-$\bfgamma=\pm \eta\bfe^{2}_1$ and $\bfgamma=\pm \eta\bfe^{2}_1$,
+$\bfgamma=\pm \eta\bfe^{2}_1$ and $\bfgamma=\pm \eta\bfe^{2}_2$,
 which are Euclidean balls centered at these $\bfgamma$ values.
 %
 \begin{figure}
