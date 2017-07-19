@@ -81,18 +81,18 @@ This fact, which is illustrated in Figures~\ref{fig:en-penalty} and
 \ref{fig:group-penalty}, stems from the definition of dual norms:
 %
 \begin{equation*}%\label{eq:lasso_generic}
-  \norm[]{\bfbeta} = \max_{\bfgamma\in\uball[*]} \bfgamma^\intercal \bfbeta
+  \norm[]{\bfbeta} = \max_{\bfgamma\in\uball[*]^{1}} \bfgamma^\intercal \bfbeta
   \enspace,
 \end{equation*}
-where $\uball[*]$ is the unit ball centered at the origin defined from the dual
+where $\uball[*]^{1}$ is the unit ball centered at the origin defined from the dual
 norm $\norm[*]{\cdot}$, \textit{i.e.}
-$\uball[*]=\left\{\bfgamma\in\mathbb{R}^p:\norm[*]{\bfgamma}\leq 1\right\}$.
+$\uball[*]^{\eta}=\left\{\bfgamma\in\mathbb{R}^p:\norm[*]{\bfgamma}\leq \eta\right\}$.
 Using this definition, Problem~\eqref{eq:general:original} can be reformulated
 as
 %
 \begin{equation}\label{eq:general:primal}
   \hatbbeta = \argmin_{\bfbeta\in\mathbb{R}^p} 
-  \max_{\bfgamma\in\uball[*]}
+  \max_{\bfgamma\in\uball[*]^{1}}
     \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + 
     \lambda \bfgamma^\intercal \bfbeta
   \enspace. 
@@ -114,10 +114,10 @@ a linear system.
 Indeed, the problem
 %
 \begin{eqnarray}
-  \hatbgamma & = & \argmax_{\bfgamma\in\uball[*]}
+  \hatbgamma & = & \argmax_{\bfgamma\in\uball[*]^{1}}
     \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + 
     \lambda \bfgamma^\intercal \bfbeta \nonumber \\
-     & = & \argmax_{\bfgamma\in\uball[*]}
+     & = & \argmax_{\bfgamma\in\uball[*]^{1}}
     \bfgamma^\intercal \bfbeta \label{eq:optimal_gamma}
 %   \enspace,
 \end{eqnarray}
@@ -128,7 +128,7 @@ Besides the sparsity of $\hatbbeta$, the overall efficiency of our algorithm
 relies also on the invariance of $\hatbgamma$ with respect to
 large changes in $\bfbeta$. 
 For the penalties we are interested in, $\hatbgamma$ takes its value in a
-finite set, defined by the extreme points of the convex polytope $\uball[*]$.
+finite set, defined by the extreme points of the convex polytope $\uball[*]^{1}$.
 This number of points typically increases exponentially in $p$, but, with the working-set
 strategy, the number of configuration actually visited typically grows linearly
 with the number of non-zero coefficients in the solution $\hatbbeta$.
@@ -157,18 +157,13 @@ solving linear systems is accurate, and efficient up to medium scale problems
 
 Geometrical insights are easier to gain from a slightly different formulation of
 Problem \eqref{eq:general:primal}:~\footnote{%
-The quadratic formulation corresponds to Problem \eqref{eq:general:primal} in 
-the limit of $\eta\rightarrow+\infty$ if the feasible set for $\bfgamma$ is
-defined as $\left\{\bfgamma\in\mathbb{R}^p:\norm[*]{\bfgamma}\leq
-\eta\right\}$
+  This quadratic formulation is more general, in the sense that it corresponds to
+  Problem~\eqref{eq:general:primal} with a proper rescaling of $\lambda$ in the
+  limit of $\eta\rightarrow+\infty$.
 }
-% can rewritten as
-% will be solved by
-% considering an equivalent form amenable to a simpler resolution in
-%$ \bfbeta$ for any $\bfgamma$, that is:
 %
 \begin{equation}\label{eq:general:dual}
-  \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma\in\uball[*]}
+  \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma\in\uball[*]^\eta}
     \frac{1}{2} \norm{\bfX \bfbeta - \bfy}^2 + \frac{\lambda}{2} \norm{\bfbeta - \bfgamma}^2
   \enspace.
 \end{equation}
@@ -179,12 +174,12 @@ constraint $\norm{\bfbeta - \bfgamma}^2\leq c$, which states that the
 solution in $\bfbeta$ belongs to a $\ell_{2}$ ball centered in $\bfgamma$.
 Then, as $\hatbgamma$ maximizes $\norm{\hatbbeta - \bfgamma}^2$, the
 solution $\hatbbeta$ belongs to the intersection of all the balls
-centered in $\bfgamma\in\uball[*]$.
+centered in $\bfgamma\in\uball[*]^\eta$.
 Eventually, the active constraints will be defined by the $\bfgamma$ values for
 which $\norm{\hatbbeta - {\bfgamma}^2}$ is maximal, that is for the
 worst-case $\hatbgamma$ values. 
 For the penalties we are interested in, $\hatbgamma$ takes its value in a
-finite set, defined by the extreme points of the convex polytope $\uball[*]$.
+finite set, defined by the extreme points of the convex polytope $\uball[*]^\eta$.
 % 
 % 
 % Various classical sparse problems such as may be expressed by means of
@@ -201,32 +196,20 @@ Figure \ref{fig:penalties} illustrates  those three  sparse problems
 with their  associated worst case quadratic penalty.
 
 
-\ifverylong
-% \subsection{More General Assumptions}
-% 
-% We now consider the more general assumption where the regularity of $\bfbeta^\star$ 
-% is measured by the following norm:
-% \begin{eqnarray*}
-%  \left\| \bfbeta \right\| & = & \min_{\bftheta\in\clO} \min(-\bftheta^\intercal\bfbeta,\bftheta^\intercal\bfbeta)  \\
-%  \text{with} \enspace 
-%  \clO & = & \left\{ \{\bftheta_1,\ldots,\bftheta_r\}: \bftheta_i \in \Rset^p \ 
-%    \text{and} \ 
-%    \bfTheta = (\bftheta_1,\ldots,\bftheta_r) 
-%    \ \text{is of rank $p$} \right\}
-% \end{eqnarray*}
 % 
 \begin{figure}
   \begin{center} 
-    \xylabelsquare{../figures/en_decomposition}{$\beta_1$}{$\beta_2$}{Elastic Net}% 
-    \xylabelsquare{../figures/linf_decomposition}{$\beta_1$}{$\beta_2$}{$\ell_\infty$} 
-    \xylabelsquare{../figures/oscar_decomposition}{$\beta_1$}{$\beta_2$}{OSCAR}%
-    \caption{Penalty shapes (patches) built from the quadratic functions whose
-             isocontour are displayed in white.}
-    \label{fig:penalties}
+    \medxylabelsquare{../figures/en_decomposition}{$\beta_1$}{$\beta_2$}{Elastic Net}% 
+    \medxylabelsquare{../figures/linf_decomposition}{$\beta_1$}{$\beta_2$}{$\ell_\infty$} 
+    \medxylabelsquare{../figures/oscar_decomposition}{$\beta_1$}{$\beta_2$}{OSCAR}%
+    \caption{Sublevel sets for several penalties (represented by the 
+             colored patches).  
+             Each set is defined as the intersection of the the Euclidean balls 
+             whose boundaries are represented by white circles, and whose centers are
+             represented by white crosses.}
+     \label{fig:penalties}
     \end{center} 
 \end{figure}
-\fi
-
 
 
 % We do consider  regression problems where $\hatbbeta$ minimizes 
@@ -255,12 +238,13 @@ with their  associated worst case quadratic penalty.
 \label{sec:gammaperturb}
 
 Our framework is amenable to many variations.
-Here, we simply present two examples where
-the desired penalty on the regression coefficients $\bfbeta$ ensues from the 
+Here, we present two examples where
+the desired penalty on the regression coefficients $\bfbeta$ is implemented 
+through the 
 definition of the dual norm on the coefficients $\bfgamma$.
 When the desired penalty on $\bfbeta$ is expressed by
 $\ell_1$ or $\ell_\infty$ norms, this process results in unit balls
-$\uball[*]$ which are convex polytopes that are 
+$\uball[*]^\eta$ which are convex polytopes that are 
 easy to manage when solving Problem~\eqref{eq:general:dual}, since they
 can be defined as the convex hulls of a finite number of values.
 

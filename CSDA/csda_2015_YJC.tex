@@ -43,6 +43,15 @@
     \put(0.525,1){\makebox[0cm]{#4}}
   \end{picture}%
 }
+\newcommand\medxylabelsquare[4]{% #1 Image, #2=XText, #3=YText,, #4=Title,
+  \setlength{\unitlength}{0.33\linewidth}%
+  \begin{picture}(1,1)%
+    \put(0.075,0.075){\includegraphics[width=0.90\unitlength]{#1}}
+    \put(0.525,0){\makebox[0cm]{\small#2}}
+    \put(0,0.525){\rotatebox{90.0}{\makebox[0cm]{\small#3}}}
+    \put(0.525,1){\makebox[0cm]{#4}}
+  \end{picture}%
+}
 \newcommand\smallxylabelsquare[4]{% #1 Image, #2=XText, #3=YText,, #4=Title,
   \setlength{\unitlength}{0.25\linewidth}%
   \begin{picture}(1,1)%
@@ -110,12 +119,15 @@
   This paper proposes a new interpretation of sparse penalties such as
   the elastic-net and the group-lasso.  Beyond providing a new
   viewpoint on these penalization schemes, our approach results in a
-  unified optimization strategy.  Our evaluation experiments
+  unified optimization strategy.  Our experiments
   demonstrate that this strategy, implemented on the elastic-net, is
   computationally extremely efficient for small to medium size
-  problems.  Our accompanying software solves problems at machine
-  precision in the time required to get a rough estimate with
-  competing state-of-the-art algorithms.
+  problems.  Our accompanying software solves problems very accurately, at machine
+  precision, in the time required to get a rough estimate with
+  competing state-of-the-art algorithms. 
+  We illustrate on real and artificial datasets that this accuracy is required to 
+  for the correctness of the support of the solution, which is an important element 
+  for the interpretability of sparsity-inducing penalties. 
 \end{abstract} 
 
 \begin{keyword}

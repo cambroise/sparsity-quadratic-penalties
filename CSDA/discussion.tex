@@ -5,28 +5,30 @@
 % PRINCIPLE
 This paper presents a new viewpoint on sparsity-inducing penalties
 where the dual norms associated with these penalties play a central role. 
-Technically, our formulation is a simple dual form of the original problem.
+Technically, our formulation is a simple dual form of the original problem. 
+However, we do not follow a very general principle such as Fenchel duality: 
+we specifically tailor our formulation to optimisation problems involving a 
+sparsity-inducing norm.
 The dual variables define a series of linear or quadratic penalties whose 
 sublevel sets define the feasible set of the original problem through
 intersection.
 
-This  viewpoint  enables  to  cast   in  the  same  framework  several
-well-known penalties. In particular, we detailed how the Lasso and the
+This  viewpoint  enables  to  encompass in the same framework  several
+well-known penalties. In particular, we detailed how the solutions to the Lasso and the
 group-Lasso (with the $\ell_{\infty,1}$  mixed norm), possibly applied
 together with an  $\ell_2$ ridge penalty (leading to what  is known as
 the elastic net for the Lasso) can be derived. 
-\\
 
 % ALGORITHM AND MAGIC BOUND
-We derived a  general-purpose algorithm that computes  the solution to
-the penalized regression problem,  and obtained a lower
-bound  on the  minimum  of  the objective  function  to
+We derived a  general-purpose algorithm that computes the solution to
+the penalized regression problem,  and proposed a new lower
+bound  on the  minimum  of  the objective  function to
 assess convergence.  The proposed  algorithm solves a series of
-quadratic  problems defined  from  the dual  variables.   It has  been
+quadratic  problems on a working set defined  by the dual  variables.   
+It has  been
 thoroughly tested  and compared with  state-of-the-art implementations
-for the elastic  net and the Lasso, comparing favorably  in most cases
-to all its competitors.%
-\\
+for the elastic net and the Lasso, and prevails over its competitors for 
+the problems tested, involving  up to a few thousands of variables.
 
 % DISCUSSION
 From a  practical viewpoint, an  important feature of our  approach is

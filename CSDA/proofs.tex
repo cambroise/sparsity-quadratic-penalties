@@ -4,11 +4,10 @@ We detail here a proof yielding a slightly tighter bound.
 Proposition~\ref{prop:monitoring} is simply a corollary of
 Proposition~\ref{prop:monitoring:appendix:v2} stated and proved below.
 
-When $\uball[*]$ is defined by a norm as in
-Proposition~\ref{prop:monitoring}, the following Lemma relates the penalty
+The following Lemma relates the penalty
 associated with a infeasible $\bfgamma$-value 
-($\norm[*]{\bfgamma} > 1$) to the one obtained by shrinking this
-$\bfgamma$-value to reach the boundary of $\uball[*]$.
+($\norm[*]{\bfgamma} > \eta$) to the one obtained by shrinking this
+$\bfgamma$-value to reach the boundary of $\uball[*]^\eta$.
 
 \begin{lemma}\label{prop:lemma1:v2}
   Let $\clS \subseteq \{1,...,p\}$, $\alpha\in(0,1)$, $\norm[*]{\cdot}$ be a vectorial norm and $\varphi^{*}(\cdot,\clS,\alpha) :
@@ -52,15 +51,16 @@ $\bfgamma$-value to reach the boundary of $\uball[*]$.
 \end{lemma}
 %
 \begin{proposition}\label{prop:monitoring:appendix:v2}
-  For all vectorial norm $\norm[*]{\cdot}$, when 
-  $\uball[*]$ is defined as $\uball[*]=\left\{\bfgamma \in \mathbb{R}^{p}:
-                      \norm[*]{\bfgamma} \leq 1 \right\}$, then, 
-  $\forall \bfgamma \in \mathbb{R}^{p}:\norm[*]{\bfgamma} \geq 1$, and 
+  For any vectorial norm $\norm[*]{\cdot}$, 
+%   when 
+%   $\uball[*]^\eta$ is defined as $\uball[*]^\eta=\left\{\bfgamma \in \mathbb{R}^{p}:
+%                       \norm[*]{\bfgamma} \leq \eta \right\}$, then, 
+  $\forall \bfgamma \in \mathbb{R}^{p}:\norm[*]{\bfgamma} \geq \eta$, and 
   $\forall (\clS,\alpha)\in2^{\{1,\ldots,p\}}\times(0,1)$ such that 
-  $\norm[*]{(\bfgamma_{\clS},\alpha\bfgamma_{\clS^c })}\leq 1$, we   
+  $\norm[*]{(\bfgamma_{\clS},\alpha\bfgamma_{\clS^c })}\leq \eta$, we   
   have:
   \begin{equation*}
-    \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma' \in \uball[*]} 
+    \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma' \in \uball[*]^\eta} 
     J_\lambda(\bfbeta,\bfgamma') 
     \geq
     \alpha J_\lambda\left(\bfbeta^\star\left(\bfgamma\right),\bfgamma\right) -
@@ -78,18 +78,18 @@ $\bfgamma$-value to reach the boundary of $\uball[*]$.
   \begin{proof} 
   For all $\bfbeta \in \mathbb{R}^{p}$ and for any $(\bfgamma,\clS,\alpha) \in
   \mathbb{R}^{p}\times2^{\{1,\ldots,p\}}\times(0,1)$ such that
-  $\varphi^{*}(\bfgamma,\clS,\alpha) \in \clD_{\bfgamma}$, with $\varphi^{*}$ 
+  $\varphi^{*}(\bfgamma,\clS,\alpha) \in \uball[*]^\eta$, with $\varphi^{*}$ 
   defined as in Lemma \ref{prop:lemma1:v2} we have
   \begin{equation}\label{eq:maxgreater:v2}
-    \max_{\bfgamma' \in \uball[*]} 
+    \max_{\bfgamma' \in \uball[*]^\eta} 
     J_\lambda(\bfbeta,\bfgamma') 
     \geq
     J_\lambda\left(\bfbeta,\varphi^{*}(\bfgamma,\clS,\alpha)\right)
     \enspace,
   \end{equation}
-  since $\varphi^{*}(\bfgamma,\clS,\alpha)$ belongs to $\uball[*]$. 
+  since $\varphi^{*}(\bfgamma,\clS,\alpha)$ belongs to $\uball[*]^\eta$. 
   We now compute a lower bound of the right-hand-side for $\bfgamma$ such that
-  $\norm[*]{\bfgamma} \geq 1$:
+  $\norm[*]{\bfgamma} \geq \eta$:
     \begin{align}       
       J_\lambda\left(\bfbeta,\varphi^{*}(\bfgamma,\clS,\alpha)\right) 
         & = \alpha \left( 
@@ -143,10 +143,10 @@ $\bfgamma$-value to reach the boundary of $\uball[*]$.
        \enspace.
     \end{align*}
     We finally remark that,  
-    since $\varphi^{*}(\bfgamma,\clS,\alpha) \in \uball[*]$,
+    since $\varphi^{*}(\bfgamma,\clS,\alpha) \in \uball[*]^\eta$,
     we trivially have:
     \begin{align*}
-      \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma \in \clD_{\bfgamma}} J_\lambda(\bfbeta,\bfgamma) 
+      \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma \in \uball[*]^\eta} J_\lambda(\bfbeta,\bfgamma) 
       & \geq 
        \min_{\bfbeta\in\mathbb{R}^{p}} 
         J_\lambda\left(\bfbeta,\varphi^{*}(\bfgamma,\clS,\alpha)\right)
@@ -155,12 +155,13 @@ $\bfgamma$-value to reach the boundary of $\uball[*]$.
     which concludes the proof.
   \end{proof}
 \end{proposition}
+Proposition~\ref{prop:monitoring} follows by choosing $\alpha={\eta}/{\norm[*]{\bfgamma}}$.
 
 % \iffalse
 %   Let $J$ be the objective function of the generic
 %   Problem~\eqref{eq:robust:general:form3}, we trivially have that, for any
 %   $\bfgamma$-value,
-%   $\min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma \in \clD_{\bfgamma}}
+%   $\min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma \in \uball[*]^\eta}
 %   J(\bfbeta,\bfgamma) \geq \min_{\bfbeta\in\mathbb{R}^{p}} J(\bfbeta,\bfgamma)$.
 %   %
 %   Hence, a tight optimality gap can be computed provided one can guess a
@@ -169,7 +170,7 @@ $\bfgamma$-value to reach the boundary of $\uball[*]$.
 %   $\widehat\bfgamma_{\clS}$ has to be completed on the complement $\clS^c$.
 %   We propose to do so by minimizing the magnitude of the gradient with respect to $\bfbeta$ at the current solution:
 %   \begin{align*}
-%     \widehat\bfgamma_{\clS^c} & = \argmin_{\bfgamma_{\clS^c}:\bfgamma \in \clD_{\bfgamma}}
+%     \widehat\bfgamma_{\clS^c} & = \argmin_{\bfgamma_{\clS^c}:\bfgamma \in \uball[*]^\eta}
 %                                \left|  \bfX_{\centerdot\supp^c}^\intercal(\bfX_{\centerdot\supp}\bfbeta_{\supp}-\bfy) - 
 %                                \lambda \bfgamma_{\supp^c} \right|
 %       \enspace.
@@ -203,9 +204,9 @@ $\bfgamma$-value to reach the boundary of $\uball[*]$.
 % \begin{align*}
 % J(\bfbeta^\star) & = \min_{\bfbeta\in\mathbb{R}^p} 
 %   \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1  \norm[1]{\bfbeta} \\
-%   &= \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
+%   &= \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \uball[*]^\eta}
 %       \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\bfgamma \Big\} \\
-%   &= \max_{\bfgamma \in \clD_{\bfgamma}} \min_{\bfbeta\in\mathbb{R}^p}
+%   &= \max_{\bfgamma \in \uball[*]^\eta} \min_{\bfbeta\in\mathbb{R}^p}
 %       \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\bfgamma \Big\} \\
 %   & \geq \min_{\bfbeta\in\mathbb{R}^p}
 %       \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\widehat\bfgamma \Big\}  \\
@@ -258,9 +259,9 @@ $\bfgamma$-value to reach the boundary of $\uball[*]$.
 % \begin{align*}
 % J(\bfbeta^\star) & = \min_{\bfbeta\in\mathbb{R}^p} 
 %   \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1  \norm[1]{\bfbeta} \\
-%   &= \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
+%   &= \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \uball[*]^\eta}
 %       \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\bfgamma \Big\} \\
-%   &= \max_{\bfgamma \in \clD_{\bfgamma}} \min_{\bfbeta\in\mathbb{R}^p}
+%   &= \max_{\bfgamma \in \uball[*]^\eta} \min_{\bfbeta\in\mathbb{R}^p}
 %       \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\bfgamma \Big\} \\
 %   & \geq \min_{\bfbeta\in\mathbb{R}^p}
 %       \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda_1 \bfbeta^\intercal\widehat\bfgamma \Big\}  \\
