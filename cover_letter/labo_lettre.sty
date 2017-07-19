@@ -1,0 +1,199 @@
+\ProvidesPackage{labo_lettre}
+
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[OT1]{fontenc}
+\RequirePackage[english,frenchb]{babel}
+\RequirePackage{fancyhdr}
+\RequirePackage{graphicx}
+\RequirePackage{xcolor}
+\RequirePackage{calc}
+\RequirePackage{textcomp}
+
+% ____________________________
+% POLICE SANS SERIF PAR DEFAUT
+\renewcommand\familydefault{\rmdefault}
+% __________________
+% DEFINITION DU LOGO
+\newlength\logoHeight
+\newlength\logoWidth
+\logoHeight = 30mm
+\logoWidth = 30mm
+
+% ___________________________________
+% BOITE DESTINEE A ACCUEILLIR LE LOGO
+\def\logoBox{%
+  \vbox to0pt{
+    \hbox{
+      \vbox to0pt{%
+        \vskip-1.75\headsep
+        \includegraphics[width=1.5\logoWidth]{logo_agro}       
+        \hfill\includegraphics[width=\logoWidth]{logo_inra}
+        \vss
+      }
+    }
+    \vss
+  }
+}
+
+% ______________________________
+% MACROS REFERENCES, OBJET, DATE
+% 1 parametre : le nom du champs
+% \macro[facultatif]{obligatoire}
+\def\objet{\@ifnextchar[{\objet@}{\def\next{\objet@{\scriptsize\bf\sf [Objet]~}}\next}}
+\def\objet@[#1]#2{\gdef\laboletter@objet{{\small\sf\textbf{[#1]}}\\{\sf \small #2}}}
+\def\date{\@ifnextchar[{\labo@date}{\def\next{\labo@date[Paris, le~]}\next}}
+\def\labo@date[#1]#2{\gdef\laboletter@date{#1#2}}
+% ___________________________________________________________________
+% OPTIONS PAR DEFAUT
+% On définit un "begin{letter}" par défaut, pour que ça ne plante pas
+% lorsque l'utilisateur ne précise pas tous les champs de la lettre
+\let\OLD@letter=\letter
+\long\def\letter{
+  \let\laboletter@reflabo	=	\@empty
+  \let\laboletter@objet		=	\@empty
+  \def\laboletter@date{\textsf{Paris, \today}}
+  \OLD@letter{\sf\destinataire}
+}
+% _________________________
+% STYLE DE LA PREMIERE PAGE
+\fancypagestyle{lettreRecto}{
+  \fancyhf{}
+  \fancyhead[LO]{\vbox{\vspace{1cm}\addressBox \logoBox \sendingBox \vss}}
+  \fancyfoot[C]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+% _________________________
+% STYLE DE LA DEUXIEME PAGE 
+\fancypagestyle{lettreVerso}{
+  \fancyhf{}
+  \fancyhead{}
+  \fancyfoot[C]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+% _______________________________________________________
+% PARTIE ADRESSE PURE
+% On redéfinit des dimension absolu par rapport au papier
+% pour que le cadre reste au bonne endroit de la lettre
+% meme si on change les  dimensions des marges
+\newlength\WidthEnvelopeWindow  
+\newlength\DistanceLeftEnvelopeWindow
+\newlength\OverlapEnvelopeWindow
+\newlength\DistanceTopEnvelopeWindow
+\newlength\HeightEnvelopeWindow 
+\newlength\Work@length
+\WidthEnvelopeWindow=70mm
+\DistanceLeftEnvelopeWindow=118mm 
+\DistanceTopEnvelopeWindow=40mm
+\HeightEnvelopeWindow=44mm
+\newbox\to@ddressBOX   
+
+\def\labol@precompute@address{
+  \setbox\to@ddressBOX=\vbox{%
+    \hsize=\WidthEnvelopeWindow
+    \normalsize \sf  \normalbaselines
+    \let\\=\par
+    \parskip0pt
+    \toname\\
+    \toaddress
+  }
+  \ifdim\ht\to@ddressBOX>\HeightEnvelopeWindow
+  \typeout{Attention ! l'adresse du destinatire est trop longue}
+  \typeout{====================================================}\fi
+  
+  \Work@length=\DistanceTopEnvelopeWindow
+  \ifdim\ht\to@ddressBOX < \HeightEnvelopeWindow
+  \advance\Work@length by.5\HeightEnvelopeWindow
+  \advance\Work@length by.5\ht\to@ddressBOX
+  \else
+  \advance\Work@length by\ht\to@ddressBOX
+  \fi
+  \advance\Work@length by-1in         
+  \advance\Work@length by-\voffset 
+  \advance\Work@length by-\topmargin  
+  \advance\Work@length by-\headheight
+  \advance\Work@length by-\headsep    
+  \ifdim \Work@length<0  \Work@length=0 \fi
+  \global\OverlapEnvelopeWindow=\Work@length
+}
+% ___________________________________________________
+% BOITE CONTENANT LE NOM ET L'ADRESSE DU DESTINATAIRE
+\def\sendingBox{%
+  \vbox to0pt{
+    \vss
+    \advance\headheight by\topmargin
+    \advance\headheight by\voffset
+    \advance\headheight by1in
+    \hbox to\textwidth{%
+      \hskip-\oddsidemargin  \hskip-\hoffset  \hskip-1in
+      \hskip\DistanceLeftEnvelopeWindow
+      \vbox to\headheight{%
+        \kern\DistanceTopEnvelopeWindow
+        \vbox to\HeightEnvelopeWindow{
+          \vskip0pt plus1000pt minus0pt
+          \box\to@ddressBOX
+          \vskip0pt plus1000pt minus1000pt
+        }
+        \vss
+      }%
+      \hss
+    }
+  }%
+}
+% _____________________________________
+% BOITE DES COORDONNEES DE L'EXPEDITEUR
+\def\addressBox{%
+  \vbox to0pt{
+    \vss
+    \advance\headheight by\topmargin
+    \advance\headheight by\voffset
+    \advance\headheight by1in
+    \vbox to0pt{%
+      \small \sf \normalbaselines
+      \adresse
+      \vss
+    }
+  }
+}
+% ______________________________________
+% OPENING
+\def\opening#1{%
+  \labol@precompute@address
+  \pagestyle{lettreVerso}
+  \thispagestyle{lettreRecto}
+  \null\vskip10mm
+  \vskip\OverlapEnvelopeWindow
+  \leavevmode
+  \vtop{%
+    \hsize=.5\textwidth
+    \raggedright
+    \laboletter@reflabo
+  }
+  \par
+  \noindent 
+  \hskip-\oddsidemargin  \hskip-\hoffset  \hskip-1in
+  \hskip\DistanceLeftEnvelopeWindow\laboletter@date  
+  \par
+  \ifx\laboletter@objet\@empty\else
+  \vskip1\parskip     \laboletter@objet\par
+  \fi
+  \vskip1\baselineskip plus 1\baselineskip minus.5\baselineskip
+  {#1}\vskip\baselineskip
+  \nobreak
+}
+% ________________
+% CLOSING
+\def\closing#1{%
+  \par\nobreak \vskip\parskip \stopbreaks
+  \noindent 
+  \hskip-\oddsidemargin  \hskip-\hoffset  \hskip-1in
+  \hskip\DistanceLeftEnvelopeWindow
+  \vtop{%
+    \hsize=\WidthEnvelopeWindow
+    \raggedright  \parindent=0pt
+    \normalsize \normalbaselines
+    \ignorespaces #1
+    \vskip4\medskipamount
+    \ifx \@empty \fromsig \fromname \else \fromsig  \fi 
+    \vskip6\medskipamount
+  }%
+}

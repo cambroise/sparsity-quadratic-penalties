@@ -1,0 +1,63 @@
+\documentclass[a4paper,11pt,english]{letter}
+
+\usepackage{labo_lettre}
+\usepackage{textcomp}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\usepackage[textheight=55em,bmargin=35mm, footskip=20mm]{geometry}
+\thispagestyle{empty}
+
+\usepackage{amsmath,amssymb}
+
+\def\destinataire{%
+  A.M. \textsc{Colubi}, E.J. \textsc{Kontoghiorghes} \& B.U. \textsc{Park}, Editors
+}
+
+\def\adresse{
+  Julien \textsc{Chiquet}\\
+  MIA Paris -- UMR 518 AgroParistech/Inra \\
+  16 rue Claude Bernard, 75231 Paris Cedex 05, France \\[2ex]
+
+  E-mail: \url{julien.chiquet@inra.fr}
+}
+
+\begin{document}
+
+\begin{letter}
+
+\signature{Julien Chiquet (on behalf of the authors) }
+
+\opening{Dear Editors,}
+
+\objet[object]{Submission of an original manuscript to CSDA}
+
+Please find, here enclosed, our manuscript entitled \emph{Sparsity by
+  Worst-Case Penalties}, which we submit to \textit{Computational
+  Statistics \& Data Analysis}.
+
+Sparse methods are now ubiquitous in statistics and statistical
+learning. An important part of the literature is still dedicated to
+crafting new sparsity-inducing penalties, which often require new
+optimization procedures with varying complexity. In our manuscript, we
+introduce a new interpretation of sparsity and an unifying view for a
+large family of penality-based approaches, thus providing additional
+insight on these methods. More importantly, this view paves the way
+for an unifying optimization strategy. We implement this strategy for
+the popular elastic-net and compare our algorithm with existing
+implementations. In particular, we show that our method provides very
+accurate solutions. This accuracy is required for the correctness
+of the support of the solution and is not always met by existing
+softwares.
+
+We feel  that this work  might be of interest  to the readers  of your
+journal and is in its scope.
+
+We confirm that  this manuscript has not been  published elsewhere and
+is not currently  under consideration by another  journal. All authors
+have approved  the manuscript  and agree with  its submission  to your
+journal.
+
+\closing{Sincerely yours,}
+
+\end{letter}
+
+\end{document}
