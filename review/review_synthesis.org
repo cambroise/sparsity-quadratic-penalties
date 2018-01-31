@@ -1,0 +1,104 @@
+* Reviewer 1
+***  The algorithm starts from a sparse initial guess, i.e., the active set A = ∅.
+    I think it may be useful to discuss briefly how the computational time
+    changes for an experimental setup, in which the choice of the initial guess
+    is randomized.
+*** In section 5,
+I would suggest to switch the results on simulated settings and on real-world
+data, such that the latter can be commented in light of the properties and
+conclusions obtained with synthetic data.
+*** In the simulated data section, 
+I would suggest to add the F-measure between the support of the true coefficient
+vector β⋆ and the estimated one βˆ, as a performance measure to evaluate the
+selection properties of the different algorithms (see Section IV in Gasso et
+al., 2009).
+
+@article{gasso2009recovering,
+  title={Recovering sparse signals with a certain family of nonconvex penalties and DC programming},
+  author={Gasso, Gilles and Rakotomamonjy, Alain and Canu, St{\'e}phane},
+  journal={IEEE Transactions on Signal Processing},
+  volume={57},
+  number={12},
+  pages={4686--4698},
+  year={2009},
+  publisher={IEEE}
+}
+*** In line 244, 
+   the reference should not be in parenthesis.
+*** Figure 6 could be improved, 
+as the axes labels are not easily readable and colors are not
+distinguishable.
+*** In line 367, 
+I would suggest to explain the reason why quadrupen, SPAMS-LARS and lars are not
+sensitive to the level of correlation between features.
+*** In the caption of Figure 8, specify the x-axis.
+
+
+Gasso G., Rakotomamonjy A., Canu S. (2009). Recovering sparse signals with a certain family of non convex penalties and DC programming. IEEE Transactions on Signal Processing, 57(12), 4686-4698.
+
+
+
+* Reviewer 2
+The authors proposed a new optimization algorithm to solve the sparse linear regression
+with a norm penalty term, including group-lasso and elastic-net. The proposed method
+is both accurate in estimation and extremely computationally fast, as shown in extensive
+
+simulation studies. It is very good that the authors also provided the accompanying R-
+package (quadrupen) on CRAN.
+
+The paper is interesting in computational aspects and fit the theme of the journal.
+However, I think a few concerns should be addressed before publication is possible.
+** Major comments:
+*** 1. As the authors also admitted in the paper, the proposed algorithm is highly similar
+to the active-set methods, except the procedures taken in Step 3. I understand
+that the authors argue that quadrupen is more flexible in handling a wider range
+of penalties and look at the problem from a different perspective. However, either
+methodological innovations or numerical improvement should be proved to make the
+contribution enough to consider it as an ”alternative” algorithm.
+*** 2. In the simulation studies, under the same tuning parameter, a more conservative
+selection of the quadrupen was observed in the QTL example comparing to that of
+glmnet, but not in the examples showed in Figure 8. I was wondering if this is an
+universal phenomenon? If it is the authors should provide some theoretical insights
+on why does this happen and maybe run some more monte carlo simulations to verify
+it, since basically they are solving the same underlying optimization problem.
+*** 3. For solving the elastic-net problem, the authors compared the proposed method to
+other two optimization strategies. It seems that the proposed method only gains
+obvious efficiency in the regime where λ1 and λ2 are very small. In the case if
+we choose parameters probably (according the theoretical rate or simply by cross-
+validation), what is the advantage of using quadrupen?
+
+
+
+** Minor comments:
+*** 1. The presentation of the figures in the paper is not very straightforward to readers. For
+example, I found Figure 1,2,3,6 kind of hard to understand by reading the captions.
+More basic introductions should be made in the captions or in the context describing
+the figures. Moreover, please pay attention to the size of fonts in the labs, titles and
+legends across the figures. Currently they are quite differing.
+*** 2. In the section 5.2.3 and 5.2.4, the authors benchmarked the methods by Lasso, letting
+λ2 = 0. Is it possible to consider the more general elastic-net problem (say for a fixed
+λ2) for at least some of the packages, especially in measuring the model selection
+accuracy? I understand that the authors have pointed out that they have different
+rules in determining tuning parameters.
+* Reviewer 3
+
+The article proposes a novel algorithm, which supposedly solves the elastic- net problem and approximates the solutions to LASSO and l∞,1 version of group LASSO. The idea seems interesting but based on the current version of the article it is difficult to assess the properties and correctness of the pro- posed algorithm. Its description is very sketchy. Also, the paper lacks the results on its convergency. Additionally, many parts of the paper suffer from the lack of precision and contain wrong statements or unjustified claims. The list of detailed remarks is included below.
+*** 1. Equations (4) and the one above (4) give the wrong impression con- cerning the ”simplicity” of the solution of problem (3). Namely, the solution of the ”inner” problem (maximizing over γ or minimizing over β) will depend on the value of the second parameter, which makes the ”outer” optimization problem rather difficult.
+*** 2. It is not true that the quadratic problem (5) is a different formulation of (3). Under some circumstances it only asymptotically (for η → ∞) approximates (3). In Section 3 the authors have shown that this asymptotic approximation works for LASSO and for l∞,1 version of group LASSO. Their derivations strongly rely on the simple form of l1 or l∞ balls. It is hard to verify the authors statement that similar asymptotic approximations would work for other norms, like e.g. the Sorted L-One Norm (see OSCAR or SLOPE (Bogdan et al, AOAS 2015)). If this assertion is indeed true, I suggest to add a Section with a proper mathematical justification.
+*** 3. I suggest to mathematically formalize the Section 2.4 on the Geomet- rical Interpretation. Specifically, it is not clear at all that the solution belongs to the intersection of all the balls centered at γ ∈ B⋆η. Note, that for small c and large η, this intersection would be an empty set. Also, please, note that βˆ depends on γ, thus maximizing
+||βˆ(γ) − γ|| 1
+does not seem to be a simple task.
+On the other hand the statement that for each β, γˆ(β) belongs to the set of extreme points does not seem to require a special justification.
+Figures 1 and 2 require an extended description. It is not clear what is represented by different colors. Also, according to the description of Figure 1, it contains the graphs for Elastic Net, l∞ and OSCAR, while according to the description in the text the first two graphs contain LASSO, and l∞,1 version of group LASSO. Where are crosses in graph number 4 in Figure 2 ?
+*** 4. The formulation (5) is asymptotically equivalent to LASSO when η → ∞. It would be good to provide some results (at least empirical) to show how the accuracy of this approximation depends on η. Should ”good” η depend on p, the correlation structure or the sparsity of the signal ?
+*** 5. It is not clear at all if the first two steps of the algorithm converge. Note that γˆ(β) is selected as the extreme point, which is most distant to β. On the other hand the quadratic penalty used to estimate βˆ(γˆ) privileges β close to γˆ. For large λ, when the penalty dominates the first term in the objective function, βˆ(γˆ) will be very close to γˆ and γˆ will not longer be coherent (most distant) to βˆ.
+I would welcome some mathematical result illustrating the convergence of the first two steps of the algorithm.
+*** 6. It would be good to explain what is the meaning of gj. Did not we select γ as the most distant extreme point ? Why do we calculate gj by minimizing over all points from the dual ball ?
+*** 7. I do not quite see how to formulate a stopping criterion based on Propo- sition 1. In the algorithm the worst case gradients are computed for γ from the ball, while the Proposition 1 requires γ to be in the closed complement of the ball.
+*** 8. Real Data Analysis - comparison of LASSO and quadrupen.
+There is no information which η was used here. It is quite natural that
+glmnet and quadrupen give different results since quadrupen is only the
+approximation to LASSO. How do these two algorithms compare in execution time for this relatively large data set ?
+*** 9. The synthetic data examples are rather small (p = 100). It would be good to see the results when p can reach several thousands (say 5000). Which η was used for quadrupen ?
+The authors use LARS as the benchmark. Please, note that LARS is only an approximation to LASSO. For example LARS paths are mono- tonic, which is not true about the LASSO path (here variables may appear and disappear many times along the path). Thus, in general, LARS does not solve the LASSO optimization problem and should not be considered as the true optimum.
+Instead of comparing D(method), which is never negative, even if a given method is better than LARS, I suggest to directly compare the values of the objective function.
