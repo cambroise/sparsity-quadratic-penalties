@@ -56,46 +56,23 @@ for (n0 in c(p/2, p, 2*p)) {
   out$np.ratio <- rep(paste("n/p =",n0/p), length(nrow(out)))
 
   out.all <- rbind(out.all, out)
-
-  ## test[[l]] <- 
-  ##   ggplot(out, aes(x=lambda,y=sqrt(error.mse),colour=method,group=method,lty=method)) +
-  ##     stat_summary(fun.data="mean_cl_normal", geom="smooth", width=3, alpha=0.1) +
-  ##       scale_x_continuous(trans=log2_trans())
-  
-  ## supp[[l]] <- 
-  ##   ggplot(out, aes(x=lambda, y=error.sup, colour=method, group=method,lty=method)) +
-  ##     stat_summary(fun.data="mean_cl_normal", geom="smooth", width=3, alpha=0.1)+
-  ##       scale_x_continuous(trans=log2_trans())
 }
 
-test.all <- 
-  ggplot(out.all, aes(x=lambda,y=sqrt(error.mse),colour=method,group=method,lty=method)) +
-  stat_summary(fun.data="mean_cl_normal", geom="smooth", width=3, alpha=0.1) +
-  scale_x_continuous(trans=log2_trans()) +
-  labs(x="", y="") +
-  facet_grid(.~ np.ratio) +
-  theme(legend.position="none")
+library(dplyr)
 
-supp.all <- 
-  ggplot(out.all, aes(x=lambda,y=error.sup, colour=method,group=method,lty=method)) +
-  stat_summary(fun.data="mean_cl_normal", geom="smooth", width=3, alpha=0.1) +
-  scale_x_continuous(trans=log2_trans()) +
-  labs(x="", y="") +
-  facet_grid(.~ np.ratio) +
-  theme(legend.position=c(.875, .74))
+dplot.all <- out.all %>% 
+  mutate(rmse = sqrt(error.mse), 
+          precision = ifelse(tp == 0, 0, tp /(tp + fp)),
+          recall = ifelse(tp == 0, 0, tp /(tp + fn))) %>% 
+  mutate(f_measure = ifelse ( (precision == 0 | recall == 0), 0,  2 * (precision * recall) / (precision + recall))) %>% 
+  rename(hamming = error.sup, timings = times, accuracy = prec) %>% 
+  select(-error.cla, -error.mse, -steps, -package)
 
-dprec <- qplot(factor(method), prec, data=out.all, group=method, colour=method, geom="boxplot", log="y") +
-  labs(title=paste("Numerical accuracy, n=",n0), x="", y="Distance to optimum") +
-  theme(legend.position="none")
+dplot <- dplot.all %>% select("lambda", "method", "np.ratio", "f_measure", "rmse", "tp", "fp") %>% gather(key = "measure", value = "value", "f_measure", "rmse", "tp", "fp")
 
-dtime <- qplot(factor(method), times, data=out.all, group=method, colour=method, geom="boxplot", log="y") +
-  labs(x="", y="Timing (sec.)")+
-  theme(legend.position="none")
+p <- ggplot(dplot, aes(x = lambda, y = value, colour = method, group = method, lty = method)) +
+  stat_summary(fun.data="mean_cl_normal", geom = "smooth", alpha = 0.1) +
+  coord_trans(x = "log10") + labs(x="", y="") +
+  facet_grid(measure ~ np.ratio, scales = "free") + theme(legend.position="none") + theme_minimal()
 
-pdf(file="test,support.pdf", width=7, height=7)
-##multiplot(test1, supp1,
-##          test2, supp2,
-##          test3, supp3, cols=2)
-multiplot(test.all, supp.all, cols=1)
-dev.off()
-
+ggsave(filename = "~/Desktop/error.pdf", width = 10, height = 7)

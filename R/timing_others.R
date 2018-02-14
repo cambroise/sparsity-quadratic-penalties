@@ -1,3 +1,4 @@
+rm(list=ls())
 library(quadrupen)
 library(lars)
 library(glmnet)
@@ -7,6 +8,7 @@ source("functions/plots.R")
 
 seed <- sample(1:10000,1)
 set.seed(seed)
+mc.cores <- 4
 
 ##scenario <- "high.dim.med"
 ##scenario <- "high.dim.hig"
@@ -27,7 +29,7 @@ if (scenario == "high.dim.med") {
 }
 ## High dimensional settings for Lasso run
 if (scenario == "high.dim.hig") {
-  nsim <- 10
+  nsim <- 30
   n <- 400
   p <- 10000
 }
@@ -50,7 +52,7 @@ call.lars <- function(data) {
                                             max.steps=min(dim(data$x)),
                                             use.Gram=ifelse(ncol(data$x)<500,TRUE,FALSE)),
                                        colMeans(data$x)))[3]
-    return(list(time=time,fit=fit))
+    return(list(time=time,fit=fit, obj=objective(fit, data$x, data$y)))
 }
 
 ## SMALL CORRELATION SETTINGS
@@ -65,6 +67,7 @@ cat("\nLars... ")
 out <- mclapply(data, call.lars, mc.cores=mc.cores)
 time.lars.low <- sapply(out, function(l) l$time)
 fit.lars <- sapply(out, function(l) l$fit)
+objc.lars.low <- lapply(out, function(l) l$obj)
 cat("\n\n")
 
 call.test.lasso <- function(s, method, eps) {
@@ -76,23 +79,27 @@ cat("\nquadra (LARS)... ")
 out <- do.call(rbind, mclapply(1:nsim, call.test.lasso, method="quadrupen", eps=1e-8, mc.cores=mc.cores))
 time.craf.low <- out[,1]
 prec.craf.low <- out[,2]
+objc.craf.low <- out[,3]
 cat("\n\n")
 
 cat("\nSPAMs (LARS)... ")
 out <- do.call(rbind, mclapply(1:nsim, call.test.lasso, method="spams.lars", eps=1e-8, mc.cores=mc.cores))
 time.spam.low <- out[,1]
 prec.spam.low <- out[,2]
+objc.spam.low <- out[,3]
 cat("\n\n")
 
 cat("\nglmnet... ")
 thres.glmn <- 10^c(-5, -8, -10, -12, -14, -16, -18, -20)
 time.glmn.low <- matrix(NA,nrow=length(thres.glmn),ncol=nsim)
 prec.glmn.low <- matrix(NA,nrow=length(thres.glmn),ncol=nsim)
+objc.glmn.low <- matrix(NA,nrow=length(thres.glmn),ncol=nsim)
 for (t in seq_along(thres.glmn)) {
-    cat("\n\t Current threshold =",thres[t])
+    cat("\n\t Current threshold =",thres.glmn[t])
     out <- do.call(rbind, mclapply(1:nsim, call.test.lasso, method="glmnet", eps=thres.glmn[t], mc.cores=mc.cores ))
     time.glmn.low[t,] <- out[, 1]
-    prec.glmn.low[t,] <- out[, 2]    
+    prec.glmn.low[t,] <- out[, 2]
+    objc.glmn.low[t,] <- out[, 3]
 }
 cat("\n\n")
 
@@ -100,11 +107,13 @@ cat("\nSPAMs (fista)... ")
 thres.spams <- 10^c(-1, -4, -5)
 time.spamf.low <- matrix(NA,nrow=length(thres.spams),ncol=nsim)
 prec.spamf.low <- matrix(NA,nrow=length(thres.spams),ncol=nsim)
+objc.spamf.low <- matrix(NA,nrow=length(thres.spams),ncol=nsim)
 for (t in seq_along(thres.spams)) {
-    cat("\n\t Current threshold =",thres[t])
+    cat("\n\t Current threshold =",thres.spams[t])
     out <- do.call(rbind, mclapply(1:nsim, call.test.lasso, method="spams.prox", eps=thres.spams[t], mc.cores=mc.cores ))
     time.spamf.low[t,] <- out[, 1]
     prec.spamf.low[t,] <- out[, 2]    
+    objc.spamf.low[t,] <- out[, 3]    
 }
 cat("\n\n")
 
@@ -120,6 +129,7 @@ cat("\nLars... ")
 out <- mclapply(data, call.lars, mc.cores=mc.cores)
 time.lars.med <- sapply(out, function(l) l$time)
 fit.lars <- sapply(out, function(l) l$fit)
+objc.lars.med <- lapply(out, function(l) l$obj)
 cat("\n\n")
 
 call.test.lasso <- function(s, method, eps) {
@@ -131,23 +141,27 @@ cat("\nquadra (LARS)... ")
 out <- do.call(rbind, mclapply(1:nsim, call.test.lasso, method="quadrupen", eps=1e-8, mc.cores=mc.cores))
 time.craf.med <- out[,1]
 prec.craf.med <- out[,2]
+objc.craf.med <- out[,3]
 cat("\n\n")
 
 cat("\nSPAMs (LARS)... ")
 out <- do.call(rbind, mclapply(1:nsim, call.test.lasso, method="spams.lars", eps=1e-8, mc.cores=mc.cores))
 time.spam.med <- out[,1]
 prec.spam.med <- out[,2]
+objc.spam.med <- out[,3]
 cat("\n\n")
 
 cat("\nglmnet... ")
 thres.glmn <- 10^c(-5, -7, -9, -11, -13) 
 time.glmn.med <- matrix(NA,nrow=length(thres.glmn),ncol=nsim)
 prec.glmn.med <- matrix(NA,nrow=length(thres.glmn),ncol=nsim)
+objc.glmn.med <- matrix(NA,nrow=length(thres.glmn),ncol=nsim)
 for (t in seq_along(thres.glmn)) {
-    cat("\n\t Current threshold =",thres[t])
+    cat("\n\t Current threshold =",thres.glmn[t])
     out <- do.call(rbind, mclapply(1:nsim, call.test.lasso, method="glmnet", eps=thres.glmn[t], mc.cores=mc.cores ))
     time.glmn.med[t,] <- out[, 1]
     prec.glmn.med[t,] <- out[, 2]    
+    objc.glmn.med[t,] <- out[, 3]    
 }
 cat("\n\n")
 
@@ -155,11 +169,13 @@ cat("\nSPAMs (fista)... ")
 thres.spams <- 10^c(-1, -4, -5)
 time.spamf.med <- matrix(NA,nrow=length(thres.spams),ncol=nsim)
 prec.spamf.med <- matrix(NA,nrow=length(thres.spams),ncol=nsim)
+objc.spamf.med <- matrix(NA,nrow=length(thres.spams),ncol=nsim)
 for (t in seq_along(thres.spams)) {
-    cat("\n\t Current threshold =",thres[t])
+    cat("\n\t Current threshold =",thres.spams[t])
     out <- do.call(rbind, mclapply(1:nsim, call.test.lasso, method="spams.prox", eps=thres.spams[t], mc.cores=mc.cores ))
     time.spamf.med[t,] <- out[, 1]
     prec.spamf.med[t,] <- out[, 2]    
+    objc.spamf.med[t,] <- out[, 3]    
 }
 cat("\n\n")
 
@@ -175,6 +191,7 @@ cat("\nLars... ")
 out <- mclapply(data, call.lars, mc.cores=mc.cores)
 time.lars.high <- sapply(out, function(l) l$time)
 fit.lars <- sapply(out, function(l) l$fit)
+objc.lars.high <- lapply(out, function(l) l$obj)
 cat("\n\n")
 
 call.test.lasso <- function(s, method, eps) {
@@ -186,23 +203,27 @@ cat("\nquadra (LARS)... ")
 out <- do.call(rbind, mclapply(1:nsim, call.test.lasso, method="quadrupen", eps=1e-8, mc.cores=mc.cores))
 time.craf.high <- out[,1]
 prec.craf.high <- out[,2]
+objc.craf.high <- out[,3]
 cat("\n\n")
 
 cat("\nSPAMs (LARS)... ")
 out <- do.call(rbind, mclapply(1:nsim, call.test.lasso, method="spams.lars", eps=1e-8, mc.cores=mc.cores))
 time.spam.high <- out[,1]
 prec.spam.high <- out[,2]
+objc.spam.high <- out[,3]
 cat("\n\n")
 
 cat("\nglmnet... ")
 thres.glmn <- 10^c(-5, -7, -8, -9, -10)
 time.glmn.high <- matrix(NA,nrow=length(thres.glmn),ncol=nsim)
 prec.glmn.high <- matrix(NA,nrow=length(thres.glmn),ncol=nsim)
+objc.glmn.high <- matrix(NA,nrow=length(thres.glmn),ncol=nsim)
 for (t in seq_along(thres.glmn)) {
-    cat("\n\t Current threshold =",thres[t])
+    cat("\n\t Current threshold =",thres.glmn[t])
     out <- do.call(rbind, mclapply(1:nsim, call.test.lasso, method="glmnet", eps=thres.glmn[t], mc.cores=mc.cores ))
     time.glmn.high[t,] <- out[, 1]
     prec.glmn.high[t,] <- out[, 2]    
+    objc.glmn.high[t,] <- out[, 3]    
 }
 cat("\n\n")
 
@@ -210,11 +231,13 @@ cat("\nSPAMs (fista)... ")
 thres.spams <- 10^c(-1, -2, -4)
 time.spamf.high <- matrix(NA,nrow=length(thres.spams),ncol=nsim)
 prec.spamf.high <- matrix(NA,nrow=length(thres.spams),ncol=nsim)
+objc.spamf.high <- matrix(NA,nrow=length(thres.spams),ncol=nsim)
 for (t in seq_along(thres.spams)) {
-    cat("\n\t Current threshold =",thres[t])
+    cat("\n\t Current threshold =",thres.spams[t])
     out <- do.call(rbind, mclapply(1:nsim, call.test.lasso, method="spams.prox", eps=thres.spams[t], mc.cores=mc.cores ))
     time.spamf.high[t,] <- out[, 1]
     prec.spamf.high[t,] <- out[, 2]    
+    objc.spamf.high[t,] <- out[, 3]    
 }
 cat("\n\n")
 
@@ -222,6 +245,6 @@ cat("\n\n")
 rm(data)
 save.image(file=file.out)
 
-pdf(file=paste(file.out,".pdf",sep=""))
+#pdf(file=paste(file.out,".pdf",sep=""))
 plot.others(file.out)
-dev.off()
+#dev.off()

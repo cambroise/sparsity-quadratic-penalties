@@ -10,16 +10,15 @@ file.med.hig <- 'output/compa-optim_p=100,s=30,n=200,eps=0.01.RData'
 file.med.med <- 'output/compa-optim_p=100,s=30,n=100,eps=0.01.RData'
 file.med.low <- 'output/compa-optim_p=100,s=30,n=50,eps=0.01.RData'
 
-pdf(file="output/timing_all.pdf", width=15, height=10)
-plot.timer(file.med.low, bw=0.25, title=FALSE)
-dev.off()
+ggsave(file = "../figures/timing_all.pdf", width = 9, height = 6,
+       plot = plot.timer(file.med.low, title = FALSE))
 
 ## Possible files...
 file.other.low <- "output/quadra_vs_others_p=200,n=400.RData"
 file.other.hig <- "output/quadra_vs_others_p=400,n=100.RData"
 
 pdf(file="timing_others_high_dim.pdf")
-plot.others(file.other.hig, title=FALSE)
+plot.others(file.other.hig, title=FALSE, cex = 1)
 dev.off()
 
 pdf(file="timing_others_low_dim.pdf")
@@ -39,19 +38,19 @@ file.other.low <- "output/timing_others_p=100,n=40_nsim=30.RData"
 file.other.med <- "output/timing_others_p=1000,n=200_nsim=30.RData"
 file.other.hig <- "output/timing_others_p=10000,n=400_nsim=10.RData"
 
-pdf(file="timing_others_low.pdf")
-par(mar=c(2,2,0.1,0.1))
-plot.others(file.other.low, title=FALSE, legend=FALSE, cex=1.5)
+pdf(file="../figures/timing_others_low.pdf")
+par(mar=c(2,2.8,0.1,0.1))
+plot.others(file.other.low, title=FALSE, legend=FALSE, cex=1.5, cex.axis=2)
 dev.off()
 
-pdf(file="timing_others_med.pdf")
-par(mar=c(2,2,0.1,0.1))
-plot.others(file.other.med, title=FALSE, legend=FALSE, cex=1.5)
+pdf(file="../figures/timing_others_med.pdf")
+par(mar=c(2,2.8,0.1,0.1))
+plot.others(file.other.med, title=FALSE, legend=FALSE, cex=1.5, cex.axis =2)
 dev.off()
 
-pdf(file="timing_others_hig.pdf")
-par(mar=c(2,2,0.1,0.1))
-plot.others(file.other.hig, title=FALSE, legend=FALSE, cex=1.5)
+pdf(file="../figures/timing_others_hig.pdf")
+par(mar=c(2,2.8,0.1,0.1))
+plot.others(file.other.hig, title=FALSE, legend=FALSE, cex=1.5, cex.axis =2)
 dev.off()
 
 pdf(file="timing_others_legend.pdf")

@@ -340,8 +340,8 @@ test.lasso <- function(data, thres, fit.ref, package=c("glmnet","quadrupen","spa
     prec <- sqrt(sum( (objc - objc.ref)[-length(lambda)]^2))/length(lambda)
   }
   
-  res <- c(time, prec)
-  names(res) <- c("CPU time in sec.","Precision")
+  res <- c(time, prec, objc)
+  names(res) <- c("CPU time in sec.","Precision", "Objective")
   return(res)
 }
 
@@ -404,7 +404,6 @@ outsample.test.error <- function(K=100, n, beta, cor, r2, lambda, thres.glmn, pr
 
       test <- sample(1:length(y),floor(length(y)*prop.test))
       train <- setdiff(1:length(y),test)
-      
       return(compute_error(x[train, ], x[test, ], y[train], y[test], thres.glmn, thres.spam, beta, lambda, mine=mycode, gamma=gamma))
   }
   out <- do.call(rbind, mclapply(1:K, one.simu, mc.cores=mc.cores))
@@ -418,7 +417,6 @@ compute_error <- function(x.train, x.test, y.train, y.test, thres.glmn, thres.sp
   require(glmnet)
 ##  require(spams)
   require(quadrupen)
-
   ## sample size
   n <- length(y.train)
   n.lambda <- length(lambda)
@@ -432,6 +430,12 @@ compute_error <- function(x.train, x.test, y.train, y.test, thres.glmn, thres.sp
   error.quad.mse <- error(lasso.quadra, x.test, y.test)
   error.quad.cla <- error(lasso.quadra, x.test, y.test, type="class", thres=thres.class)
   error.quad.sup <- apply(lasso.quadra@coefficients, 1, function(x) sum(sign(x) != sign(true.beta)) )
+  
+  tp.quad <- apply(lasso.quadra@coefficients, 1, function(x) length(intersect(which(x != 0), which(true.beta != 0))))
+  tn.quad <- apply(lasso.quadra@coefficients, 1, function(x) length(intersect(which(x == 0), which(true.beta == 0))))
+  fp.quad <- apply(lasso.quadra@coefficients, 1, function(x) length(intersect(which(x != 0), which(true.beta == 0))))
+  fn.quad <- apply(lasso.quadra@coefficients, 1, function(x) length(intersect(which(x == 0), which(true.beta != 0))))
+
   times.quad     <- rep(lasso.quadra@monitoring$external.timer, n.lambda)
 
   objc.ref <- objc <- objective(lasso.quadra,x.train,y.train)
@@ -449,6 +453,10 @@ compute_error <- function(x.train, x.test, y.train, y.test, thres.glmn, thres.sp
   error.glmn.sup <- c()
   times.glmn     <- c()
   prec.glmn      <- c()
+  tp.glmn <- c()
+  tn.glmn <- c()
+  fp.glmn <- c()
+  fn.glmn <- c()
 
   for (thres in thres.glmn) {
 ##    cat(" ", thres)
@@ -465,7 +473,12 @@ compute_error <- function(x.train, x.test, y.train, y.test, thres.glmn, thres.sp
     error.glmn.cla <- cbind(error.glmn.cla, error(lasso.glmn, x.test, y.test, type="class", thres=thres.class))
     error.glmn.sup <- cbind(error.glmn.sup,apply(lasso.glmn@coefficients, 1, function(x) sum(sign(x) != sign(true.beta))))
 
-    objc <- objective(lasso.glmn,x.train,y.train)
+  tp.glmn <- cbind(tp.glmn, apply(lasso.glmn@coefficients, 1, function(x) length(intersect(which(x != 0), which(true.beta != 0)))))
+  tn.glmn <- cbind(tn.glmn, apply(lasso.glmn@coefficients, 1, function(x) length(intersect(which(x == 0), which(true.beta == 0)))))
+  fp.glmn <- cbind(fp.glmn, apply(lasso.glmn@coefficients, 1, function(x) length(intersect(which(x != 0), which(true.beta == 0)))))
+  fn.glmn <- cbind(fn.glmn, apply(lasso.glmn@coefficients, 1, function(x) length(intersect(which(x == 0), which(true.beta != 0)))))
+  
+  objc <- objective(lasso.glmn,x.train,y.train)
     prec <- sqrt(sum( (objc - objc.ref)^2))/length(lambda)
     prec.glmn  <- c(prec.glmn , rep(prec, n.lambda))
     times.glmn <- c(times.glmn, rep(timer, n.lambda))
@@ -501,6 +514,11 @@ compute_error <- function(x.train, x.test, y.train, y.test, thres.glmn, thres.sp
   error.mse  <- c(error.quad.mse, c(error.glmn.mse))
   error.cla  <- c(error.quad.cla, c(error.glmn.cla))
   error.sup  <- c(error.quad.sup, c(error.glmn.sup))
+  tp <- c(tp.quad, c(tp.glmn))
+  tn <- c(tn.quad, c(tn.glmn))
+  fp <- c(fp.quad, c(fp.glmn))
+  fn <- c(fn.quad, c(fn.glmn))
+
   times      <- c(times.quad, times.glmn)
   prec       <- c(prec.quad, prec.glmn)
 
@@ -510,7 +528,7 @@ compute_error <- function(x.train, x.test, y.train, y.test, thres.glmn, thres.sp
   method     <- factor(rep(c("quad",paste("glmn",thres.glmn)), each=n.lambda), levels=c("quad",paste("glmn",thres.glmn)),ordered=TRUE)
   
   return(data.frame(steps=steps,lambda=lambdas,
-                    error.mse=error.mse,error.cla=error.cla,error.sup=error.sup,
+                    error.mse=error.mse,error.cla=error.cla,error.sup=error.sup,tp=tp, tn=tn,fp=fp,fn=fn,
                     times=times,prec=prec, package=package,method=method))
 } 
 

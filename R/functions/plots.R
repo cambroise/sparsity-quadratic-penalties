@@ -1,4 +1,6 @@
 require(ggplot2)
+require(viridis)
+
 plot.timer <- function(files, main="Timing comparison", title=TRUE, bw=0.25) {
 
   for (file in files) {
@@ -13,14 +15,12 @@ plot.timer <- function(files, main="Timing comparison", title=TRUE, bw=0.25) {
 
     xy <- as.matrix(expand.grid(lambdas, gammas))
     
-    prox.all <- c()
     prox.all     <- data.frame(rbind(cbind(xy, log10(c(res.prox.small$timer/res.quad.small$timer))),
                                      cbind(xy, log10(c(res.prox.medium$timer/res.quad.medium$timer))),
                                      cbind(xy, log10(c(res.prox.large$timer/res.quad.large$timer)))))
     prox.all <- cbind(prox.all, factor(rep(c("small corr. (0.1)", "medium corr. (0.4)", "large corr. (0.8)"), each=nrow(xy))))
     names(prox.all) <- c("x", "y", "z", "cor")
     
-    path.all <- c()
     path.all     <- data.frame(rbind(cbind(xy, log10(c(res.path.small$timer/res.quad.small$timer))),
                                      cbind(xy, log10(c(res.path.medium$timer/res.quad.medium$timer))),
                                      cbind(xy, log10(c(res.path.large$timer/res.quad.large$timer)))))
@@ -31,32 +31,32 @@ plot.timer <- function(files, main="Timing comparison", title=TRUE, bw=0.25) {
     res.all <- cbind(res.all, factor(rep(c("proximal (fista)", "coordinate descent"), c(nrow(prox.all),nrow(path.all)))))
     names(res.all) <- c("x", "y", "z", "correlation", "algo")
     
-    d <- ggplot(data=res.all, aes(x=log10(y), y=log10(x), z=z)) 
-    d <- d + geom_tile(aes(fill=z)) + stat_contour(size=0.2, binwidth=bw)
+    d <- ggplot(data=res.all, aes(x=log10(y), y=rev(log10(x)), z=z)) 
+    d <- d + geom_raster(aes(fill=z)) + stat_contour(size=0.2, binwidth=bw, colour = "black")
     if (title){
       d <- d + opts(title=paste(main,"with",sparsity,"and",sample)) + labs(x="lambda (log-scale)",y="gamma (log-scale)")
     } else {
-      d <- d + labs(x="",y="")
+      d <- d + labs(x="",y="") + theme_minimal(base_size = 14)
     }
-    d <- d + facet_grid(algo ~ correlation)  + scale_fill_continuous(name="# times\n   faster", breaks= c(0,log10(3),log10(10),log10(30),log10(100),log10(300)), labels=c("1","3","10","30","100","300"))
+    d <- d + facet_grid(algo ~ correlation)  + scale_fill_gradient(low = "gray40", high = "white", name="# times\n   faster", breaks= c(0,log10(3),log10(10),log10(30),log10(100),log10(300)), labels=c("1","3","10","30","100","300"))
     print(d)
   }
 }
 
 plot.others <- function(file, main="timing of quadratic solver vs other packages on a full solution path",
-                        cex = 1, y.range=NA, legend=TRUE, title=TRUE) {
+                        y.range=NA, legend=TRUE, title=TRUE, ...) {
 
   load(file)
 
-  time.glmn.low <- apply(time.glmn.low,1, median, na.rm=TRUE)
-  prec.glmn.low <- apply(prec.glmn.low,1, median, na.rm=TRUE)
- 
-  time.glmn.med <- apply(time.glmn.med,1,median, na.rm=TRUE)
-  prec.glmn.med <- apply(prec.glmn.med,1,median, na.rm=TRUE)
+  time.glmn.low <- apply(time.glmn.low, 1, median, na.rm=TRUE)
+  prec.glmn.low <- apply(prec.glmn.low, 1, median, na.rm=TRUE)
 
-  time.glmn.hig <- apply(time.glmn.high,1,median, na.rm=TRUE)
-  prec.glmn.hig <- apply(prec.glmn.high,1,median, na.rm=TRUE)
-  
+  time.glmn.med <- apply(time.glmn.med, 1,median, na.rm=TRUE)
+  prec.glmn.med <- apply(prec.glmn.med, 1,median, na.rm=TRUE)
+
+  time.glmn.hig <- apply(time.glmn.high, 1,median, na.rm=TRUE)
+  prec.glmn.hig <- apply(prec.glmn.high, 1,median, na.rm=TRUE)
+
   time.craf <- median(c(time.craf.low, time.craf.med, time.craf.high), na.rm=TRUE)
   prec.craf <- median(c(prec.craf.low, prec.craf.med, prec.craf.high), na.rm=TRUE)
 
@@ -65,13 +65,13 @@ plot.others <- function(file, main="timing of quadratic solver vs other packages
 
   time.spamf.low <- apply(time.spamf.low,1, median, na.rm=TRUE)
   prec.spamf.low <- apply(prec.spamf.low,1, median, na.rm=TRUE)
- 
+
   time.spamf.med <- apply(time.spamf.med,1,median, na.rm=TRUE)
   prec.spamf.med <- apply(prec.spamf.med,1,median, na.rm=TRUE)
 
   time.spamf.hig <- apply(time.spamf.high,1,median, na.rm=TRUE)
   prec.spamf.hig <- apply(prec.spamf.high,1,median, na.rm=TRUE)
-  
+
   time.lars <- median(c(time.lars.low, time.lars.med, time.lars.high), na.rm=TRUE)
 
   all.time <- c(time.glmn.low,time.glmn.med,time.glmn.hig, time.spam,
@@ -87,26 +87,26 @@ plot.others <- function(file, main="timing of quadratic solver vs other packages
   }
   
   plot(log10(time.glmn.low),log10(prec.glmn.low), col="blue",
-       xlab="", ylab="", ylim=ry, xlim=rx, type="b", lty=2, pch=16, cex=cex)
+       xlab="", ylab="", ylim=ry, xlim=rx, type="b", lty=2, pch=16, ...)
   if (title) {
     title(main = main, xlab="CPU time in sec (log10)", ylab="distance to optimum (log10)")
   }
-  lines(log10(time.glmn.med),log10(prec.glmn.med), col="green",type="b", pch=16, lty=2, cex=cex)
-  lines(log10(time.glmn.hig),log10(prec.glmn.hig), col="red",type="b", pch=16, lty=2, cex=cex)
+  lines(log10(time.glmn.med),log10(prec.glmn.med), col="green",type="b", pch=16, lty=2, ...)
+  lines(log10(time.glmn.hig),log10(prec.glmn.hig), col="red",type="b", pch=16, lty=2, ...)
 
-  lines(log10(time.spamf.low),log10(prec.spamf.low), col="blue",type="b", pch=17, lty=3, cex=cex)
-  lines(log10(time.spamf.med),log10(prec.spamf.med), col="green",type="b", pch=17, lty=3, cex=cex)
-  lines(log10(time.spamf.hig),log10(prec.spamf.hig), col="red",type="b", pch=17, lty=3, cex=cex)
+  lines(log10(time.spamf.low),log10(prec.spamf.low), col="blue",type="b", pch=17, lty=3, ...)
+  lines(log10(time.spamf.med),log10(prec.spamf.med), col="green",type="b", pch=17, lty=3, ...)
+  lines(log10(time.spamf.hig),log10(prec.spamf.hig), col="red",type="b", pch=17, lty=3, ...)
   
-  segments(min(rx)-1,log10(prec.craf),log10(time.craf),log10(prec.craf), lty=3, cex=cex)
-  segments(log10(time.craf),min(ry)-1,log10(time.craf),log10(prec.craf), lty=3, cex=cex)
-  points(log10(time.craf),log10(prec.craf), pch=15, cex=cex)
-  segments(log10(time.lars),min(ry)-1,log10(time.lars),log10(prec.craf), lty=3, cex=cex)
-  points(log10(time.lars),log10(prec.craf), pch=16, cex=cex)
+  segments(min(rx)-1,log10(prec.craf),log10(time.craf),log10(prec.craf), lty=3, ...)
+  segments(log10(time.craf),min(ry)-1,log10(time.craf),log10(prec.craf), lty=3, ...)
+  points(log10(time.craf),log10(prec.craf), pch=15, ...)
+  segments(log10(time.lars),min(ry)-1,log10(time.lars),log10(prec.craf), lty=3, ...)
+  points(log10(time.lars),log10(prec.craf), pch=16, ...)
 
-  segments(min(rx)-1,log10(prec.spam),log10(time.spam),log10(prec.spam), lty=3, cex=cex)
-  segments(log10(time.spam),min(ry)-1,log10(time.spam),log10(prec.spam), lty=3, cex=cex)
-  points(log10(time.spam),log10(prec.spam), pch=17, cex=cex)
+  segments(min(rx)-1,log10(prec.spam),log10(time.spam),log10(prec.spam), lty=3, ...)
+  segments(log10(time.spam),min(ry)-1,log10(time.spam),log10(prec.spam), lty=3, ...)
+  points(log10(time.spam),log10(prec.spam), pch=17, ...)
   
   if (legend) {
     legend("topright", c("low corr.","med corr.","high corr."), seg.len=3,
