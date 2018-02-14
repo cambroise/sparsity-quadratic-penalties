@@ -1,0 +1,101 @@
+\paragraph{OSCAR}
+
+The sparsity inducing penalties can be adapted to pursue different goals, such
+as having equal coefficients.  This was first implemented for ordered features
+with the fused Lasso \citep{Tibshirani05}, which encourages sparse and locally
+constant solutions by penalizing the $\ell_1$-norm of both the coefficients and
+their successive differences.
+
+Even when there is no ordering between features, equality can be desired for
+interpretability purposes.  OSCAR (Octagonal Shrinkage and Clustering Algorithm
+for Regression) has been conceived in this siprit, to infer clusters of
+variables in a supervised setting \citep{Bondell08}.
+It is based on a penalizer encouraging the sparsity of the regression
+coefficients and the equality of the non-zero entries.
+By this means, correlated predictors that have a similar effect on the response
+form ``predictive clusters'' represented by a single coefficient.
+
+
+
+%
+\begin{equation*}
+  \clH^\mathrm{oscar}_{\bfbeta^*} = \left\{ 
+% \bfbeta \in \mathbb{R}^p : \norm[1]{\bfbeta} \leq \eta_\beta 
+\right\}
+  \enspace.
+\end{equation*}
+%
+The dual assumption is that the $\ell_\infty$-norm of $\bfgamma$ should be
+controlled, say:
+%
+\begin{align*}
+  \mathcal{D}^\mathrm{Oscar}_{\bfgamma} & = \left\{ 
+% \bfgamma \in \mathbb{R}^p :
+% \sup_{\bfbeta\in\clH^\mathrm{Lasso}_{\bfbeta^*}} \bfgamma^\intercal\bfbeta \leq 1 
+\right\} \\
+%     & = \left\{ \bfgamma \in \mathbb{R}^p : \norm[\infty]{\bfgamma} \leq \eta_\gamma \right\} \\
+%     & = \mathbf{conv} \big\{ \left\{ -\eta_\gamma, \eta_\gamma \right\}^p \big\}
+  \enspace,
+\end{align*}
+where $\eta_\gamma$ is defined from $\eta_\beta$ and $\mathbf{conv}$ denotes convex hull, so that Problem
+\eqref{eq:robust:general:form3} reads:
+%
+\begin{align*}
+  & \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \left\{ -\eta_\gamma, \eta_\gamma \right\}^p}
+      \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda \norm{\bfbeta - \bfgamma}^2 \Big\} \\
+  \Leftrightarrow
+    & \min_{\bfbeta\in\mathbb{R}^p}
+      \norm{\bfX \bfbeta - \bfy}^2 + 2 \lambda \eta_\gamma \norm[1]{\bfbeta} + \lambda \norm{\bfbeta}^2 
+  \enspace,
+\end{align*}
+
+
+The lagrangian formulation of  OSCAR as a constrained optimization can be expressed as
+$$
+ \min_{\bfbeta}     \norm{\bfX  \bfbeta  - \bfy  }^2+\lambda \sum_{j=1}^p \left( c(j-1)+1 \right) |\beta|_{(j)},
+$$
+with $|\beta|_{(1)}\leq |\beta|_{(2)} \leq \cdots \leq |\beta|_{(p)}$. The penalty term can be expressed in a form close to our adverse quadratic penalty. Let us consider  the adverse vector domain to be
+$$
+ \clD_{\bfgamma}=\left\{ \bfgamma \in \mathbb{R}^p | \bfgamma= 
+\begin{pmatrix}
+\alpha_1 1\\
+\alpha_2 (c+1) \\
+\alpha_3 (2c+1) \\
+\vdots \\
+\alpha_p (p-1) c+1
+\end{pmatrix}, \ c\in \mathbb{R}^+ , 
+\norm[\infty]{(\alpha_1,\cdots,\alpha_p)} \leq \eta_\alpha \right\}
+$$
+and the permutation matrix
+$$
+ P_{\bfbeta} = \left\{ \mathbb{I}_{(\mbox{rank}\left( |\beta|_{(i)}=j \right)} \right\}_{i = 1 \cdots p, j=1 \cdots p}.
+$$
+
+We can reformulate the previous lagrangian as 
+\begin{equation*}
+    \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
+    \norm{\bfX \bfbeta - \bfy } + \lambda \norm{\bfbeta +
+    P_{\bfbeta}   P_{\bfbeta}  \bfgamma } \enspace.
+\end{equation*}
+
+
+
+The rewriting of the initial problem  allows to see that the very same
+optimization adaptive  constraint algorithm  used for the  elastic net
+can be used to solve the OSCAR problem (see Table \ref{table:summary}).
+
+
+\begin{figure}
+  \begin{center} 
+    \smallxylabelsquare{../figures/oscar_decomposition1}{$\beta_1$}{$\beta_2$}{}%
+    \smallxylabelsquare{../figures/oscar_decomposition2}{$\beta_1$}{$\beta_2$}{}%
+    \smallxylabelsquare{../figures/oscar_decomposition3}{$\beta_1$}{$\beta_2$}{}%
+    \smallxylabelsquare{../figures/oscar_decomposition4}{$\beta_1$}{$\beta_2$}{}%
+    \caption{Admissible sets (patches) for the OSCAR, defined by the
+      intersection of the Euclidean balls whose centers are represented by
+      crosses and boundaries are
+      displayed in black.}
+    \label{fig:oscar-penalty}
+    \end{center} 
+\end{figure}
+

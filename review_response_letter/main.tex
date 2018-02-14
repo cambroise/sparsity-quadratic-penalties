@@ -1,8 +1,95 @@
-* Reviewer 1
-***  The algorithm starts from a sparse initial guess, i.e., the active set A = ∅.
-    I think it may be useful to discuss briefly how the computational time
-    changes for an experimental setup, in which the choice of the initial guess
-    is randomized.
+%\title{Overleaf Memo Template}
+% Using the texMemo package by Rob Oakes
+\documentclass[a4paper,11pt]{texMemo}
+\usepackage[english]{babel}
+\usepackage{graphicx, lipsum}
+\usepackage{amssymb,amsthm,amsmath}
+\usepackage{array}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\input{../CSDA/preamble}
+
+\newtheorem{assumption}{Assumption}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newcommand\xylabellarge[4]{% #1 Image, #2=XText, #3=YText,, #4=Title,
+  \setlength{\unitlength}{13cm}%
+  \begin{picture}(1,0.6)%
+    \put(0.04,0.025){\includegraphics[width=0.95\unitlength]{#1}}
+    \put(0.54,0){\makebox[0cm]{\small#2}}
+    \put(0,0.3){\rotatebox{90.0}{\makebox[0cm]{\small#3}}}
+    \put(0.525,0.6){\makebox[0cm]{#4}}
+  \end{picture}%
+}
+\newcommand\xylabelsquare[4]{% #1 Image, #2=XText, #3=YText,, #4=Title,
+  \setlength{\unitlength}{6.5cm}%
+  \begin{picture}(1,1)%
+    \put(0.075,0.075){\includegraphics[width=0.90\unitlength]{#1}}
+    \put(0.575,0){\makebox[0cm]{\small#2}}
+    \put(0,0.525){\rotatebox{90.0}{\makebox[0cm]{\small#3}}}
+    \put(0.525,1){\makebox[0cm]{#4}}
+  \end{picture}%
+}
+\newcommand\medxylabelsquare[4]{% #1 Image, #2=XText, #3=YText,, #4=Title,
+  \setlength{\unitlength}{0.33\linewidth}%
+  \begin{picture}(1,1)%
+    \put(0.075,0.075){\includegraphics[width=0.90\unitlength]{#1}}
+    \put(0.525,0){\makebox[0cm]{\small#2}}
+    \put(0,0.525){\rotatebox{90.0}{\makebox[0cm]{\small#3}}}
+    \put(0.525,1){\makebox[0cm]{#4}}
+  \end{picture}%
+}
+\newcommand\smallxylabelsquare[4]{% #1 Image, #2=XText, #3=YText,, #4=Title,
+  \setlength{\unitlength}{0.25\linewidth}%
+  \begin{picture}(1,1)%
+    \put(0.10,0.10){\includegraphics[width=0.80\unitlength]{#1}}
+    \put(0.5,0){\makebox[0cm]{\small#2}}
+    \put(0,0.5){\rotatebox{90.0}{\makebox[0cm]{\small#3}}}
+    \put(0.525,0.95){\makebox[0cm]{#4}}
+  \end{picture}%
+}
+
+
+
+
+%% Edit the header section here. To include your
+%% own logo, upload a file via the files menu.
+\memoto{Erricos Kontoghiorghes}
+\memofrom{Chiquet, Grandvalet, Ambroise}
+\memosubject{Response to CSDA review CSDA-D-17-00692  (e199)}
+\memodate{\today}
+\logo{\includegraphics[width=0.25\textwidth]{logo_lamme.pdf}}
+
+\begin{document}
+\maketitle
+Dear editor,
+
+We are grateful to the reviewers for their careful reading  of
+our paper entitled
+
+\begin{center}
+  ''Sparsity by Worst-case Penalties''
+\end{center}
+
+and their enriching remarks. This letter aims to provide a
+point-by-point response to their comments and suggestions.
+
+\section*{Referee 1}
+
+%* Reviewer 1
+%***
+
+
+\emph{The algorithm starts from a sparse initial guess, i.e., the active
+set $A = \emptyset$.  I think it may be useful to discuss briefly how the
+computational time changes for an experimental setup, in which the
+choice of the initial guess is randomized.}
+
+
+
+
 
 ****  Réponse (dans la lettre) :Yves:
 Yves: 
@@ -57,19 +144,20 @@ donc on ne rajoute pas mais on met les FP et FN sur la figure 8
 as the axes labels are not easily readable and colors are not
 distinguishable.
 *** In line 377,                                                       :Yves:
-**** Quadrupen, Spam_lars sont des méthodes du second ordre et ne sont pas sensible aux corrélation... au 
+**** Quadrupen, Spam\_lars sont des méthodes du second ordre et ne sont pas sensible aux corrélation... au 
 I would suggest to explain the reason why quadrupen, SPAMS-LARS and lars are not
 sensitive to the level of correlation between features.
 *** In the caption of Figure 8, specify the x-axis. :Julien: 
 
-**** C'est un log-10 (\lambda_1)
+**** C'est un log-10 ($\lambda_1$)
 
 
 Gasso G., Rakotomamonjy A., Canu S. (2009). Recovering sparse signals with a certain family of non convex penalties and DC programming. IEEE Transactions on Signal Processing, 57(12), 4686-4698.
 
 
 
-* Reviewer 2
+
+\section*{Referee 2}
 The authors proposed a new optimization algorithm to solve the sparse linear regression
 with a norm penalty term, including group-lasso and elastic-net. The proposed method
 is both accurate in estimation and extremely computationally fast, as shown in extensive
@@ -142,7 +230,13 @@ rules in determining tuning parameters.
 
 Fixer lambda puis alpha pour glmnet
 Faire bouger lambda1 et lambda2 pour nous
-* Reviewer 3
+
+
+
+\section*{Referee 3}
+
+
+
 
 The article proposes a novel algorithm, which supposedly solves the elastic- net 
 problem and approximates the solutions to LASSO and l∞,1 version of group LASSO. 
@@ -182,6 +276,10 @@ like e.g. the Sorted L-One Norm (see OSCAR or SLOPE (Bogdan et al, AOAS 2015)).
 
 **** Ajouter OSCAR dans la lettre.                               :Christophe:
 Voir oscar.tex
+
+%\subsection{OSCAR}
+\input{oscar}
+
 
 
 *** 3. I suggest to mathematically formalize the Section 2.4 
@@ -302,3 +400,11 @@ I suggest to directly compare the values of the objective function.
 
 
 **** 
+
+
+\bibliographystyle{../CSDA/elsarticle-harv} 
+\bibliography{../CSDA/biblio_crafter}
+
+
+
+\end{document}
