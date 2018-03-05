@@ -15,40 +15,37 @@ coefficients and the equality of the non-zero entries.
 By this means, correlated predictors that have a similar effect on the response
 form ``predictive clusters'' represented by a single coefficient.
 
-
-
-%
-\begin{equation*}
-  \clH^\mathrm{oscar}_{\bfbeta^*} = \left\{ 
-% \bfbeta \in \mathbb{R}^p : \norm[1]{\bfbeta} \leq \eta_\beta 
-\right\}
-  \enspace.
-\end{equation*}
-%
-The dual assumption is that the $\ell_\infty$-norm of $\bfgamma$ should be
-controlled, say:
-%
-\begin{align*}
-  \mathcal{D}^\mathrm{Oscar}_{\bfgamma} & = \left\{ 
-% \bfgamma \in \mathbb{R}^p :
-% \sup_{\bfbeta\in\clH^\mathrm{Lasso}_{\bfbeta^*}} \bfgamma^\intercal\bfbeta \leq 1 
-\right\} \\
-%     & = \left\{ \bfgamma \in \mathbb{R}^p : \norm[\infty]{\bfgamma} \leq \eta_\gamma \right\} \\
-%     & = \mathbf{conv} \big\{ \left\{ -\eta_\gamma, \eta_\gamma \right\}^p \big\}
-  \enspace,
-\end{align*}
-where $\eta_\gamma$ is defined from $\eta_\beta$ and $\mathbf{conv}$ denotes convex hull, so that Problem
-\eqref{eq:robust:general:form3} reads:
-%
-\begin{align*}
-  & \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \left\{ -\eta_\gamma, \eta_\gamma \right\}^p}
-      \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda \norm{\bfbeta - \bfgamma}^2 \Big\} \\
-  \Leftrightarrow
-    & \min_{\bfbeta\in\mathbb{R}^p}
-      \norm{\bfX \bfbeta - \bfy}^2 + 2 \lambda \eta_\gamma \norm[1]{\bfbeta} + \lambda \norm{\bfbeta}^2 
-  \enspace,
-\end{align*}
-
+% %
+% \begin{equation*}
+%   \clH^\mathrm{oscar}_{\bfbeta^*} = \left\{ 
+% % \bfbeta \in \mathbb{R}^p : \norm[1]{\bfbeta} \leq \eta_\beta 
+% \right\}
+%   \enspace.
+% \end{equation*}
+% %
+% The dual assumption is that the $\ell_\infty$-norm of $\bfgamma$ should be
+% controlled, say:
+% %
+% \begin{align*}
+%   \mathcal{D}^\mathrm{Oscar}_{\bfgamma} & = \left\{ 
+% % \bfgamma \in \mathbb{R}^p :
+% % \sup_{\bfbeta\in\clH^\mathrm{Lasso}_{\bfbeta^*}} \bfgamma^\intercal\bfbeta \leq 1 
+% \right\} \\
+% %     & = \left\{ \bfgamma \in \mathbb{R}^p : \norm[\infty]{\bfgamma} \leq \eta_\gamma \right\} \\
+% %     & = \mathbf{conv} \big\{ \left\{ -\eta_\gamma, \eta_\gamma \right\}^p \big\}
+%   \enspace,
+% \end{align*}
+% where $\eta_\gamma$ is defined from $\eta_\beta$ and $\mathbf{conv}$ denotes convex hull, so that Problem
+% \eqref{eq:robust:general:form3} reads:
+% %
+% \begin{align*}
+%   & \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \left\{ -\eta_\gamma, \eta_\gamma \right\}^p}
+%       \Big\{ \norm{\bfX \bfbeta - \bfy}^2 + \lambda \norm{\bfbeta - \bfgamma}^2 \Big\} \\
+%   \Leftrightarrow
+%     & \min_{\bfbeta\in\mathbb{R}^p}
+%       \norm{\bfX \bfbeta - \bfy}^2 + 2 \lambda \eta_\gamma \norm[1]{\bfbeta} + \lambda \norm{\bfbeta}^2 
+%   \enspace,
+% \end{align*}
 
 The lagrangian formulation of  OSCAR as a constrained optimization can be expressed as
 $$
@@ -75,14 +72,12 @@ We can reformulate the previous lagrangian as
 \begin{equation*}
     \min_{\bfbeta\in\mathbb{R}^p} \max_{\bfgamma \in \clD_{\bfgamma}}
     \norm{\bfX \bfbeta - \bfy } + \lambda \norm{\bfbeta +
-    P_{\bfbeta}   P_{\bfbeta}  \bfgamma } \enspace.
+     P_{\bfbeta}  \bfgamma } \enspace.
 \end{equation*}
 
-
-
-The rewriting of the initial problem  allows to see that the very same
+This rewriting of the initial problem  allows to see that the very same
 optimization adaptive  constraint algorithm  used for the  elastic net
-can be used to solve the OSCAR problem (see Table \ref{table:summary}).
+can be used to solve the OSCAR problem (Illustrated in Figure \ref{figure:oscar}).
 
 
 \begin{figure}
@@ -94,7 +89,7 @@ can be used to solve the OSCAR problem (see Table \ref{table:summary}).
     \caption{Admissible sets (patches) for the OSCAR, defined by the
       intersection of the Euclidean balls whose centers are represented by
       crosses and boundaries are
-      displayed in black.}
+      displayed in black.} \label{figure:oscar}
     \label{fig:oscar-penalty}
     \end{center} 
 \end{figure}

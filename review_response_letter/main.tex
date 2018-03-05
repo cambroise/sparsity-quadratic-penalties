@@ -2,6 +2,7 @@
 % Using the texMemo package by Rob Oakes
 \documentclass[a4paper,11pt]{texMemo}
 \usepackage[english]{babel}
+%\usepackage[utf8]{inputenc}
 \usepackage{graphicx, lipsum}
 \usepackage{amssymb,amsthm,amsmath}
 \usepackage{array}
@@ -81,13 +82,12 @@ point-by-point response to their comments and suggestions.
 %* Reviewer 1
 %***
 
-
-\emph{The algorithm starts from a sparse initial guess, i.e., the active
+\begin{itemize}
+\item
+  \emph{The algorithm starts from a sparse initial guess, i.e., the active
 set $A = \emptyset$.  I think it may be useful to discuss briefly how the
 computational time changes for an experimental setup, in which the
 choice of the initial guess is randomized.}
-
-
 
 
 
@@ -105,70 +105,103 @@ Une partie de la réponse est dans le warm start que nous avons utilisé dans le
 **** Réponse (à ajouter dans le texte) :Yves:
 Dire que c'est important de partir de zéro 
 
-*** In section 5,
-I would suggest to switch the results on simulated settings and on real-world
+\item
+%*** In section 5,
+\emph{I would suggest to switch the results on simulated settings and on real-world
 data, such that the latter can be commented in light of the properties and
-conclusions obtained with synthetic data.
+conclusions obtained with synthetic data.}
 
-**** Réponse (faisable) :Christophe:
-
-OK on fait 
-
-*** In the simulated data section, 
-I would suggest to add the F-measure between the support of the true coefficient
-vector β⋆ and the estimated one βˆ, as a performance measure to evaluate the
-selection properties of the different algorithms (see Section IV in Gasso et
-al., 2009).
+We have switched the results
+on simulated setting and real-world data.
+The real-world data indeed exhibits a  difference in support recovery
+between \texttt{quadrupen} and \texttt{glmnet}.
+This difference was expected as shown in the simulation comparing 
+\texttt{quadrupen} \texttt{glmnet} with the  default value of
+precision. 
 
 
-**** La F mesure n'est pas super lisible, :Julien: 
-donc on ne rajoute pas mais on met les FP et FN sur la figure 8
+%**** Réponse (faisable) :Christophe:
 
-**** Rajouter la citation en citant la F-Mesure :Christophe:
-
-@article{gasso2009recovering,
-  title={Recovering sparse signals with a certain family of nonconvex penalties and DC programming},
-  author={Gasso, Gilles and Rakotomamonjy, Alain and Canu, St{\'e}phane},
-  journal={IEEE Transactions on Signal Processing},
-  volume={57},
-  number={12},
-  pages={4686--4698},
-  year={2009},
-  publisher={IEEE}
+%OK on fait 
+\item 
+\emph{In the simulated data section, 
+  I would suggest to add the F-measure between
+  the support of the true coefficient
+  vector $\betaβ^⋆$ and the estimated one $\hat{\beta}$,
+  as a performance measure to evaluate the
+  selection properties of the different algorithms
+  (see Section IV in Gasso et al., 2009).
 }
 
-*** In line 244, :Christophe: :DONE:
-   the reference should not be in parenthesis.
+We followed the recommandation and  improve the illustration of difference in support recovery (Figure 8) in using True Postive and False Negative and F-measure (with the corresponding citation of \cite{gasso2009recovering}):
 
+% \begin{verbatim}
+% @article{gasso2009recovering,
+%   title={Recovering sparse signals with a certain family of nonconvex penalties and DC programming},
+%   author={Gasso, Gilles and Rakotomamonjy, Alain and Canu, St{\'e}phane},
+%   journal={IEEE Transactions on Signal Processing},
+%   volume={57},
+%   number={12},
+%   pages={4686--4698},
+%   year={2009},
+%   publisher={IEEE}
+% }
+% \end{verbatim}
+
+\item 
+\emph{In line 244, %:Christophe: :DONE:
+   the reference should not be in parenthesis.}
+
+Done.
+
+
+
+
+
+
+
+
+
+\item 
 *** Figure 6 could be improved, :Julien:
 as the axes labels are not easily readable and colors are not
 distinguishable.
+
+\item
 *** In line 377,                                                       :Yves:
 **** Quadrupen, Spam\_lars sont des méthodes du second ordre et ne sont pas sensible aux corrélation... au 
 I would suggest to explain the reason why quadrupen, SPAMS-LARS and lars are not
 sensitive to the level of correlation between features.
+
+
+\item
 *** In the caption of Figure 8, specify the x-axis. :Julien: 
 
 **** C'est un log-10 ($\lambda_1$)
 
 
-Gasso G., Rakotomamonjy A., Canu S. (2009). Recovering sparse signals with a certain family of non convex penalties and DC programming. IEEE Transactions on Signal Processing, 57(12), 4686-4698.
+\end{itemize}
+%Gasso G., Rakotomamonjy A., Canu S. (2009). Recovering sparse signals with a certain family of non convex penalties and DC programming. IEEE Transactions on Signal Processing, 57(12), 4686-4698.
 
 
 
 
 \section*{Referee 2}
-The authors proposed a new optimization algorithm to solve the sparse linear regression
-with a norm penalty term, including group-lasso and elastic-net. The proposed method
-is both accurate in estimation and extremely computationally fast, as shown in extensive
 
-simulation studies. It is very good that the authors also provided the accompanying R-
-package (quadrupen) on CRAN.
+%The authors proposed a new optimization algorithm to solve the sparse linear regression
+%with a norm penalty term, including group-lasso and elastic-net. The proposed method
+%is both accurate in estimation and extremely computationally fast, as shown in extensive
 
-The paper is interesting in computational aspects and fit the theme of the journal.
-However, I think a few concerns should be addressed before publication is possible.
-** Major comments:
-*** 1. As the authors also admitted in the paper, the proposed algorithm is highly similar
+%simulation studies. It is very good that the authors also provided the accompanying R-
+%package (quadrupen) on CRAN.
+%
+%The paper is interesting in computational aspects and fit the theme of the journal.
+%However, I think a few concerns should be addressed before publication is possible.
+
+\subsection*{Major comments}
+\begin{itemize}
+\item
+  *** 1. As the authors also admitted in the paper, the proposed algorithm is highly similar
 to the active-set methods, except the procedures taken in Step 3. I understand
 that the authors argue that quadrupen is more flexible in handling a wider range
 of penalties and look at the problem from a different perspective. However, either
@@ -178,6 +211,9 @@ contribution enough to consider it as an ”alternative” algorithm.
 **** Réponse dans le texte 
 Step 3 speeds up the algorithm .... that the main advantage....
 
+
+
+\item 
 *** 2. In the simulation studies, under the same tuning parameter, a more conservative
 selection of the quadrupen was observed in the QTL example comparing to that of
 glmnet, but not in the examples showed in Figure 8. I was wondering if this is an
@@ -190,6 +226,7 @@ it, since basically they are solving the same underlying optimization problem.
 
 glmnet garde les petits coefficients qui ne coutent pas cher dans l'objectif
 
+\item 
 *** 3. For solving the elastic-net problem, the authors compared the proposed method to
 other two optimization strategies. It seems that the proposed method only gains
 obvious efficiency in the regime where λ1 and λ2 are very small. In the case if
@@ -206,11 +243,13 @@ des valeurs de lambda1 lambda2
 
 **** Mais c'est justement 
 sur les petites valeurs que c'est coûteux.
+\end{itemize}
 
+\subsection*{Minor comments}
 
-
-** Minor comments:
-*** 1. The presentation of the figures in the paper is not very straightforward to readers. For
+\begin{itemize}
+\item
+  *** 1. The presentation of the figures in the paper is not very straightforward to readers. For
 example, I found Figure 1,2,3,6 kind of hard to understand by reading the captions.
 More basic introductions should be made in the captions or in the context describing
 the figures. Moreover, please pay attention to the size of fonts in the labs, titles and
@@ -219,7 +258,7 @@ legends across the figures. Currently they are quite differing.
 
 **** Plus gros caption :Yves:
 
-
+\item 
 *** 2. In the section 5.2.3 and 5.2.4, the authors benchmarked the methods by Lasso, letting
 λ2 = 0. Is it possible to consider the more general elastic-net problem (say for a fixed
 λ2) for at least some of the packages, especially in measuring the model selection
@@ -231,57 +270,78 @@ rules in determining tuning parameters.
 Fixer lambda puis alpha pour glmnet
 Faire bouger lambda1 et lambda2 pour nous
 
+\end{itemize}
 
 
 \section*{Referee 3}
 
+%The article proposes a novel algorithm, which supposedly solves the elastic- net 
+%problem and approximates the solutions to LASSO and l∞,1 version of group LASSO. 
+%The idea seems interesting but based on the current version of the article it is 
+%difficult to assess the properties and correctness of the pro- posed algorithm.
+% Its description is very sketchy. Also, the paper lacks the results on its convergency.
+% Additionally, many parts of the paper suffer from the lack of precision and contain wrong statements or unjustified claims. 
+%The list of detailed remarks is included below.
 
 
+\begin{itemize}
 
-The article proposes a novel algorithm, which supposedly solves the elastic- net 
-problem and approximates the solutions to LASSO and l∞,1 version of group LASSO. 
-The idea seems interesting but based on the current version of the article it is 
-difficult to assess the properties and correctness of the pro- posed algorithm.
- Its description is very sketchy. Also, the paper lacks the results on its convergency.
- Additionally, many parts of the paper suffer from the lack of precision and contain wrong statements or unjustified claims. 
-The list of detailed remarks is included below.
-*** 1. Equations (4) and the one above (4) give the wrong impression concerning the ”simplicity” of the solution of problem (3).
-Namely, the solution of the ”inner” problem (maximizing over γ or minimizing over β) 
-will depend on the value of the second parameter, 
-which makes the ”outer” optimization problem rather difficult.
+\item 
+\emph{1. Equations (4) and the one above (4) give the wrong impression
+  concerning the ''simplicity'' of the solution of problem (3).  Namely,
+  the solution of the ''inner'' problem (maximizing over $\gamma$ or minimizing
+  over $\beta$) will depend on the value of the second parameter, which
+  makes the ''outer'' optimization problem rather difficult.
+}
 
-**** Réponse dans la lettre: c'est comme les équation d'EM où les équations d'update sont simples et le problème globale est 
-complexe :Christophe: 
-
-**** On explique à la fin du paragraphe:
-et, defined by the extreme points of the convex polytope B∗1. This number of
-87 points typically increases exponentially in p, but, with the working-set strategy,
-88 the number of configuration actually visited typically grows linearly with the
-89 number of non-zero coefficients in the solution βˆ.
+Equations 4 and above are actually simple but pose an optimization problem difficult to solve. They highlight that when $\gamma$ is known the optimization problem becomes simple. This type of circularity  lies at the heart of the Expectation Maximization algorithm. We use a similar  form in the  relation between $\beta$ and $\gamma$ to solve the problem of external maximization without pretending that the global problem is a simple problem.
 
 
+% **** Réponse dans la lettre: c'est comme les équation d'EM où les équations d'update sont simples et le problème globale est
+% complexe :Christophe:
 
-*** 2. It is not true that the quadratic problem (5) is a different formulation of (3). 
+% Les équations 4 et au dessus sont effectivement simple mais pose un problème d'optimisation difficile à résoudre. Elles en évidence que lorsque $\gamma$ est connu le problème d'optimisation devient simple. Ce type  de circularité du problème est au coeur de l'algorithme Expectation Maximisation.  Nous utilisons la forme de la relation pour résoudre le problème de maximisation externe sans prétendre que le problème global est un problème simple. 
 
-Under some circumstances it only asymptotically (for η → ∞) approximates (3).
- In Section 3 the authors have shown that this asymptotic approximation works for LASSO 
-and for l∞,1 version of group LASSO. Their derivations strongly rely on the simple form of l1 or l∞ balls. 
+
+% **** On explique à la fin du paragraphe:
+% et, defined by the extreme points of the convex polytope B∗1. This number of
+% 87 points typically increases exponentially in p, but, with the working-set strategy,
+% 88 the number of configuration actually visited typically grows linearly with the
+% 89 number of non-zero coefficients in the solution βˆ.
+
+
+\item
+  \emph{2.  It is not true that the quadratic problem (5) is a
+    different formulation of (3).
+    Under some circumstances it only asymptotically (for
+    $\eta \rightarrow \infty$) approximates (3).  In Section 3 the
+    authors have shown that this asymptotic approximation works for
+    LASSO and for $\ell_\infty$, 1 version of group LASSO. Their
+    derivations strongly rely on the simple form of $\ell_1$ or
+    $\ell_\infty$ balls.
+  }
 
 **** We agree with the reviewer, as stated in the paper line 100
 
+\item 
+  \emph{It is hard to verify the authors statement that similar asymptotic approximations would work for other norms,  like e.g.
+    the Sorted L-One Norm (see OSCAR \citep{Bondell08} or SLOPE \citep{bogdan2015slope}).
+    If this assertion is indeed true,
+    I suggest to add a Section with a proper mathematical justification.}
 
-It is hard to verify the authors statement that similar asymptotic approximations would work for other norms, 
-like e.g. the Sorted L-One Norm (see OSCAR or SLOPE (Bogdan et al, AOAS 2015)).
- If this assertion is indeed true,  I suggest to add a Section with a proper mathematical justification.
+%**** Ajouter OSCAR dans la lettre.                               :Christophe:
+%Voir oscar.tex
 
-**** Ajouter OSCAR dans la lettre.                               :Christophe:
-Voir oscar.tex
+%\subsection{OSCcAR}
 
-%\subsection{OSCAR}
+To avoid overloading the article, we prefer to leave aside the approximations for many other possible algorithms. In the following, we add an example concerning the OSCAR algorithm to show the principle of extending our approach to another penalty.
+
+  
 \input{oscar}
 
 
 
+\item 
 *** 3. I suggest to mathematically formalize the Section 2.4 
 on the Geomet- rical Interpretation. Specifically,
  it is not clear at all that the solution belongs to the intersection of all the balls centered at γ ∈ B⋆η. 
@@ -294,22 +354,25 @@ Note, that for small c and large η, this intersection would be an empty set.
 La vue géométrique est intéressante pour l'interprétation.... 
 
 
-Also, please, note that βˆ depends on γ, thus maximizing
-||βˆ(γ) − γ|| 1
-does not seem to be a simple task.
+\item
+  \emph{Also, please, note that $\hat{\beta}$ depends on $\gamma$,
+      thus maximizing $$||\beta(\gamma) − \gamma||_1$$
+does not seem to be a simple task.}
 
-**** Dans la lettre:                                             :Christophe:
-We agree that it is not a simple task, this is why we adopt an alternate optimization point of view... It is an EM algo
+%**** Dans la lettre:                                             :Christophe:
+We agree with the reviewer that it is not a simple task,
+as stated in the response of the first remark. 
+
+%this is why we adopt an alternate optimization point of view... It is an EM algo
 
 
+\item 
 On the other hand the statement that for each β, γˆ(β) belongs 
 to the set of extreme points does not seem to require a special justification.
 
 **** Dans l'article : changer les captions des figures 1 et 2  :Yves:
 
 Figures 1 and 2 require an extended description.
-
-
 
  It is not clear what is represented by different colors.
  Also, according to the description of Figure 1,
@@ -321,6 +384,9 @@ Figures 1 and 2 require an extended description.
  Where are crosses in graph number 4 in Figure 2 ?
 **** A l'extérieur de la figure :Yves:
 
+
+
+\item 
 *** 4. The formulation (5) is asymptotically equivalent to LASSO when η → ∞. 
 It would be good to provide some results (at least empirical) 
 to show how the accuracy of this approximation depends on η.
@@ -334,6 +400,7 @@ We always use formulation 3 to solve the problem
 le lambda qui tend vers l'infini c'est une façon de voir les
 
 
+\item 
 *** 5. It is not clear at all if the first two steps of the algorithm converge. 
 Note that γˆ(β) is selected as the extreme point, which is most distant to β. 
 On the other hand the quadratic penalty used to estimate βˆ(γˆ) privileges β close to γˆ. 
@@ -344,6 +411,7 @@ I would welcome some mathematical result illustrating the convergence of the fir
 
 **** Prouver la convergence de l'algo
 
+\item 
 *** 6. It would be good to explain what is the meaning of gj. 
 
 Did not we select γ as the most distant extreme point ?
@@ -353,25 +421,34 @@ Why do we calculate gj by minimizing over all points from the dual ball ?
 
 **** We need to consider gj to add a variable in the active set
 
-*** 7. I do not quite see how to formulate a stopping criterion based on Proposition 1. 
+\item
+  \emph{7. I do not quite see how to formulate a stopping criterion based on Proposition 1.}
+  
 **** upper bound est le terme de droite :Yves:
 
 
-In the algorithm the worst case gradients are computed for γ from the ball,
- while the Proposition 1 requires γ to be in the closed complement of the ball.
+\item
+\emph{In the algorithm the worst case gradients are computed for $\gamma$ from the ball,
+while the Proposition 1 requires $\gamma$  to be in the closed
+complement of the ball.
+}
 
 **** :Yves: dans la lettre
 
 **** Expliquer que l'algo produit une séquence de gamma non admissible et c'est pour ces solutions 
 que nous cherchons à avoir une borne sur l'optimum du critère...
 
-*** 8. Real Data Analysis - comparison of LASSO and quadrupen.
-There is no information which η was used here. 
+\item 
+\emph{8. Real Data Analysis - comparison of LASSO and quadrupen.
+There is no information which $\eta$ was used here. }
 
 **** We do not use eta see above :Christophe:
 
+
+\item
+\emph{
 It is quite natural that glmnet and quadrupen give different results since quadrupen is only the
-approximation to LASSO. 
+approximation to LASSO. }
 
 **** Not true, it is the same problem thanks to formulation 3
 
@@ -379,6 +456,7 @@ How do these two algorithms compare in execution time for this relatively large 
 
 **** 
 
+\item
 *** 9. The synthetic data examples are rather small (p = 100).
 It would be good to see the results when p can reach several thousands (say 5000).
  Which η was used for quadrupen ?
@@ -400,7 +478,7 @@ I suggest to directly compare the values of the objective function.
 
 
 **** 
-
+\end{itemize}
 
 \bibliographystyle{../CSDA/elsarticle-harv} 
 \bibliography{../CSDA/biblio_crafter}
