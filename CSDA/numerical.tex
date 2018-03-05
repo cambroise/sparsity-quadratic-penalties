@@ -9,61 +9,18 @@ Obviously, the timing of two algorithms/packages has to be compared at similar
 precision requirements, which are rather crude in statistical learning, far from
 machine precision \citep{Bottou08}.
 
-We start by showing an experiment on a real dataset illustrating that optimization is an actual issue from the data analysis viewpoint. We then provide an in-depth analysis on simulated data, thereby covering a wide range of well-controlled situations, where  our conclusions are derived from numerous simulations.
-Finally, the available ground truths will also be useful to show that optimization issues during training have notable effects in terms of prediction accuracy and support recovery.
+ We provide an in-depth analysis on simulated data, thereby covering
+a wide range of well-controlled situations, where our conclusions are
+derived from numerous simulations.  Finally, the available ground
+truths will also be useful to show that optimization issues during
+training have notable effects in terms of prediction accuracy and
+support recovery.  These optimization issues are eventually illustrated
+on  a real dataset in genomics.
+%, where it is shown  that different supports
+%are recovered by \texttt{glmnet} and our proposed approach
+%optimization is an actual issue from the data analysis viewpoint.
+%%%%%%%%%%%%%%
 
-\subsection{Introductory Example: Quantitative Trait Loci and Association Mapping}
-
-Many quantitative traits in plants and animals are heritable.  When
-considering Mendelian traits, the Quantitative Trait Loci (QTL) are sections of
-DNA that explain the trait variability.
-As traits are typically controlled by several QTL, the association 
-between traits and QTL involves several limited effects that are difficult to detect individually.
-
-A possible method for mapping genotype to trait consists in regressing
-the trait (that is, phenotype) of interest  against the QTL (that is, genotype), using penalized regression.
-%
-In this introductory example, we consider the maize association
-mapping panel described in \citep{RincentEtAl2014},where 269
-individuals were genotyped with a 50k single-nucleotide polymorphisms (SNPs) array. 
-After classical data
-cleaning, 261 individuals with 29849 markers (that is, SNPs) were kept.
-%
-
-We focus here on the tasseling time of maize, whose heritability is explained by many genes.
-We used two different implementations of Lasso for detecting the relevant markers: \mytexttt{glmnet} \citep[Generalized Linear
-Models regularized by Lasso and elastic-NET,][]{2009_JSS_Friedman} and
-our own implementation, 
-% by resolution of the worst-case quadratic problem, which is
-publicly available through the
-\mytexttt{R} package
-\mytexttt{quadrupen}%
-% publicly available at the second author's web page
-\footnote{The \mytexttt{quadrupen} package is available on the CRAN (Comprehensive R Archive Network
-  {\url{https://cran.r-project.org/web/packages/quadrupen/}}}.
-
-The two implementations were run using their default parameters, with the 
-same penalty strength $\lambda$, selected by leave-one-out cross-validation with 
-\mytexttt{glmnet}.
-The latter selected 169 markers among the 29849 SNPs, whereas \mytexttt{quadrupen} was more stringent, selecting only a subset of 156 markers. 
-% Where does this $10\%$ difference in the number of SNPs comes from since there is theoretically one unique solution to our convex Lasso problem ? 
-This notable difference is unexpected considering that the two implementations attempt to solve the very same convex optimization problem.
-
-In the following, we show how the speed and precision of \mytexttt{glmnet} are affected by the threshold controlling the stopping condition. 
-Regarding precision, a first hint is provided in 
-Figure \ref{fig:gradient}, which displays the absolute value of the derivatives of the objective function with respect to the non-zero coefficients of the parameter vectors returned by \mytexttt{glmnet} and \mytexttt{quadrupen}, respectively. 
-The departure from zero for \mytexttt{glmnet} illustrates its relative imprecision, which is responsible for the difference in the set of selected markers.
-%
-\begin{figure}
-  \centering
-  \begin{tabular}{lc}
-  \rotatebox{90}{\small \hspace{2.25cm} count}
-    & \includegraphics[width=.6\textwidth]{../figures/gradient} \\
-    & \small $\left| \mathbf{x}_j^\intercal\left(\mathbf{y}  -\mathbf{X}\hatbbeta\right) \right| -  \lambda$ \hspace{1cm} (log scale) \\
-  \end{tabular}
-  \caption{Histogram of the derivatives w.r.t. the non-zero coefficients of the parameter vectors returned by \mytexttt{glmnet} and \mytexttt{quadrupen}}.
-  \label{fig:gradient}
-\end{figure}
 
 \subsection{Synthetic data}
 
@@ -574,3 +531,59 @@ test performances, \mytexttt{glmnet} is about ten times slower than our solver.
 
 
 
+\subsection{Quantitative Trait Loci and Association Mapping}
+
+Many quantitative traits in plants and animals are heritable.  When
+considering Mendelian traits, the Quantitative Trait Loci (QTL) are sections of
+DNA that explain the trait variability.
+As traits are typically controlled by several QTL, the association 
+between traits and QTL involves several limited effects that are difficult to detect individually.
+
+A possible method for mapping genotype to trait consists in regressing
+the trait (that is, phenotype) of interest  against the QTL (that is, genotype), using penalized regression.
+%
+In this introductory example, we consider the maize association
+mapping panel described in \citep{RincentEtAl2014},where 269
+individuals were genotyped with a 50k single-nucleotide polymorphisms (SNPs) array. 
+After classical data
+cleaning, 261 individuals with 29849 markers (that is, SNPs) were kept.
+%
+
+We focus here on the tasseling time of maize, whose heritability is explained by many genes.
+We used two different implementations of Lasso for detecting the relevant markers: \mytexttt{glmnet} \citep[Generalized Linear
+Models regularized by Lasso and elastic-NET,][]{2009_JSS_Friedman} and
+our own implementation, 
+% by resolution of the worst-case quadratic problem, which is
+publicly available through the
+\mytexttt{R} package
+\mytexttt{quadrupen}%
+% publicly available at the second author's web page
+\footnote{The \mytexttt{quadrupen} package is available on the CRAN (Comprehensive R Archive Network
+  {\url{https://cran.r-project.org/web/packages/quadrupen/}}}.
+
+The two implementations were run using their default parameters, with the 
+same penalty strength $\lambda$, selected by leave-one-out cross-validation with 
+\mytexttt{glmnet}.
+The latter selected 169 markers among the 29849 SNPs, whereas \mytexttt{quadrupen} was more stringent, selecting only a subset of 156 markers. 
+% Where does this $10\%$ difference in the number of SNPs comes from since there is theoretically one unique solution to our convex Lasso problem ? 
+This notable difference is unexpected considering that the two implementations attempt to solve the very same convex optimization problem.
+
+In the following, we show how the speed and precision of \mytexttt{glmnet} are affected by the threshold controlling the stopping condition. 
+Regarding precision, a first hint is provided in 
+Figure \ref{fig:gradient}, which displays the absolute value of the derivatives of the objective function with respect to the non-zero coefficients of the parameter vectors returned by \mytexttt{glmnet} and \mytexttt{quadrupen}, respectively. 
+The departure from zero for \mytexttt{glmnet} illustrates its relative imprecision, which may be  responsible for the difference in the set of selected markers.
+%
+\begin{figure}
+  \centering
+  \begin{tabular}{lc}
+  \rotatebox{90}{\small \hspace{2.25cm} count}
+    & \includegraphics[width=.6\textwidth]{../figures/gradient} \\
+    & \small $\left| \mathbf{x}_j^\intercal\left(\mathbf{y}  -\mathbf{X}\hatbbeta\right) \right| -  \lambda$ \hspace{1cm} (log scale) \\
+  \end{tabular}
+  \caption{Histogram of the derivatives w.r.t. the non-zero coefficients of the parameter vectors returned by \mytexttt{glmnet} and \mytexttt{quadrupen}}.
+  \label{fig:gradient}
+\end{figure}
+
+This last conjecture fits perfectly with the simulations of the previous section (see Figure \ref{fig:accuracy}),
+where the difference in support recovery between \texttt{quadrupen} and \texttt{glmnet}
+is  particularly nocticable with the \texttt{glmnet} default value of precision. 
