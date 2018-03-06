@@ -8,7 +8,8 @@
 \usepackage{array}
 \usepackage{natbib}
 \usepackage{hyperref}
-\usepackage{xcolor}
+\usepackage{framed}
+\usepackage[dvipsnames]{xcolor}
 
 \input{../CSDA/preamble}
 
@@ -63,6 +64,20 @@
 \memodate{\today}
 \logo{\includegraphics[width=0.25\textwidth]{logo_lamme.pdf}}
 
+
+
+\newenvironment{comment}
+{
+   \par\medskip \color{black}%
+   \textbf{Response: }}
+{\medskip}
+ 
+\newenvironment{remark}
+{\begin{itshape} \color{gray}}
+{\end{itshape}}
+
+
+  
 \begin{document}
 \maketitle
 Dear editor,
@@ -84,12 +99,14 @@ point-by-point response to their comments and suggestions.
 
 \begin{itemize}
 \item
-  \emph{The algorithm starts from a sparse initial guess, i.e., the active
+  \begin{remark}
+    The algorithm starts from a sparse initial guess, i.e., the active
 set $A = \emptyset$.  I think it may be useful to discuss briefly how the
 computational time changes for an experimental setup, in which the
-choice of the initial guess is randomized.}
+choice of the initial guess is randomized.
+  \end{remark}
 
-
+\begin{comment}
 
 ****  Réponse (dans la lettre) :Yves:
 Yves: 
@@ -105,12 +122,17 @@ Une partie de la réponse est dans le warm start que nous avons utilisé dans le
 **** Réponse (à ajouter dans le texte) :Yves:
 Dire que c'est important de partir de zéro 
 
+\end{comment}
+
 \item
 %*** In section 5,
-\emph{I would suggest to switch the results on simulated settings and on real-world
+  \begin{remark}
+    I would suggest to switch the results on simulated settings and on real-world
 data, such that the latter can be commented in light of the properties and
-conclusions obtained with synthetic data.}
+conclusions obtained with synthetic data.
+  \end{remark}
 
+  \begin{comment}
 We have switched the results
 on simulated setting and real-world data.
 The real-world data indeed exhibits a  difference in support recovery
@@ -118,23 +140,25 @@ between \texttt{quadrupen} and \texttt{glmnet}.
 This difference was expected as shown in the simulation comparing 
 \texttt{quadrupen} \texttt{glmnet} with the  default value of
 precision. 
-
+ \end{comment}
 
 %**** Réponse (faisable) :Christophe:
 
 %OK on fait 
 \item 
-\emph{In the simulated data section, 
+  \begin{remark}
+    In the simulated data section, 
   I would suggest to add the F-measure between
   the support of the true coefficient
   vector $\betaβ^⋆$ and the estimated one $\hat{\beta}$,
   as a performance measure to evaluate the
   selection properties of the different algorithms
   (see Section IV in Gasso et al., 2009).
-}
+ \end{remark}
 
-We followed the recommandation and  improve the illustration of difference in support recovery (Figure 8) in using True Postive and False Negative and F-measure (with the corresponding citation of \cite{gasso2009recovering}):
-
+ \begin{comment}
+We followed the recommandation and  improve the illustration of difference in support recovery (Figure 8) in using True Postive and False Negative and F-measure (with the corresponding citation of \cite{gasso2009recovering}).
+\end{comment}
 % \begin{verbatim}
 % @article{gasso2009recovering,
 %   title={Recovering sparse signals with a certain family of nonconvex penalties and DC programming},
@@ -149,36 +173,53 @@ We followed the recommandation and  improve the illustration of difference in su
 % \end{verbatim}
 
 \item 
-\emph{In line 244, %:Christophe: :DONE:
-   the reference should not be in parenthesis.}
+  \begin{remark}
+    In line 244, %:Christophe: :DONE:
+   the reference should not be in parenthesis.
+  \end{remark}
 
-Done.
-
-
-
-
-
+  \begin{comment}
+    Done.
+  \end{comment}
 
 
 
 
 \item 
-*** Figure 6 could be improved, :Julien:
+  \begin{remark}
+    Figure 6 could be improved, 
 as the axes labels are not easily readable and colors are not
 distinguishable.
+\end{remark}
+
+\begin{comment}
+  :Julien:
+\end{comment}
+
+
 
 \item
-*** In line 377,                                                       :Yves:
-**** Quadrupen, Spam\_lars sont des méthodes du second ordre et ne sont pas sensible aux corrélation... au 
+   \begin{remark}
+    In line 377,                                                       
 I would suggest to explain the reason why quadrupen, SPAMS-LARS and lars are not
 sensitive to the level of correlation between features.
+    \end{remark}
+
+\begin{comment}
+  :Yves:
+   Quadrupen, Spam\_lars sont des méthodes du second ordre et ne sont pas sensible aux corrélation... au
+\end{comment}
 
 
 \item
-*** In the caption of Figure 8, specify the x-axis. :Julien: 
-
+  \begin{remark}
+    In the caption of Figure 8, specify the x-axis.
+  \end{remark}
+  
+\begin{comment}
+    :Julien: 
 **** C'est un log-10 ($\lambda_1$)
-
+\end{comment}
 
 \end{itemize}
 %Gasso G., Rakotomamonjy A., Canu S. (2009). Recovering sparse signals with a certain family of non convex penalties and DC programming. IEEE Transactions on Signal Processing, 57(12), 4686-4698.
