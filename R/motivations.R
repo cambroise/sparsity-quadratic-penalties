@@ -12,7 +12,7 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 scale_colour_manual(values=cbbPalette)
 
 seed <- sample(1:10000,1)
-set.seed(seed) ## 4157
+set.seed(seed)
 ## Sparsity settings
 sp.hig <- sample(rep(c(1,-1,0),c(5,5,90)))
 sp.med <- sample(rep(c(1,-1,0),c(15,15,70)))
@@ -32,7 +32,7 @@ prec <- list()
 time <- list()
 out.all <- c()
 l <- 0
-lambda <- 10^seq(1, -.8, len=100)
+lambda <- 10^seq(0.5, -1, len=100)
 
 for (n0 in c(p/2, p, 2*p)) {
   cat("\n\n========================================================================")
@@ -66,13 +66,14 @@ dplot.all <- out.all %>%
           recall = ifelse(tp == 0, 0, tp /(tp + fn))) %>% 
   mutate(f_measure = ifelse ( (precision == 0 | recall == 0), 0,  2 * (precision * recall) / (precision + recall))) %>% 
   rename(hamming = error.sup, timings = times, accuracy = prec) %>% 
-  select(-error.cla, -error.mse, -steps, -package)
+  select(-error.cla, -error.mse, -steps, -package) %>% 
+  filter(method != "glmnet high")
 
-dplot <- dplot.all %>% select("lambda", "method", "np.ratio", "f_measure", "rmse", "tp", "fp") %>% gather(key = "measure", value = "value", "f_measure", "rmse", "tp", "fp")
+dplot <- dplot.all %>% select("lambda", "method", "np.ratio", "precision", "recall", "rmse") %>% gather(key = "measure", value = "value", "rmse", "precision", "recall")
 
 p <- ggplot(dplot, aes(x = lambda, y = value, colour = method, group = method, lty = method)) +
   stat_summary(fun.data="mean_cl_normal", geom = "smooth", alpha = 0.1) +
   coord_trans(x = "log10") + labs(x="", y="") +
   facet_grid(measure ~ np.ratio, scales = "free") + theme(legend.position="none") + theme_minimal()
 
-ggsave(filename = "~/Desktop/error.pdf", width = 10, height = 7)
+ggsave(filename = "../figures/accuracy.pdf", width = 10, height = 7)
