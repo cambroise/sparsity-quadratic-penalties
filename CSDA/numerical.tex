@@ -98,7 +98,7 @@ accelerated proximal method \citep[see, e.g.,][]{2009_SIAM_Beck},
 coordinate descent \citep[popularized by][]{2007_AAS_Friedman},
 and our algorithm, that will respectively be named hereafter \mytexttt{proximal},
 \mytexttt{coordinate} and \mytexttt{quadratic}.
-Our implementations estimate the solution to the elastic net problem
+Our implementations estimate the solution to the elastic-net problem
 \begin{equation}
   \label{eq:enet}
 %   \hatbbetaenet_{\lambda_1, \lambda_2} = \argmin_{\bfbeta \in
@@ -162,7 +162,7 @@ situations stemming from the choice of three following parameters:
 2) low, medium and  high-dimensional setting ($p/n \in \{2, 1, 0.5\}$),
 3) low, medium and high levels of sparsity ($s/p\in\{10\% ,30\%,60\%\}$).
 \fi
-Each solver computes the elastic net for the tuning parameters $\lambda_1$ and
+Each solver computes the elastic-net for the tuning parameters $\lambda_1$ and
 $\lambda_2$ on a 2D-grid of $50 \times 50$ values, and their running 
 times have been averaged over 100 runs.
 
@@ -183,10 +183,7 @@ a medium level of sparsity ($s=30$) for the three levels of correlation.
       \put(1.025,0){\makebox[0cm]{$\log_{10}{\lambda_2}$}}
 %       \put(0,2.2){\line(1,0){1.5}}
     \end{picture} 
-     \caption{Log-ratio of computation times for \mytexttt{coordinate} (left), and
-     \mytexttt{proximal} (right), versus \mytexttt{quadratic}, for
-     $(p,n)=(100,50),\, s=30$ and correlation $\rho \in \{0.1, 0.4, 0.8\}$
-     (top, middle and bottom respectively).}
+     \caption{Surfaces of the log-ratio of computation times (brighter shades     indicate higher ratio, see colorbar) according to the     $(\lambda_1,\lambda_2)$ penalty parameters for \mytexttt{coordinate} versus     \mytexttt{quadratic} (left), and \mytexttt{proximal} versus     \mytexttt{quadratic} (right), for $(p,n)=(100,50),\, s=30$ and     correlation $\rho \in \{0.1, 0.4, 0.8\}$ (top, middle and bottom     respectively).}
     \label{fig:timing_all}
   \end{figure}
 \else
@@ -222,7 +219,7 @@ slowdown of the first-order methods \mytexttt{coordinate} and
 \mytexttt{proximal}.
 As the penalty parameters increase, smaller gains are observed, especially when
 $\lambda_2$, attached to the quadratic penalty, reaches high values for which all
-problems are well-conditioned, and where the elastic net is leaning towards
+problems are well-conditioned, and where the elastic-net is leaning towards
 univariate soft thresholding, in which case all algorithms behave similarly.
 
 \subsubsection{Comparing Stand-Alone Implementations}
@@ -231,7 +228,7 @@ We  now  proceed  to the  evaluation  of  our  code with  three  other
 stand-alone programs publicly  available as \mytexttt{R} packages.  We
 chose     three    leading    state-of-the-art     packages,    namely
 \mytexttt{glmnet}  \citep[Generalized  Linear  Models  regularized  by
-Lasso    and    elastic-NET,][]{2009_JSS_Friedman},    \mytexttt{lars}
+Lasso    and    elastic-net,][]{2009_JSS_Friedman},    \mytexttt{lars}
 \citep[Least      Angle     Regression,     lasso      and     forward
 Stagewise,][]{2004_AS_Efron}    and   \mytexttt{SPAMS}   \citep[SPArse
 Modeling     Software,][]{2012_FML_Bach},     with     two     options
@@ -252,8 +249,8 @@ and  \mytexttt{SPAMS} in \mytexttt{C++}.
 We benchmark these packages by computing  regularization paths for the
 Lasso\footnote{%
   We benchmark the packages on a Lasso problem since the parametrization of the
-  elastic net problem differs among packages, hindering fair comparisons.},
-that is, the elastic net Problem~\eqref{eq:enet} with $\lambda_2=0$.   
+  elastic-net problem differs among packages, hindering fair comparisons.},
+that is, the elastic-net Problem~\eqref{eq:enet} with $\lambda_2=0$.   
 %
 The inaccuracy of the solutions produced is measured by the gap in the objective
 function compared to a reference solution, considered as being the true optimum.  
@@ -306,8 +303,7 @@ computes the solutions at identical $\lambda$ values, as defined above.
 \iflong
 
   We pool together the runtimes obtained for the three levels of correlation for
-  \mytexttt{quadrupen}, \mytexttt{SPAMS-LARS} and \mytexttt{lars}, which are not
-  sensible to the correlation between features. 
+  \mytexttt{quadrupen}, \mytexttt{SPAMS-LARS} and \mytexttt{lars}: all these   second-order methods are not sensitive to the correlation between features
   In each plot of Figure~\ref{fig:timing_glmnet}, each of these methods is thus 
   represented by a single point marking the average precision and the average distance to the
   optimum over the 150 runs (50 runs for each $\rho \in \{0.1, 0.4, 0.8\}$).
@@ -551,7 +547,7 @@ cleaning, 261 individuals with 29849 markers (that is, SNPs) were kept.
 
 We focus here on the tasseling time of maize, whose heritability is explained by many genes.
 We used two different implementations of Lasso for detecting the relevant markers: \mytexttt{glmnet} \citep[Generalized Linear
-Models regularized by Lasso and elastic-NET,][]{2009_JSS_Friedman} and
+Models regularized by Lasso and elastic-net,][]{2009_JSS_Friedman} and
 our own implementation, 
 % by resolution of the worst-case quadratic problem, which is
 publicly available through the
