@@ -31,8 +31,8 @@ plot.timer <- function(files, main="Timing comparison", title=TRUE, bw=0.25) {
     res.all <- cbind(res.all, factor(rep(c("proximal (fista)", "coordinate descent"), c(nrow(prox.all),nrow(path.all)))))
     names(res.all) <- c("x", "y", "z", "correlation", "algo")
     
-    d <- ggplot(data=res.all, aes(x=log10(y), y=rev(log10(x)), z=z)) 
-    d <- d + geom_raster(aes(fill=z)) + stat_contour(size=0.2, binwidth=bw, colour = "black")
+    d <- ggplot(data=res.all, aes(x=log10(y), y=log10(x), z=z)) 
+    d <- d + geom_raster(aes(fill=z)) + stat_contour(size=0.2, binwidth=bw, colour = "black") + scale_y_reverse()
     if (title){
       d <- d + opts(title=paste(main,"with",sparsity,"and",sample)) + labs(x="lambda (log-scale)",y="gamma (log-scale)")
     } else {
