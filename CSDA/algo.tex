@@ -197,7 +197,7 @@ This approach suggests a new assessment of convergence, as detailed below.
   Note that more precise upper bounds could be computed relying on significant extra computation.
   The generic optimality gap computed from Proposition \ref{prop:monitoring} differs
   from the Fenchel duality gap \citep[see][]{2012_FML_Bach}. 
-  For the elastic net expressed in \eqref{eq:elastic-net}, Fenchel inequality
+  For the elastic-net expressed in \eqref{eq:elastic-net}, Fenchel inequality
   \citep[see details in][]{Mairal10} yields the following optimality gap:
    \begin{align*}
       \min_{\bfbeta\in\mathbb{R}^{p}} \max_{\bfgamma' \in \uball[*]^\eta} 
@@ -220,14 +220,14 @@ This approach suggests a new assessment of convergence, as detailed below.
     \centering 
     \xylabellarge{../figures/monitoring_bounds}{\# of iterations}{Optimality gap (log scale)}{$n=50$, $p=200$}
     \caption{Monitoring convergence: true optimality gap (solid black) versus
-    our generic upper bound (dashed blue) and Fenchel's duality gap for elastic
-    net (dotted red) computed at each iteration of
+    our generic upper bound (dashed blue) and Fenchel's duality gap for
+    elastic-net (dotted red) computed at each iteration of
     Algorithm~\ref{algo:active_set}.}
     \label{fig:monitoring}
   \end{figure}
   %
   The two optimality gaps are empirically compared in 
-  Figure~\ref{fig:monitoring} for the elastic net, along a short regularization 
+  Figure~\ref{fig:monitoring} for the elastic-net, along a short regularization 
   path with five values of the $\ell_{1}$-penalization parameter.  
   We see that the two options can be used to assess convergence, though
   Fenchel's duality gap is more accurate for the rougher solutions. 
@@ -275,7 +275,7 @@ This approach suggests a new assessment of convergence, as detailed below.
   %   check, note that when $\bfbeta$ is optimal, the corresponding optimal
   %   $\widehat\bfgamma$ is known to be null on $\supp^c$, so that the bound is exact.
   %   Two typical behaviors are displayed in Figure~\ref{fig:monitoring} for the
-  %   elastic net.
+  %   elastic-net.
   %   The two plots show the true distance to the optimum, measured by the
   %   difference in objective function, and the value of the bound, both computed at each
   %   iteration of Algorithm~\ref{algo:active_set} at the entrance of Step

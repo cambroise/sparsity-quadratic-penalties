@@ -17,7 +17,7 @@ This  viewpoint  enables  to  encompass in the same framework  several
 well-known penalties. In particular, we detailed how the solutions to the Lasso and the
 group-Lasso (with the $\ell_{\infty,1}$  mixed norm), possibly applied
 together with an  $\ell_2$ ridge penalty (leading to what  is known as
-the elastic net for the Lasso) can be derived. 
+the elastic-net for the Lasso) can be derived. 
 
 % ALGORITHM AND MAGIC BOUND
 We derived a  general-purpose algorithm that computes the solution to
@@ -27,7 +27,7 @@ assess convergence.  The proposed  algorithm solves a series of
 quadratic  problems on a working set defined  by the dual  variables.   
 It has  been
 thoroughly tested  and compared with  state-of-the-art implementations
-for the elastic net and the Lasso, and prevails over its competitors for 
+for the elastic-net and the Lasso, and prevails over its competitors for 
 the problems tested, involving  up to a few thousands of variables.
 
 % DISCUSSION
@@ -51,6 +51,6 @@ wider range of penalties by extending the framework in two directions:
 first,  to accommodate  additional general  $\ell_2$ penalties  in the
 form of  arbitrary symmetric  positive semidefinite matrix  instead of
 the simple ridge, in particular to provide an efficient implementation
-of the  structured elastic  net \citep{2010_AOS_Slawski} ;  second, we
+of the  structured elastic-net \citep{2010_AOS_Slawski} ;  second, we
 plan to  derive similar  views on a  wider range  of sparsity-inducing
 penalties, such as the fused-Lasso or the OSCAR \citep{Bondell08}.
