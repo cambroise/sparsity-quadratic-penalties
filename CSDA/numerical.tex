@@ -183,7 +183,13 @@ a medium level of sparsity ($s=30$) for the three levels of correlation.
       \put(1.025,0){\makebox[0cm]{$\log_{10}{\lambda_2}$}}
 %       \put(0,2.2){\line(1,0){1.5}}
     \end{picture} 
-     \caption{Surfaces of the log-ratio of computation times (brighter shades     indicate higher ratio, see colorbar) according to the     $(\lambda_1,\lambda_2)$ penalty parameters for \mytexttt{coordinate} versus     \mytexttt{quadratic} (left), and \mytexttt{proximal} versus     \mytexttt{quadratic} (right), for $(p,n)=(100,50),\, s=30$ and     correlation $\rho \in \{0.1, 0.4, 0.8\}$ (top, middle and bottom     respectively).}
+     \caption{Surfaces of the log-ratio of computation times (brighter shades
+     indicate higher ratio, see colorbar) according to the
+     $(\lambda_1,\lambda_2)$ penalty parameters for \mytexttt{coordinate} versus
+     \mytexttt{quadratic} (left), and \mytexttt{proximal} versus
+     \mytexttt{quadratic} (right), for $(p,n)=(100,50),\, s=30$ and
+     correlation $\rho \in \{0.1, 0.4, 0.8\}$ (top, middle and bottom
+     respectively).}
     \label{fig:timing_all}
   \end{figure}
 \else
@@ -303,7 +309,8 @@ computes the solutions at identical $\lambda$ values, as defined above.
 \iflong
 
   We pool together the runtimes obtained for the three levels of correlation for
-  \mytexttt{quadrupen}, \mytexttt{SPAMS-LARS} and \mytexttt{lars}: all these   second-order methods are not sensitive to the correlation between features
+  \mytexttt{quadrupen}, \mytexttt{SPAMS-LARS} and \mytexttt{lars}: all these 
+  second-order methods are not sensitive to the correlation between features
   In each plot of Figure~\ref{fig:timing_glmnet}, each of these methods is thus 
   represented by a single point marking the average precision and the average distance to the
   optimum over the 150 runs (50 runs for each $\rho \in \{0.1, 0.4, 0.8\}$).
@@ -465,8 +472,6 @@ various   level   of    accuracy\footnote{This   is   done   via   the
   \mytexttt{low}, \mytexttt{med}  and \mytexttt{high}  level of  accuracy for
   \mytexttt{glmnet} respectively correspond to \mytexttt{thresh} set to
   \mytexttt{1e-1}, \mytexttt{1e-4}, and \mytexttt{1e-9}.}.  
-Figure \ref{fig:accuracy} reports performances, as measured by the mean squared
-test error and the support error rate.
 
 % \begin{figure}[htbp]
 %   \centering
@@ -489,32 +494,49 @@ test error and the support error rate.
   \centering
   \begin{tabular}{@{}l@{}c@{}}
     & $n = p/2$ \hspace{2.2cm} $n = p$ \hspace{2.2cm} $n = 2p$ \\
-    \rotatebox{90.0}{\makebox[.2\textwidth]{\hspace{2ex}precision}}
-    & \includegraphics[width=.9\textwidth]{../figures/precision} \\
-    \rotatebox{90.0}{\makebox[.2\textwidth]{\hspace{5ex}recall}}
-    & \includegraphics[width=.9\textwidth]{../figures/recall} \\
-    \rotatebox{90.0}{\makebox[.2\textwidth]{\hspace{7ex} $\sqrt{\text{MSE}}$ }}
-    & \includegraphics[width=.9\textwidth]{../figures/rmse} \\
-    & $\log_{10}(\lambda)$ \\
-    & \\
-    \rotatebox{90.0}{\makebox[.2\textwidth]{\hspace{7ex} precision}}
-    & \includegraphics[width=.9\textwidth]{../figures/PR_curves} \\
-    & recall
+    \rotatebox{90.0}{\makebox[.2\textwidth]{\hspace{7ex} RMSE }}
+    & \includegraphics[width=.9\textwidth]{../figures/rmse} \\[-4ex]
+    & ~\hspace{1.1cm} $\log_{10}(\lambda)$ \hspace{1.9cm} $\log_{10}(\lambda)$ 
+    \hspace{1.9cm} $\log_{10}(\lambda)$ \hspace{1.1cm}~ \\
+    \rotatebox{90.0}{\makebox[.2\textwidth]{\hspace{2ex}Precision}}
+    & \includegraphics[width=.9\textwidth]{../figures/precision} \\[-4ex]
+    & ~\hspace{1.1cm} $\log_{10}(\lambda)$ \hspace{1.9cm} $\log_{10}(\lambda)$ 
+    \hspace{1.9cm} $\log_{10}(\lambda)$ \hspace{1.1cm}~ \\
+    \rotatebox{90.0}{\makebox[.2\textwidth]{\hspace{5ex}Recall}}
+    & \includegraphics[width=.9\textwidth]{../figures/recall} \\[-4ex]
+    & ~\hspace{1.1cm} $\log_{10}(\lambda)$ \hspace{1.9cm} $\log_{10}(\lambda)$ 
+    \hspace{1.9cm} $\log_{10}(\lambda)$ \hspace{1.1cm}~ \\
+    \rotatebox{90.0}{\makebox[.2\textwidth]{\hspace{7ex}Precision}}
+    & \includegraphics[width=.9\textwidth]{../figures/PR_curves} \\[-4ex]
+    & ~\hspace{1.1cm} Recall \hspace{2.3cm} Recall \hspace{2.3cm} Recall \hspace{1.1cm}~ \\
   \end{tabular}
-  \caption{Test performances according to the penalty parameter for the
-    Lasso estimates returned by \mytexttt{quadrupen} and \mytexttt{glmnet} at various level
-    of accuracy. Three high-dimensional setups are illustrated: from left to 
-    right $n/p=1/2$, $n/p=1$ and $n/p=2$;
-    top: mean squared test error;
-    bottom: support error rate.\label{fig:accuracy}}
+  \caption{Test RMSE, precision and recall for the
+    Lasso estimates returned by \mytexttt{quadrupen} and \mytexttt{glmnet} at 
+    the low and medium levels of accuracy. Three high-dimensional setups are illustrated: from left to 
+    right $n/p=1/2$, $n/p=1$ and $n/p=2$.\label{fig:accuracy}}
 \end{figure} 
 
-As expected, the curves show that selecting variables and searching for
-the best prediction are two different problems.  The selection problem
-(bottom  of Figure \ref{fig:accuracy}) always  requires a sparser  model than the
-prediction  problem.  But  despite this  obvious difference,  the more
-accurate the solution returned by the algorithm, the better  the performances for any levels of
-penalty and for  both performance measures. 
+Figure \ref{fig:accuracy} reports performances, as measured by the root mean 
+squared error (RMSE) and the precision and the recall regarding the selected 
+coefficients.  
+In the top row, one sees that one can reach about the same prediction 
+performance for all accuracies. However, these best performances are obtained 
+for different penalty strengths, with more stringent penalties (that is, higher values 
+of $\lambda$) for the more accurate estimates. 
+The central rows show that, for any penalty strength, being more accurate 
+brings better precision and identical or worse recall.
+As expected, the curves show that there is a trade-off in selecting truly 
+relevant variables and discarding the irrelevant ones. 
+Combined with the top row, the precision and recall vs $\lambda$ curves show that there are noticeable differences in terms of support for the best predictors.
+Finally, in the bottom row, the precision vs recall curve shows that the 
+accurate solutions dominate the inaccurate ones. 
+Here, a solution dominates another one if it is displayed higher and more to the right. 
+It can be seen that any point of the green curve 
+(\mytexttt{glmnet} with \mytexttt{low} accuracy) is dominated by a point of the blue curve (\mytexttt{glmnet} with \mytexttt{med} accuracy), 
+which is itself dominated by a point on the red curve (\mytexttt{quadrupen}).
+Hence, there is always a solution of \mytexttt{quadrupen} having both better precision and better recall that the solutions returned by \mytexttt{glmnet}  \mytexttt{low} or \mytexttt{glmnet} \mytexttt{med}.
+%
+Note that this dominating solution needs not to be obtained for the same penalty parameter.
 % Regarding  the MSE though (upper
 % part of  the Figure), an interesting  point concerns the  shape of the
 % error  curve: a  high level  of accuracy  tends to  produce  less flat
@@ -524,32 +546,22 @@ penalty and for  both performance measures.
 % remains a bottleneck commonly dealt with cross-validation.
 
 \begin{table}[htbp]
-
+  \caption{Median timings and solution accuracies% for the experiments
+                                % of Section~\ref{sec:fromatop}.
+  }
+  \label{tab:accuracy}
   \begin{tabular}{@{}l|cccc@{}}
     methods & \mytexttt{quadrupen} & \mytexttt{glmnet\,low} & \mytexttt{glmnet\,med} & \mytexttt{glmnet\,high} \\
     \hline
     timing (ms) & 8 & 7 & 8 & 64 \\
     accuracy (dist.  to opt.)  & $5.9\times 10^{-14}$ & $7.2 \times 10^{0}$ & $6.04 \times 10^{0}$ & $1.47 \times 10^{-2}$\\
   \end{tabular}
-  \caption{Median timings and solution accuracies% for the experiments
-                                % of Section~\ref{sec:fromatop}.
-  }
-  \label{tab:accuracy}
 \end{table} 
 
-Now focusing on \mytexttt{glmnet} performances, the better the accuracy,
-the  smaller the  MSE  and the  support  error rate.  But  the better  the
-accuracy,  the  slower  the  algorithm  becomes.   Using  the  default
-settings allows to have a result very close to our quadratic solver, and the
-performance differences become negligible between our approach and \mytexttt{glmnet}
-running with high precision.
-However, Table \ref{tab:accuracy} illustrates that high accuracy is achieved at 
-a high computational cost: to be at par with \mytexttt{quadrupen} with regards to
-test performances, \mytexttt{glmnet} is about ten times slower than our solver.
-
-
-
-
+%Now focusing on \mytexttt{glmnet} prediction performances, the better the accuracy, the  smaller the  MSE  and the  support  error rate.  But  the better  the accuracy,  the  slower  the  algorithm  becomes.   Using  the  default settings allows to have a result very close to our quadratic solver, and 
+\sloppypar
+Figure \ref{fig:accuracy} does not display the performances of \mytexttt{glmnet} with a \mytexttt{high} level of  accuracy, because they are indistinguishable from those of\mytexttt{quadrupen}. Table~\ref{tab:accuracy} shows that this accuracy is achieved at 
+a high computational cost: to be at par with \mytexttt{quadrupen} with regards to performances, \mytexttt{glmnet} is about ten times slower than our solver.
 
 \subsection{Quantitative Trait Loci and Association Mapping}
 
