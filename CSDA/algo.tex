@@ -83,7 +83,7 @@ description.
   $\bfbeta_{\!\supp}^\mathrm{old} \leftarrow \bfbeta_{\!\supp}$ \\
   $\bfbeta_{\!\supp} \leftarrow 
    \left(\mathbf{X}_{\centerdot\supp}^\intercal
-      \mathbf{X}_{\centerdot\supp} + \lambda \mathbf{I}_{|\supp|}\right)^{-1}
+      \mathbf{X}_{\centerdot\supp}^{\phantom{\intercal}} + \lambda \mathbf{I}_{|\supp|}\right)^{-1}
     \left(\mathbf{X}_{\centerdot\supp}^\intercal\mathbf{y} -
       \lambda \bfgamma_{\!\supp}\right)  
   $ \\ 
@@ -97,7 +97,7 @@ description.
     \tcc{Check whether progress can be made with $\widetilde\bfgamma_{\!\supp}$}
     $\widetilde\bfbeta_{\!\supp} \leftarrow
     \left(\mathbf{X}_{\centerdot\supp}^\intercal
-      \mathbf{X}_{\centerdot\supp} + \lambda \mathbf{I}_{|\supp|}\right)^{-1}
+      \mathbf{X}_{\centerdot\supp}^{\phantom{\intercal}} + \lambda \mathbf{I}_{|\supp|}\right)^{-1}
     \left(\mathbf{X}_{\centerdot\supp}^\intercal\mathbf{y} -
       \lambda \widetilde\bfgamma_{\!\supp}\right)  
   $ \\ 
@@ -114,7 +114,7 @@ description.
 
   \nlset{Step 3} Update active set $\supp$ \\
   $\displaystyle g_j \leftarrow \min_{\bfgamma\in\uball[*]^\eta} \left|
-    \mathbf{x}_j^\intercal(\mathbf{X}_{\centerdot\supp}\bfbeta_{\!\supp} - \mathbf{y})  + \lambda (\beta_j - \gamma_j) \right|
+    \mathbf{x}_j^\intercal(\mathbf{X}_{\centerdot\supp}^{\phantom{\intercal}}\bfbeta_{\!\supp} - \mathbf{y})  + \lambda (\beta_j - \gamma_j) \right|
   \enspace j=1,\ldots,p$
   \tcp*[f]{worst-case gradient} \\
   \eIf{$\exists\, j \in\supp:\beta_j = 0 \ \text{and}\ g_j = 0$}{
