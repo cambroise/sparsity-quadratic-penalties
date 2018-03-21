@@ -92,11 +92,10 @@ p_rmse <- ggplot(dplot_rmse, aes(x = lambda, y = value, colour = method, group =
   facet_grid(. ~ np.ratio) 
 
 res_PR <- ddply(dplot.all, .(lambda, method, np.ratio), summarise, precision = mean(precision), recall = mean(recall))
-p_PR <- ggplot(res_PR, aes(x=recall, y = precision, group=method, colour=method, lty=method)) + geom_line() + 
+p_PR <- ggplot(res_PR, aes(x=recall, y = precision, group=method, colour=method, lty=method)) + geom_line(size=1) + 
   facet_grid(.~np.ratio) + theme_minimal(base_size = 14) + labs(x="", y="") + theme(legend.position = "none", strip.text.x = element_blank())
 
 
-  
 ggsave(plot = p_precision, filename = "../figures/precision.pdf", width = 10, height = 3)
 ggsave(plot = p_recall   , filename = "../figures/recall.pdf", width = 10, height = 3)
 ggsave(plot = p_rmse     , filename = "../figures/rmse.pdf", width = 10, height = 3)

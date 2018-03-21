@@ -468,14 +468,38 @@ various   level   of    accuracy\footnote{This   is   done   via   the
 Figure \ref{fig:accuracy} reports performances, as measured by the mean squared
 test error and the support error rate.
 
+% \begin{figure}[htbp]
+%   \centering
+%   \begin{tabular}{@{}l@{}c@{}} 
+%     \rotatebox{90.0}{\makebox[.6\textwidth]{\hspace{.3\textwidth} Support Error 
+%     Rate \hspace{.35\textwidth} MSE}}
+%     &
+%     \includegraphics[width=.95\textwidth]{../figures/accuracy}
+%     % \includegraphics[trim={0.5cm 0.5cm 0.5cm 0.5cm},clip,angle=0,width=\textwidth]{../figures/accuracy}
+%   \end{tabular}
+%   \caption{Test performances according to the penalty parameter for the
+%     Lasso estimates returned by \mytexttt{quadrupen} and \mytexttt{glmnet} at various level
+%     of accuracy. Three high-dimensional setups are illustrated: from left to 
+%     right $n/p=1/2$, $n/p=1$ and $n/p=2$;
+%     top: mean squared test error;
+%     bottom: support error rate.\label{fig:accuracy}}
+% \end{figure} 
+
 \begin{figure}[htbp]
   \centering
-  \begin{tabular}{@{}l@{}c@{}} 
-    \rotatebox{90.0}{\makebox[.6\textwidth]{\hspace{.3\textwidth} Support Error 
-    Rate \hspace{.35\textwidth} MSE}}
-    &
-    \includegraphics[width=.95\textwidth]{../figures/accuracy}
-    % \includegraphics[trim={0.5cm 0.5cm 0.5cm 0.5cm},clip,angle=0,width=\textwidth]{../figures/accuracy}
+  \begin{tabular}{@{}l@{}c@{}}
+    & $n = p/2$ \hspace{2.2cm} $n = p$ \hspace{2.2cm} $n = 2p$ \\
+    \rotatebox{90.0}{\makebox[.2\textwidth]{\hspace{2ex}precision}}
+    & \includegraphics[width=.9\textwidth]{../figures/precision} \\
+    \rotatebox{90.0}{\makebox[.2\textwidth]{\hspace{5ex}recall}}
+    & \includegraphics[width=.9\textwidth]{../figures/recall} \\
+    \rotatebox{90.0}{\makebox[.2\textwidth]{\hspace{7ex} $\sqrt{\text{MSE}}$ }}
+    & \includegraphics[width=.9\textwidth]{../figures/rmse} \\
+    & $\log_{10}(\lambda)$ \\
+    & \\
+    \rotatebox{90.0}{\makebox[.2\textwidth]{\hspace{7ex} precision}}
+    & \includegraphics[width=.9\textwidth]{../figures/PR_curves} \\
+    & recall
   \end{tabular}
   \caption{Test performances according to the penalty parameter for the
     Lasso estimates returned by \mytexttt{quadrupen} and \mytexttt{glmnet} at various level
