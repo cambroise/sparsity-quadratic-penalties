@@ -21,9 +21,13 @@ Here, as for the Lasso~\citep{2000_JCGS_Osborne,2004_AS_Efron}, this process boi
 iterative optimization scheme involving the resolution of quadratic problems.
 
 The algorithm is based on the iterative update of the set of ``active''
-variables, $\supp$, indexing the coefficients $\bfbeta_{\!\supp}$ currently
-identified as being non-zero. 
-It is started from a sparse initial guess, say $\supp=\emptyset$ ($\bfbeta=0$),
+variables, $\supp$, indexing the coefficients $\bfbeta_{\!\supp}$. A
+variable $j$ is part of the active set when a single value $\gamma_j$ maximizes the criterion.
+In other words a variable is active if it does not generate a singular point of the criterion.
+Optimization with respect to all the active variables boils down to a simple resolution of a
+quadratic problem. For the Lasso a non-zero coefficient defines an active variable.  
+
+The active set  is started from a sparse initial guess %, say $\supp=\emptyset$ ($\bfbeta=0$),
 and iterates the three following steps:
 \begin{enumerate}
 \item \label{item:algo:step1} the first step solves
