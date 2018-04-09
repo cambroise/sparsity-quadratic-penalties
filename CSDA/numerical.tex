@@ -230,27 +230,22 @@ univariate soft thresholding, in which case all algorithms behave similarly.
 
 \subsubsection{Comparing Stand-Alone Implementations}
 
-We  now  proceed  to the  evaluation  of  our  code with  three  other
-stand-alone programs for solving the Lasso, which are all publicly available as \mytexttt{R} packages.  We
-chose     three    leading    state-of-the-art     packages,    namely
-\mytexttt{glmnet}  \citep[Generalized  Linear  Models  regularized  by
-Lasso    and    elastic-net,][]{2009_JSS_Friedman},    \mytexttt{lars}
-\citep[Least      Angle     Regression,     lasso      and     forward
-Stagewise,][]{2004_AS_Efron}    and   \mytexttt{SPAMS}   \citep[SPArse
-Modeling     Software,][]{2012_FML_Bach},     with     two     options
-\mytexttt{SPAMS-FISTA},  which   implements  an  accelerated  proximal
-method,   and  \mytexttt{SPAMS-LARS}   which   is  a   \mytexttt{lars}
-substitute.   Note that  \mytexttt{glmnet} does  most of  its internal
-computations  in \mytexttt{Fortran}, \mytexttt{lars}  in \mytexttt{R},
-and  \mytexttt{SPAMS} in \mytexttt{C++}.   
-
-%Our own  implementation, by
-%resolution  of the worst-case quadratic  problem,  is  shipped within  an
-%\mytexttt{R} package \mytexttt{quadrupen} publicly available at the second
-%author's        web         page\footnote{or        directly        at
-%  \mytexttt{\href{http://stat.genopole.cnrs.fr/logiciels/quadrupen}}. This
-%  will  be  made  available  on  the  CRAN  (Comprehensive  R  Archive
-%  Network)}.
+We now proceed to the evaluation of our code with three other
+stand-alone programs for solving the Lasso, which are publicly available as \mytexttt{R} packages.  We
+chose three leading state-of-the-art packages, namely
+\mytexttt{glmnet} \citep[Generalized Linear Models regularized by
+Lasso and elastic-net,][]{2009_JSS_Friedman}, \mytexttt{lars}
+\citep[Least Angle Regression, lasso and forward
+Stagewise,][]{2004_AS_Efron} and \mytexttt{SPAMS} \citep[SPArse
+Modeling Software,][]{2012_FML_Bach}, with two options
+\mytexttt{SPAMS-FISTA}, which implements an accelerated proximal
+method, and \mytexttt{SPAMS-LARS} which is a \mytexttt{lars}
+substitute.  Note that \mytexttt{glmnet} does most of its internal
+computations in \mytexttt{Fortran}, \mytexttt{lars} in \mytexttt{R},
+and \mytexttt{SPAMS} in \mytexttt{C++}.  Our own implementation, by
+resolution of the worst-case quadratic problem, is shipped within an
+\mytexttt{R} package \mytexttt{quadrupen} publicly available on github
+{\url{https://github.com/jchiquet/quadrupen}}.
 
 We benchmark these packages by computing  regularization paths for the
 Lasso\footnote{%
@@ -581,22 +576,15 @@ After classical data
 cleaning, 261 individuals with 29849 markers (that is, SNPs) were kept.
 %
 
-We focus here on the tasseling time of maize, whose heritability is explained by many genes.
-We used two different implementations of Lasso for detecting the relevant markers: \mytexttt{glmnet} \citep[Generalized Linear
-Models regularized by Lasso and elastic-net,][]{2009_JSS_Friedman} and
-our own implementation, 
-% by resolution of the worst-case quadratic problem, which is
-publicly available through the
-\mytexttt{R} package
-\mytexttt{quadrupen}%
-% publicly available at the second author's web page
-\footnote{The \mytexttt{quadrupen} package is available on the CRAN (Comprehensive R Archive Network
-  {\url{https://cran.r-project.org/web/packages/quadrupen/}}}.
-
-The two implementations were run using their default parameters, with the 
-same penalty strength $\lambda$, selected by leave-one-out cross-validation with 
-\mytexttt{glmnet}.
-The latter selected 169 markers among the 29849 SNPs, whereas \mytexttt{quadrupen} was more stringent, selecting only a subset of 156 markers. 
+We focus here on the tasseling time of maize, whose heritability is
+explained by many genes.  We used two different implementations of
+Lasso for detecting the relevant markers: \mytexttt{glmnet} and
+\mytexttt{quadrupen}. The two implementations were run using their
+default parameters, with the same penalty strength $\lambda$, selected
+by leave-one-out cross-validation with \mytexttt{glmnet}.  The latter
+selected 169 markers among the 29849 SNPs, whereas
+\mytexttt{quadrupen} was more stringent, selecting only a subset of
+156 markers.
 % Where does this $10\%$ difference in the number of SNPs comes from since there is theoretically one unique solution to our convex Lasso problem ? 
 This notable difference is unexpected considering that the two implementations attempt to solve the very same convex optimization problem.
 
