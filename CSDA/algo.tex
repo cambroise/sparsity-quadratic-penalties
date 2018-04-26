@@ -121,7 +121,7 @@ description.
     \mathbf{x}_j^\intercal(\mathbf{X}_{\centerdot\supp}^{\phantom{\intercal}}\bfbeta_{\!\supp} - \mathbf{y})  + \lambda (\beta_j - \gamma_j) \right|
   \enspace j=1,\ldots,p$
   \tcp*[f]{worst-case gradient} \\
-  \eIf{ ( $\exists\, j \in\supp:  \left\| \bfgamma - \bfbeta \right\|_2^2 = \left\| \bfgamma' - \bfbeta \right\|_2^2 \ and  \ \bfgamma_j' \neq \bfgamma_j  ) \ \text{and}\ g_j = 0$}{
+  \eIf{ $\exists\, j \in\supp:  \left\| \bfgamma - \bfbeta \right\|_2^2 = \left\| \bfgamma' - \bfbeta \right\|_2^2 \ and  \ \bfgamma_j' \neq \bfgamma_j  \ \text{and}\ g_j = 0$}{
        $\displaystyle \supp \leftarrow \supp\backslash\{j\}$ \tcp*[r]{Downgrade $j$} 
        \tcc{Go to Step 1}
    }{%

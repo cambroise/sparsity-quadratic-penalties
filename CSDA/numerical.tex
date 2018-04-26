@@ -176,11 +176,11 @@ a medium level of sparsity ($s=30$) for the three levels of correlation.
     \setlength{\unitlength}{0.575\linewidth}%
     \begin{picture}(1.5,2.2)%
       \put(0,0){\includegraphics[angle=90,width=1.45\unitlength]{../figures/timing_all}}
-      \put(1.45,1.65){\rotatebox{90.0}{\makebox[0cm]{$\log_{10}{\lambda_1}$}}}
-      \put(1.45,1.05){\rotatebox{90.0}{\makebox[0cm]{$\log_{10}{\lambda_1}$}}}
-      \put(1.45,0.45){\rotatebox{90.0}{\makebox[0cm]{$\log_{10}{\lambda_1}$}}}
-      \put(0.4,0){\makebox[0cm]{$\log_{10}{\lambda_2}$}}
-      \put(1.025,0){\makebox[0cm]{$\log_{10}{\lambda_2}$}}
+      \put(1.425,1.575){\rotatebox{90.0}{\makebox[0cm]{$\log_{10}{\lambda_1}$}}}
+      \put(1.425,1.0){\rotatebox{90.0}{\makebox[0cm]{$\log_{10}{\lambda_1}$}}}
+      \put(1.425,0.425){\rotatebox{90.0}{\makebox[0cm]{$\log_{10}{\lambda_1}$}}}
+      \put(0.4,0.025){\makebox[0cm]{$\log_{10}{\lambda_2}$}}
+      \put(1.025,0.025){\makebox[0cm]{$\log_{10}{\lambda_2}$}}
 %       \put(0,2.2){\line(1,0){1.5}}
     \end{picture} 
      \caption{Surfaces of the log-ratio of computation times (brighter shades
@@ -523,9 +523,9 @@ brings better precision and identical or worse recall.
 As expected, the curves show that there is a trade-off in selecting truly 
 relevant variables and discarding the irrelevant ones. 
 Combined with the top row, the precision and recall vs $\lambda$ curves show that there are noticeable differences in terms of support for the best predictors.
-Finally, in the bottom row, the precision vs recall curve shows that the 
+Finally, in the bottom row, the precision vs recall curves show that the 
 accurate solutions dominate the inaccurate ones. 
-Here, a solution dominates another one if it is displayed higher and more to the right. 
+Here, a solution dominates another one if it is displayed more to the right and higher. 
 It can be seen that any point of the green curve 
 (\mytexttt{glmnet} with \mytexttt{low} accuracy) is dominated by a point of the blue curve (\mytexttt{glmnet} with \mytexttt{med} accuracy), 
 which is itself dominated by a point on the red curve (\mytexttt{quadrupen}).
@@ -595,12 +595,12 @@ The departure from zero for \mytexttt{glmnet} illustrates its relative imprecisi
 %
 \begin{figure}
   \centering
-  \begin{tabular}{lc}
+  \begin{tabular}{l@{}c}
   \rotatebox{90}{\small \hspace{2.25cm} count}
-    & \includegraphics[width=.6\textwidth]{../figures/gradient} \\
-    & \small $\left| \mathbf{x}_j^\intercal\left(\mathbf{y}  -\mathbf{X}\hatbbeta\right) \right| -  \lambda$ \hspace{1cm} (log scale) \\
+    &     \includegraphics[width=0.6\textwidth,trim=5mm 5mm 50.5mm 0mm,clip=true]{../figures/gradient} \\[-1.5ex]
+    & \small{$\left| \mathbf{x}_j^\intercal\left(\mathbf{y}  -\mathbf{X}\hatbbeta\right) \right| -  \lambda$} \hspace{0cm} \\
   \end{tabular}
-  \caption{Histogram of the derivatives w.r.t. the non-zero coefficients of the parameter vectors returned by \mytexttt{glmnet} and \mytexttt{quadrupen}}.
+  \caption{Histogram  (log scale) of the derivatives w.r.t. the non-zero coefficients of the parameter vectors returned by \mytexttt{glmnet} and \mytexttt{quadrupen}}.
   \label{fig:gradient}
 \end{figure}
 
