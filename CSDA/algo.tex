@@ -25,9 +25,11 @@ variables, $\supp$, indexing the coefficients $\bfbeta_{\!\supp}$. A
 variable $j$ is part of the active set when a single value $\gamma_j$ maximizes the criterion.
 In other words a variable is active if it does not generate a singular point of the criterion.
 Optimization with respect to all the active variables boils then down to a simple resolution of a
-quadratic problem. For the Lasso a non-zero coefficient defines an active variable.  
+quadratic problem. 
+For the elastic-net, a non-zero coefficient defines an active variable; more
+generally, a zero coefficient defines an inactive variable.
 
-The active set  is started from a sparse initial guess %, say $\supp=\emptyset$ ($\bfbeta=0$),
+The active set is typically started from a sparse initial guess %, say $\supp=\emptyset$ ($\bfbeta=0$),
 and iterates the three following steps:
 \begin{enumerate}
 \item \label{item:algo:step1} the first step solves
@@ -79,17 +81,18 @@ description.
  \SetSideCommentLeft
 %  \DontPrintSemicolon
  \nlset{Init.} $\bfbeta \leftarrow \bfbeta^0$\\
-   Pick a worst admissible $\bfgamma$ in $\boldsymbol\Gamma = \left\{\argmax_{\bfgamma' \in \uball[*]^\eta} \left\| \bfgamma' - \bfbeta \right\|_2^2 \right\}$ \\ 
-  Determine the active set:  $\supp \leftarrow \{j: \exists \bfgamma, \bfgamma' \in \boldsymbol\Gamma
-  \left\| \bfgamma - \bfbeta \right\|_2^2 = \left\| \bfgamma' - \bfbeta \right\|_2^2 \Rightarrow \bfgamma_j' = \bfgamma_j \}$\\  
+  Pick a worst admissible $\bfgamma$ in $\boldsymbol\Gamma = \left\{\argmax_{\bfgamma' \in \uball[*]^\eta} \left\| \bfgamma' - \bfbeta \right\|_2^2 \right\}$ \\ 
+  Determine the active set:  
+%   $\supp \leftarrow \{j: \exists \bfgamma, \bfgamma' \in \boldsymbol\Gamma \left\| \bfgamma - \bfbeta \right\|_2^2 = \left\| \bfgamma' - \bfbeta \right\|_2^2 \Rightarrow \bfgamma_j' = \bfgamma_j \}$\\  
+  $\supp \leftarrow \{j: \forall (\bfgamma, \bfgamma') \in \boldsymbol\Gamma, \enspace \gamma_j= \gamma_j' \}$\\  
   \BlankLine 
   \nlset{Step 1} Update active variables $\bfbeta_{\!\supp}$ assuming that $\supp$ and $\bfgamma_{\!\supp}$ are optimal \\
   $\bfbeta_{\!\supp}^\mathrm{old} \leftarrow \bfbeta_{\!\supp}$ \\
-  $\mathbf{r} \leftarrow \mathbf{y} - \mathbf{X}_{\centerdot\supp^c} \bfbeta_{\!\supp^c}$ \\  
+  $\mathbf{r} \leftarrow \mathbf{y} - \mathbf{X}_{\centerdot\supp^c}^{\phantom{\intercal}} \bfbeta_{\!\supp^c}$ \\  
   $\bfbeta_{\!\supp} \leftarrow 
    \left(\mathbf{X}_{\centerdot\supp}^\intercal
       \mathbf{X}_{\centerdot\supp}^{\phantom{\intercal}} + \lambda \mathbf{I}_{|\supp|}\right)^{-1}
-    \left(\mathbf{X}_{\centerdot\supp}^\intercal\mathbf{r} -
+    \left(\mathbf{X}_{\centerdot\supp}^\intercal\mathbf{r} +
       \lambda \bfgamma_{\!\supp}\right)  
   $ \\ 
   \nlset{Step 2} Verify coherence of $\bfgamma_{\!\supp}$ with the updated $\bfbeta_{\!\supp}$\\
@@ -103,7 +106,7 @@ description.
     $\widetilde\bfbeta_{\!\supp} \leftarrow
     \left(\mathbf{X}_{\centerdot\supp}^\intercal
       \mathbf{X}_{\centerdot\supp}^{\phantom{\intercal}} + \lambda \mathbf{I}_{|\supp|}\right)^{-1}
-    \left(\mathbf{X}_{\centerdot\supp}^\intercal\mathbf{r} -
+    \left(\mathbf{X}_{\centerdot\supp}^\intercal\mathbf{r} +
       \lambda \widetilde\bfgamma_{\!\supp}\right)  
   $ \\ 
   \If(\tcp*[f]{if $\widetilde\bfgamma_{\!\supp}$ is worst-case\ldots})
@@ -118,11 +121,11 @@ description.
     \tcc{The current $\bfgamma_{\!\supp}$ is coherent with $\bfbeta_{\!\supp}$}
 
   \nlset{Step 3} Update active set $\supp$ with worst-case $\bfgamma_{\!\supp}$ \\
-  $\displaystyle g_j \leftarrow \left|
+  $\displaystyle g_j \leftarrow \min_{\bfgamma \in \uball[*]^\eta}\left|
     \mathbf{x}_j^\intercal(\mathbf{X}_{\centerdot\supp}^{\phantom{\intercal}}\bfbeta_{\!\supp} - \mathbf{r})  + \lambda (\beta_j - \gamma_j) \right|
   \enspace j=1,\ldots,p$
   \tcp*[f]{worst-case gradient} \\
-  \eIf{ $\exists\, j \in\supp:  \left\| \bfgamma - \bfbeta \right\|_2^2 = \left\| \bfgamma' - \bfbeta \right\|_2^2 \ and  \ \bfgamma_j' \neq \bfgamma_j  \ \text{and}\ g_j = 0$}{
+  \eIf{ $\exists\, j \in\supp:  \left\| \bfgamma - \bfbeta \right\|_2^2 = \left\| \bfgamma' - \bfbeta \right\|_2^2 \ and  \ \gamma_j \neq \gamma_j'  \ \text{and}\ g_j = 0$}{
        $\displaystyle \supp \leftarrow \supp\backslash\{j\}$ \tcp*[r]{Downgrade $j$} 
        \tcc{Go to Step 1}
    }{%
