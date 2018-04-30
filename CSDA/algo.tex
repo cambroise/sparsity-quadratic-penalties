@@ -78,17 +78,18 @@ description.
   \begin{small}
  \SetSideCommentLeft
 %  \DontPrintSemicolon
-  \nlset{Init.} $\bfbeta \leftarrow \bfbeta^0$\\
-  Determine the active set:  $\supp \leftarrow \{j: \left\| \bfgamma - \bfbeta \right\|_2^2 = \left\| \bfgamma' - \bfbeta \right\|_2^2 \Rightarrow \bfgamma_j' = \bfgamma_j \}$\\   %$\supp \leftarrow \{j:\beta_{j} > 0 \} $\\
-  Pick a worst admissible $\bfgamma$, that is,  $\displaystyle\bfgamma \in 
-  \argmax_{\bfgamma' \in \uball[*]^\eta} \left\| \bfgamma' - \bfbeta \right\|_2^2$
+ \nlset{Init.} $\bfbeta \leftarrow \bfbeta^0$\\
+   Pick a worst admissible $\bfgamma$ in $\boldsymbol\Gamma = \left\{\argmax_{\bfgamma' \in \uball[*]^\eta} \left\| \bfgamma' - \bfbeta \right\|_2^2 \right\}$ \\ 
+  Determine the active set:  $\supp \leftarrow \{j: \exists \bfgamma, \bfgamma' \in \boldsymbol\Gamma
+  \left\| \bfgamma - \bfbeta \right\|_2^2 = \left\| \bfgamma' - \bfbeta \right\|_2^2 \Rightarrow \bfgamma_j' = \bfgamma_j \}$\\  
   \BlankLine 
   \nlset{Step 1} Update active variables $\bfbeta_{\!\supp}$ assuming that $\supp$ and $\bfgamma_{\!\supp}$ are optimal \\
   $\bfbeta_{\!\supp}^\mathrm{old} \leftarrow \bfbeta_{\!\supp}$ \\
+  $\mathbf{r} \leftarrow \mathbf{y} - \mathbf{X}_{\centerdot\supp^c} \bfbeta_{\!\supp^c}$ \\  
   $\bfbeta_{\!\supp} \leftarrow 
    \left(\mathbf{X}_{\centerdot\supp}^\intercal
       \mathbf{X}_{\centerdot\supp}^{\phantom{\intercal}} + \lambda \mathbf{I}_{|\supp|}\right)^{-1}
-    \left(\mathbf{X}_{\centerdot\supp}^\intercal\mathbf{y} -
+    \left(\mathbf{X}_{\centerdot\supp}^\intercal\mathbf{r} -
       \lambda \bfgamma_{\!\supp}\right)  
   $ \\ 
   \nlset{Step 2} Verify coherence of $\bfgamma_{\!\supp}$ with the updated $\bfbeta_{\!\supp}$\\
@@ -102,7 +103,7 @@ description.
     $\widetilde\bfbeta_{\!\supp} \leftarrow
     \left(\mathbf{X}_{\centerdot\supp}^\intercal
       \mathbf{X}_{\centerdot\supp}^{\phantom{\intercal}} + \lambda \mathbf{I}_{|\supp|}\right)^{-1}
-    \left(\mathbf{X}_{\centerdot\supp}^\intercal\mathbf{y} -
+    \left(\mathbf{X}_{\centerdot\supp}^\intercal\mathbf{r} -
       \lambda \widetilde\bfgamma_{\!\supp}\right)  
   $ \\ 
   \If(\tcp*[f]{if $\widetilde\bfgamma_{\!\supp}$ is worst-case\ldots})
@@ -116,9 +117,9 @@ description.
     }
     \tcc{The current $\bfgamma_{\!\supp}$ is coherent with $\bfbeta_{\!\supp}$}
 
-  \nlset{Step 3} Update active set $\supp$ \\
-  $\displaystyle g_j \leftarrow \min_{\bfgamma\in\uball[*]^\eta} \left|
-    \mathbf{x}_j^\intercal(\mathbf{X}_{\centerdot\supp}^{\phantom{\intercal}}\bfbeta_{\!\supp} - \mathbf{y})  + \lambda (\beta_j - \gamma_j) \right|
+  \nlset{Step 3} Update active set $\supp$ with worst-case $\bfgamma_{\!\supp}$ \\
+  $\displaystyle g_j \leftarrow \left|
+    \mathbf{x}_j^\intercal(\mathbf{X}_{\centerdot\supp}^{\phantom{\intercal}}\bfbeta_{\!\supp} - \mathbf{r})  + \lambda (\beta_j - \gamma_j) \right|
   \enspace j=1,\ldots,p$
   \tcp*[f]{worst-case gradient} \\
   \eIf{ $\exists\, j \in\supp:  \left\| \bfgamma - \bfbeta \right\|_2^2 = \left\| \bfgamma' - \bfbeta \right\|_2^2 \ and  \ \bfgamma_j' \neq \bfgamma_j  \ \text{and}\ g_j = 0$}{
